@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>war</packaging>
+    <name>Hong's Mosaic Web</name>
+    <artifactId>hongs-mosaic-web</artifactId>
+    <parent>
+        <artifactId>hongs-mosaic</artifactId>
+        <groupId>io.github.ihongs</groupId>
+        <version>0.4-SNAPSHOT</version>
+    </parent>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <endorsed.dirs>${project.build.directory}/endorsed</endorsed.dirs>
+        <released.name>HongsMosaic</released.name>
+    </properties>
+    <dependencies>
+        <dependency>
+            <artifactId>hongs-wms</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <artifactId>hongs-serv-mosaic</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <!--directory>bin</directory-->
+        <finalName>${released.name}-${project.version}</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>2.6</version>
+                <configuration>
+                    <warSourceDirectory>web</warSourceDirectory>
+                    <warSourceExcludes>
+                        **/*-dev/**,
+                        **/build/**,
+                        **/coverage/**,
+                        **/node_modules/**
+                    </warSourceExcludes>
+                    <packagingExcludes>
+                        WEB-INF/classes/io/github/ihongs/**
+                    </packagingExcludes>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>2.6.1</version>
+                <executions>
+                    <execution>
+                        <id>clean</id>
+                        <phase>pre-clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <configuration>
+                            <directory>web/WEB-INF/lib</directory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>2.9</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeTypes>jar</includeTypes>
+                            <outputDirectory>web/WEB-INF/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <compilerArguments>
+                        <endorseddirs>${endorsed.dirs}</endorseddirs>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>2.18.1</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <!-- Build target system -->
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>build-hongs-core-system</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <!--
+                                <delete dir="${project.build.directory}/${released.name}"/>
+                                //-->
+                                <copy todir="${project.build.directory}/${released.name}" >
+                                    <fileset dir="${project.build.directory}/${project.build.finalName}/WEB-INF">
+                                        <exclude name="classes/" />
+                                        <exclude name="web.*" />
+                                        <exclude name="*.war" />
+                                    </fileset>
+                                    <fileset dir="${basedir}"  >
+                                        <include name="*.bat" />
+                                    </fileset>
+                                </copy>
+                                <copy todir="${project.build.directory}/${released.name}/lib">
+                                    <fileset dir="${project.build.directory}/${project.build.finalName}/WEB-INF">
+                                        <include name="classes/" />
+                                    </fileset>
+                                </copy>
+                                <copy todir="${project.build.directory}/${released.name}/etc">
+                                    <fileset dir="${project.build.directory}/${project.build.finalName}/WEB-INF">
+                                        <include name="web.*" />
+                                    </fileset>
+                                </copy>
+                                <copy todir="${project.build.directory}/${released.name}/web">
+                                    <fileset dir="${project.build.directory}/${project.build.finalName}">
+                                        <exclude name="*-INF/"/>
+                                    </fileset>
+                                </copy>
+                                <mkdir  dir="${project.build.directory}/${released.name}/var/log"/>
+                                <mkdir  dir="${project.build.directory}/${released.name}/var/tmp"/>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
