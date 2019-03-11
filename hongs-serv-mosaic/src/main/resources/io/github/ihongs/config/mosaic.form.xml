@@ -1,1 +1,39 @@
-
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <form name="pane">
+        <field name="id" type="hidden"></field>
+        <field name="name" type="text" required="yes">
+            <param name="maxlength">1000</param>
+        </field>
+        <field name="tags" type="text" repeated="yes">
+            <param name="maxrepeat">100</param>
+            <param name="maxlength">100</param>
+            <param name="slice">,</param>
+        </field>
+        <field name="cols" type="form" repeated="yes">
+            <param name="form">_col</param>
+        </field>
+        <field name="user_id" type="string">
+            <param name="default">=$uid</param>
+            <param name="deforce">create</param>
+        </field>
+    </form>
+    <form name="_col">
+        <field name="id" type="hidden"></field>
+        <field name="type" type="enum" repeated="yes">
+            <param name="enum">_col</param>
+        </field>
+    </form>
+    <enum name="_col">
+        <value code="link" >链接</value>
+        <value code="slide">轮播</value>
+        <value code="html" >图文</value>
+    </enum>
+    
+    <form name="page">
+        
+    </form>
+    <form name="form">
+        
+    </form>
+</root>
