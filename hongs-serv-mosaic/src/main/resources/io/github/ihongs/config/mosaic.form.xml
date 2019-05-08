@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
+
+    <!-- 基类 -->
     <form name="mosaic">
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
             <param name="maxlength">1000</param>
         </field>
         <field text="简介" name="note" type="text">
-            <param name="maxrepeat">1000</param>
+            <param name="maxlength">1000</param>
         </field>
         <field text="标签" name="tags" type="text" repeated="yes">
             <param name="maxrepeat">100</param>
@@ -14,8 +16,47 @@
             <param name="slice">,</param>
         </field>
         <field text="图标" name="logo" type="image" rule="MosaicPath,Thumb">
-            <param name="path">static/upload/mosaic/${uid}</param>
-            <param name="href">static/upload/mosiac/${uid}</param>
+            <param name="path">static/upload/mosaic/${uid}/image</param>
+            <param name="href">static/upload/mosiac/${uid}/image</param>
+        </field>
+        <field text="属主" name="owner" type="fork">
+            <param name="data-al">centra/master/user/list.act?rb=id,name</param>
+            <param name="data-ak">owner</param>
+            <param name="default">=$uid</param>
+            <param name="deforce">create</param>
+        </field>
+        <field text="修改时间" name="mtime" type="date">
+            <param name="type">timestamp</param>
+            <param name="default">=%now</param>
+            <param name="deforce">always</param>
+        </field>
+        <field text="创建时间" name="ctime" type="date">
+            <param name="type">timestamp</param>
+            <param name="default">=%now</param>
+            <param name="deforce">create</param>
+        </field>
+    </form>
+
+    <!-- 面板 -->
+    <form name="pane">
+        <field name="id" type="hidden"></field>
+        <field text="名称" name="name" type="text">
+            <param name="maxlength">1000</param>
+        </field>
+        <field text="简介" name="note" type="text">
+            <param name="maxlength">1000</param>
+        </field>
+        <field text="标签" name="tags" type="text" repeated="yes">
+            <param name="maxrepeat">100</param>
+            <param name="maxlength">100</param>
+            <param name="slice">,</param>
+        </field>
+        <field text="图标" name="logo" type="image" rule="MosaicPath,Thumb">
+            <param name="path">static/upload/mosaic/${uid}/image</param>
+            <param name="href">static/upload/mosiac/${uid}/image</param>
+        </field>
+        <field name="items" type="form" repeated="yes">
+            <param name="form">_pane_item</param>
         </field>
         <field name="owner" type="fork">
             <param name="data-al">centra/master/user/list.act?rb=id,name</param>
@@ -34,39 +75,117 @@
             <param name="deforce">always</param>
         </field>
     </form>
-    <form name="pane">
-        <field name="id" type="hidden"></field>
-        <field name="items" type="form" repeated="yes">
-            <param name="form">_pane_item</param>
-        </field>
-    </form>
+    <!-- 面板条目 -->
     <form name="_pane_item">
-        <field text="类型" name="type" type="enum">
-            <param name="enum">pane_type</param>
-        </field>
-        <field text="图标" name="logo" type="image" rule="MosaicPath,Thumb">
-            <param name="path">static/upload/mosaic/${uid}</param>
-            <param name="href">static/upload/mosaic/${uid}</param>
-        </field>
         <field text="名称" name="name" type="text">
             <param name="maxlength">1000</param>
         </field>
         <field text="简介" name="note" type="text">
             <param name="maxlength">1000</param>
         </field>
+        <field text="图标" name="logo" type="image" rule="MosaicPath,Thumb">
+            <param name="path">static/upload/mosaic/${uid}/image</param>
+            <param name="href">static/upload/mosaic/${uid}/image</param>
+        </field>
+        <field text="类型" name="type" type="enum">
+            <param name="enum">pane_type</param>
+        </field>
         <field text="链接" name="link" type="text">
+            <param name="maxlength">1000</param>
         </field>
         <field text="内容" name="html" type="textview">
+            <param name="type">html</param>
         </field>
     </form>
 
+    <!-- 内容 -->
     <form name="page">
-        
+        <field name="id" type="hidden"></field>
+        <field text="名称" name="name" type="text">
+            <param name="maxlength">1000</param>
+        </field>
+        <field text="简介" name="note" type="text">
+            <param name="maxlength">1000</param>
+        </field>
+        <field text="标签" name="tags" type="text" repeated="yes">
+            <param name="maxrepeat">100</param>
+            <param name="maxlength">100</param>
+            <param name="slice">,</param>
+        </field>
+        <field text="图标" name="logo" type="image" rule="MosaicPath,Thumb">
+            <param name="path">static/upload/mosaic/${uid}/image</param>
+            <param name="href">static/upload/mosiac/${uid}/image</param>
+        </field>
+        <field text="类型" name="type" type="enum">
+            <param name="enum">page_type</param>
+        </field>
+        <field text="链接" name="link" type="text">
+            <param name="maxlength">1000</param>
+        </field>
+        <field text="内容" name="html" type="textview">
+            <param name="type">html</param>
+        </field>
+        <field name="owner" type="fork">
+            <param name="data-al">centra/master/user/list.act?rb=id,name</param>
+            <param name="data-ak">owner</param>
+            <param name="default">=$uid</param>
+            <param name="deforce">create</param>
+        </field>
+        <field name="ctime" type="date">
+            <param name="type">timestamp</param>
+            <param name="default">=%now</param>
+            <param name="deforce">create</param>
+        </field>
+        <field name="mtime" type="date">
+            <param name="type">timestamp</param>
+            <param name="default">=%now</param>
+            <param name="deforce">always</param>
+        </field>
     </form>
+
+    <!-- 表单 -->
     <form name="form">
-        
+        <field name="id" type="hidden"></field>
+        <field text="名称" name="name" type="text">
+            <param name="maxlength">1000</param>
+        </field>
+        <field text="简介" name="note" type="text">
+            <param name="maxlength">1000</param>
+        </field>
+        <field text="标签" name="tags" type="text" repeated="yes">
+            <param name="maxrepeat">100</param>
+            <param name="maxlength">100</param>
+            <param name="slice">,</param>
+        </field>
+        <field text="图标" name="logo" type="image" rule="MosaicPath,Thumb">
+            <param name="path">static/upload/mosaic/${uid}/image</param>
+            <param name="href">static/upload/mosiac/${uid}/image</param>
+        </field>
+        <field text="类型" name="type" type="enum">
+            <param name="enum">form_type</param>
+        </field>
+        <field text="配置" name="conf" type="textview">
+            <param name="type">code</param>
+            <param name="mode">json</param>
+        </field>
+        <field name="owner" type="fork">
+            <param name="data-al">centra/master/user/list.act?rb=id,name</param>
+            <param name="data-ak">owner</param>
+            <param name="default">=$uid</param>
+            <param name="deforce">create</param>
+        </field>
+        <field name="ctime" type="date">
+            <param name="type">timestamp</param>
+            <param name="default">=%now</param>
+            <param name="deforce">create</param>
+        </field>
+        <field name="mtime" type="date">
+            <param name="type">timestamp</param>
+            <param name="default">=%now</param>
+            <param name="deforce">always</param>
+        </field>
     </form>
-    
+
     <enum name="pane_type">
         <value code="link">链接</value>
         <value code="post">轮播</value>
@@ -81,5 +200,5 @@
         <value code="form">表单</value>
         <value code="vote">投票</value>
     </enum>
-    
+
 </root>
