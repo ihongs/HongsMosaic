@@ -35,7 +35,6 @@
     <form name="pane">
         <field>
             <param name="form_id">mosiac.pane</param>
-            <param name="part_id">mosiac.pane</param>
         </field>
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
@@ -94,7 +93,6 @@
     <form name="page">
         <field>
             <param name="form_id">mosiac.page</param>
-            <param name="part_id">mosiac.page</param>
         </field>
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
@@ -137,7 +135,6 @@
     <form name="form">
         <field>
             <param name="form_id">mosiac.form</param>
-            <param name="part_id">mosiac.form</param>
         </field>
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
@@ -157,6 +154,9 @@
         </field>
         <field text="类型" name="type" type="enum">
             <param name="enum">form_type</param>
+        </field>
+        <field text="内容" name="html" type="textview">
+            <param name="type">html</param>
         </field>
         <field text="配置" name="conf" type="textview">
             <param name="type">code</param>
