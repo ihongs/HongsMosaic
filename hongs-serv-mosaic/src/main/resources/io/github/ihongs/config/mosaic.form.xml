@@ -19,12 +19,6 @@
             <param name="path">static/upload/mosaic/${uid}/image</param>
             <param name="href">static/upload/mosiac/${uid}/image</param>
         </field>
-        <field text="属主" name="owner" type="fork">
-            <param name="data-al">centra/master/user/list.act?rb=id,name</param>
-            <param name="data-ak">owner</param>
-            <param name="default">=$uid</param>
-            <param name="deforce">create</param>
-        </field>
         <field text="修改时间" name="mtime" type="date">
             <param name="type">timestamp</param>
             <param name="default">=%now</param>
@@ -39,6 +33,10 @@
 
     <!-- 面板 -->
     <form name="pane">
+        <field>
+            <param name="form_id">mosiac.pane</param>
+            <param name="part_id">mosiac.pane</param>
+        </field>
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
             <param name="maxlength">1000</param>
@@ -57,12 +55,6 @@
         </field>
         <field name="items" type="form" repeated="yes">
             <param name="form">_pane_item</param>
-        </field>
-        <field name="owner" type="fork">
-            <param name="data-al">centra/master/user/list.act?rb=id,name</param>
-            <param name="data-ak">owner</param>
-            <param name="default">=$uid</param>
-            <param name="deforce">create</param>
         </field>
         <field name="ctime" type="date">
             <param name="type">timestamp</param>
@@ -100,6 +92,10 @@
 
     <!-- 内容 -->
     <form name="page">
+        <field>
+            <param name="form_id">mosiac.page</param>
+            <param name="part_id">mosiac.page</param>
+        </field>
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
             <param name="maxlength">1000</param>
@@ -125,12 +121,6 @@
         <field text="内容" name="html" type="textview">
             <param name="type">html</param>
         </field>
-        <field name="owner" type="fork">
-            <param name="data-al">centra/master/user/list.act?rb=id,name</param>
-            <param name="data-ak">owner</param>
-            <param name="default">=$uid</param>
-            <param name="deforce">create</param>
-        </field>
         <field name="ctime" type="date">
             <param name="type">timestamp</param>
             <param name="default">=%now</param>
@@ -145,6 +135,10 @@
 
     <!-- 表单 -->
     <form name="form">
+        <field>
+            <param name="form_id">mosiac.form</param>
+            <param name="part_id">mosiac.form</param>
+        </field>
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
             <param name="maxlength">1000</param>
@@ -167,12 +161,6 @@
         <field text="配置" name="conf" type="textview">
             <param name="type">code</param>
             <param name="mode">json</param>
-        </field>
-        <field name="owner" type="fork">
-            <param name="data-al">centra/master/user/list.act?rb=id,name</param>
-            <param name="data-ak">owner</param>
-            <param name="default">=$uid</param>
-            <param name="deforce">create</param>
         </field>
         <field name="ctime" type="date">
             <param name="type">timestamp</param>
