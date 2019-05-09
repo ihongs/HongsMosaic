@@ -1,50 +1,32 @@
 package io.github.ihongs.serv.mosaic;
 
 import io.github.ihongs.Cnst;
-import io.github.ihongs.Core;
 import io.github.ihongs.HongsException;
 import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.db.Table;
 import io.github.ihongs.serv.matrix.Data;
 import io.github.ihongs.util.Synt;
 import io.github.ihongs.util.Tool;
-import java.io.File;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 import org.apache.lucene.document.Document;
 
 /**
- * 数据基类
+ * 模型基类
  * 按照用户存放
- * @author hong
+ * @author Hongs
  */
 public abstract class MosaicEntity extends Data {
 
     private String unitId = null;
-    private final Set<String> mcUrls = new LinkedHashSet();
 
     protected MosaicEntity(String conf, String form) {
         super(conf, form);
     }
 
     @Override
-    public String getDbPath() {
-        String path = "mosaic/" + getUnitId();
-        path = Synt.declare(getParams().get("db-path"),path);
-
-        // 进一步处理路径
-        Map m = new HashMap();
-        m.put("SERVER_ID", Core.SERVER_ID);
-        m.put("CORE_PATH", Core.CORE_PATH);
-        m.put("DATA_PATH", Core.DATA_PATH);
-        m.put("UNIT_ID"  , getUnitId ( ) );
-        path = Tool.inject(path, m);
-        if ( ! new File(path).isAbsolute())
-        path = Core.DATA_PATH + "/lucene/" + path;
-
-        return path;
+    public String getPartId() {
+        return getFormId() + "." + getUnitId();
     }
 
     public String getUnitId() {
@@ -53,10 +35,10 @@ public abstract class MosaicEntity extends Data {
                 unitId = (String) ActionHelper.getInstance()
                                 . getSessibute(Cnst.UID_SES);
             } catch (UnsupportedOperationException e ) {
-                throw new NullPointerException("Call setUserId first");
+                throw new NullPointerException("Call setUnitId first");
             }
             if ( null == unitId ) {
-                throw new NullPointerException("Call setUserId first");
+                throw new NullPointerException("Call setUnitId first");
             }
         }
         return unitId;

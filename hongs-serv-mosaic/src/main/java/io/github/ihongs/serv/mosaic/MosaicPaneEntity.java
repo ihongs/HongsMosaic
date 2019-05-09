@@ -1,8 +1,8 @@
 package io.github.ihongs.serv.mosaic;
 
 /**
- *
- * @author hong
+ * 面板模型
+ * @author Hongs
  */
 public class MosaicPaneEntity extends MosaicEntity {
     

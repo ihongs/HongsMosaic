@@ -1,10 +1,8 @@
 package io.github.ihongs.serv.mosaic;
 
-import io.github.ihongs.Core;
-
 /**
- *
- * @author hong
+ * 表单模型
+ * @author Hongs
  */
 public class MosaicFormEntity extends MosaicEntity {
 
