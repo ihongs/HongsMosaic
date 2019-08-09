@@ -5,6 +5,7 @@ import io.github.ihongs.HongsException;
 import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.db.Table;
 import io.github.ihongs.serv.matrix.Data;
+import io.github.ihongs.util.Dawn;
 import io.github.ihongs.util.Synt;
 import io.github.ihongs.util.Tool;
 import java.util.HashMap;
@@ -98,7 +99,7 @@ public abstract class MosaicEntity extends Data {
                     if ( Synt.declare ( od.get("ctime"), 0L )  >=  ctime ) {
                         throw new HongsException(0x1100, "等会儿, 不要急");
                     }
-                    dd = (Map) io.github.ihongs.util.Data.toObject(od.get("data").toString());
+                    dd = (Map) Dawn.toObject((String) od.get("data"));
                     st = 2; // 有快照也算更新
                 }
             }
@@ -142,7 +143,7 @@ public abstract class MosaicEntity extends Data {
             nd.put("user_id", uid);
             nd.put("memo", rd.get("memo"));
             nd.put("name", dd.get("name"));
-            nd.put("data", io.github.ihongs.util.Data.toString(dd, true));
+            nd.put("data", Dawn.toString(dd, true));
 
             table.update(ud, where, param);
             table.insert(nd);
@@ -283,7 +284,7 @@ public abstract class MosaicEntity extends Data {
 
         //** 保存到索引库 **/
 
-        dd = (Map) io.github.ihongs.util.Data.toObject(dd.get("data").toString());
+        dd = (Map) Dawn.toObject((String) dd.get("data"));
 
         Document doc = new Document(  );
         dd.put(Cnst.ID_KEY, id);
