@@ -6,8 +6,8 @@ import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.db.Table;
 import io.github.ihongs.serv.matrix.Data;
 import io.github.ihongs.util.Dawn;
+import io.github.ihongs.util.Syno;
 import io.github.ihongs.util.Synt;
-import io.github.ihongs.util.Tool;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.lucene.document.Document;
@@ -311,7 +311,7 @@ public abstract class MosaicEntity extends Data {
 
         String fid = getFormId();
         String nid = getFormId();
-        dcUrls.add(Tool.inject(url, Synt.mapOf(
+        dcUrls.add(Syno.inject(url, Synt.mapOf(
             "form_id", fid,
             "unit_id", nid,
             "id"     , id ,

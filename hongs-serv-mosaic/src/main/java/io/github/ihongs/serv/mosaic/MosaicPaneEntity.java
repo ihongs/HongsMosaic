@@ -1,7 +1,7 @@
 package io.github.ihongs.serv.mosaic;
 
 import io.github.ihongs.Core;
-import io.github.ihongs.util.Tool;
+import io.github.ihongs.util.Syno;
 
 /**
  * 面板模型
@@ -30,7 +30,7 @@ public class MosaicPaneEntity extends MosaicEntity {
         if (core.containsKey(name)) {
             inst = (MosaicPaneEntity) core.got( name );
         } else {
-            unit = Tool.splitPath( unit );
+            unit = Syno.splitPath( unit );
             inst = new MosaicPaneEntity();
             inst.setUnitId ( unit );
             core.put ( name, inst );
