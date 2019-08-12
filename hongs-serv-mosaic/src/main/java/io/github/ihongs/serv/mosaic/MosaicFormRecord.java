@@ -1,7 +1,7 @@
 package io.github.ihongs.serv.mosaic;
 
 import io.github.ihongs.Core;
-import io.github.ihongs.util.Tool;
+import io.github.ihongs.util.Syno;
 
 /**
  * 记录模型
@@ -27,7 +27,7 @@ public class MosaicFormRecord extends MosaicEntity {
         if (core.containsKey(name)) {
             inst = (MosaicFormRecord) core.got( name );
         } else {
-            unit = Tool.splitPath (unit);
+            unit = Syno.splitPath (unit);
             inst = new MosaicFormRecord("mosaic/" + unit + "/" + form , form);
             core.put ( name, inst );
         }
