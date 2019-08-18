@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author Hongs
  */
-@Action("centre/mosaic/_auto_")
+@Action("centre/mosaic/__unit__")
 public class MosaicPaneAction extends SearchAction {
 
     /**

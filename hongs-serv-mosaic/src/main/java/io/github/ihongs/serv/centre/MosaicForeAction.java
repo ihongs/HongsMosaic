@@ -13,7 +13,7 @@ import io.github.ihongs.dh.IEntity;
 import io.github.ihongs.dh.ModelGate;
 import io.github.ihongs.serv.matrix.Data;
 import io.github.ihongs.serv.mosaic.MosaicEntity;
-import io.github.ihongs.serv.mosaic.MosaicFormEntity;
+import io.github.ihongs.serv.mosaic.MosaicForeEntity;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -22,7 +22,7 @@ import java.util.Map;
  * @author Hongs
  */
 @Action("centre/mosaic/__unit__")
-public class MosaicFormAction extends ModelGate {
+public class MosaicForeAction extends ModelGate {
 
     /**
      * 获取模型对象
@@ -42,11 +42,11 @@ public class MosaicFormAction extends ModelGate {
         if (unitId.length() > 14) {
             unitId = unitId.substring( 15 ); // 格式: centre/mosaic/unitId
         if (unitId.length() < 1 ) {
-            throw new HongsException(0x1100, "URI must be centre/mosaic/UNIT/form/ACTION.act");
+            throw new HongsException(0x1100, "URI must be centre/mosaic/UNIT/fore/FORM/ACTION.act");
         }} else {
-            throw new HongsException(0x1100, "URI must be centre/mosaic/UNIT/form/ACTION.act");
+            throw new HongsException(0x1100, "URI must be centre/mosaic/UNIT/fore/FORM/ACTION.act");
         }
-        MosaicEntity entity = MosaicFormEntity.getInstance(unitId);
+        MosaicEntity entity = MosaicForeEntity.getInstance(unitId, "");
 //      entity.setUnitId(unitId);
         entity.setUserId(userId);
         return entity;
@@ -70,7 +70,7 @@ public class MosaicFormAction extends ModelGate {
         }
     }
 
-    @Action("form/select")
+    @Action("fore/select")
     @Preset(conf="", form="")
     @Select(conf="", form="")
     @Override
@@ -78,7 +78,7 @@ public class MosaicFormAction extends ModelGate {
         super.select(helper);
     }
 
-    @Action("form/search")
+    @Action("fore/search")
     @Preset(conf="", form="")
     @Select(conf="", form="")
     @Override
@@ -86,7 +86,7 @@ public class MosaicFormAction extends ModelGate {
         super.search(helper);
     }
 
-    @Action("form/create")
+    @Action("fore/create")
     @Preset(conf="", form="", defs={":defence"})
     @Verify(conf="", form="")
     @Select(conf="", form="")
@@ -96,7 +96,7 @@ public class MosaicFormAction extends ModelGate {
         super.create(helper);
     }
 
-    @Action("form/update")
+    @Action("fore/update")
     @Preset(conf="", form="", defs={":defence"})
     @Verify(conf="", form="")
     @CommitSuccess
@@ -105,7 +105,7 @@ public class MosaicFormAction extends ModelGate {
         super.update(helper);
     }
 
-    @Action("form/delete")
+    @Action("fore/delete")
     @Preset(conf="", form="", defs={":defence"})
     @CommitSuccess
     @Override
