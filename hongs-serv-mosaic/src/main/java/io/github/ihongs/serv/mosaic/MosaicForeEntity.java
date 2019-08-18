@@ -7,9 +7,9 @@ import io.github.ihongs.util.Syno;
  * 记录模型
  * @author Hongs
  */
-public class MosaicFormRecord extends MosaicEntity {
+public class MosaicForeEntity extends MosaicEntity {
 
-    protected MosaicFormRecord(String conf, String form) {
+    protected MosaicForeEntity(String conf, String form) {
         super(conf, form);
     }
 
@@ -20,15 +20,15 @@ public class MosaicFormRecord extends MosaicEntity {
      * @param form
      * @return
      */
-    public static MosaicFormRecord getInstance(String unit, String form) {
-        MosaicFormRecord inst;
+    public static MosaicForeEntity getInstance(String unit, String form) {
+        MosaicForeEntity inst;
         Core   core = Core.getInstance();
-        String name = MosaicFormRecord.class.getName() +":"+ unit +":"+ form ;
+        String name = MosaicForeEntity.class.getName() +":"+ unit +":"+ form ;
         if (core.containsKey(name)) {
-            inst = (MosaicFormRecord) core.got( name );
+            inst = (MosaicForeEntity) core.got( name );
         } else {
             unit = Syno.splitPath (unit);
-            inst = new MosaicFormRecord("mosaic/" + unit + "/" + form , form);
+            inst = new MosaicForeEntity("mosaic/" + unit + "/" + form , form);
             core.put ( name, inst );
         }
         return inst;
