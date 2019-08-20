@@ -39,6 +39,8 @@ public class MosaicForeAction extends ModelGate {
         ActionRunner runner = (ActionRunner) helper.getAttribute(ActionRunner.class.getName());
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
         String unitId = runner.getModule( );
+        String formId = runner.getEntity( );
+               unitId = unitId.substring(0 , -5 + unitId.length()); // 去掉 /fore
         if (unitId.length() > 14) {
             unitId = unitId.substring( 15 ); // 格式: centre/mosaic/unitId
         if (unitId.length() < 1 ) {
@@ -46,7 +48,7 @@ public class MosaicForeAction extends ModelGate {
         }} else {
             throw new HongsException(0x1100, "URI must be centre/mosaic/UNIT/fore/FORM/ACTION.act");
         }
-        MosaicEntity entity = MosaicForeEntity.getInstance(unitId, "");
+        MosaicEntity entity = MosaicForeEntity.getInstance(unitId, formId);
 //      entity.setUnitId(unitId);
         entity.setUserId(userId);
         return entity;
