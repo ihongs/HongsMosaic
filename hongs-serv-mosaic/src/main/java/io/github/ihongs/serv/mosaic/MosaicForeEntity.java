@@ -28,7 +28,7 @@ public class MosaicForeEntity extends MosaicEntity {
             inst = (MosaicForeEntity) core.got( name );
         } else {
             unit = Syno.splitPath (unit);
-            inst = new MosaicForeEntity("mosaic/" + unit + "/" + form , form);
+            inst = new MosaicForeEntity("mosaic/"+ unit +"/fore/"+ form,form);
             core.put ( name, inst );
         }
         return inst;
