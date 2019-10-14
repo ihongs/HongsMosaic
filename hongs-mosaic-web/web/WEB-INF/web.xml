@@ -71,16 +71,6 @@
         <url-pattern>/common/conf/*</url-pattern>
         <url-pattern>/common/lang/*</url-pattern>
     </servlet-mapping>
-    <!-- XSRF Filter -->
-    <filter>
-        <filter-name>XsrfFilter</filter-name>
-        <filter-class>io.github.ihongs.normal.serv.XsrfFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>XsrfFilter</filter-name>
-        <url-pattern>*.act</url-pattern>
-        <url-pattern>*.api</url-pattern>
-    </filter-mapping>
     <!-- SPAR Filter -->
     <filter>
         <filter-name>SparFilter</filter-name>
@@ -89,6 +79,21 @@
     <filter-mapping>
         <filter-name>SparFilter</filter-name>
         <url-pattern>/public/*</url-pattern>
+    </filter-mapping>
+    <!-- XSRF Filter -->
+    <filter>
+        <filter-name>XsrfFilter</filter-name>
+        <filter-class>io.github.ihongs.normal.serv.XsrfFilter</filter-class>
+        <init-param>
+            <param-name>ignore-urls</param-name>
+            <param-value>/centre/oauth2/*</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>XsrfFilter</filter-name>
+        <url-pattern>*.act</url-pattern>
+        <url-pattern>*.api</url-pattern>
+        <url-pattern>/api/*</url-pattern>
     </filter-mapping>
     <!-- Sess Filter -->
     <!--
@@ -198,12 +203,12 @@
         <filter-name>AutoFilter_Centra</filter-name>
         <filter-class>io.github.ihongs.action.serv.AutoFilter</filter-class>
         <init-param>
-            <param-name>action-path</param-name>
-            <param-value>/centra/auto</param-value>
+            <param-name>layout-path</param-name>
+            <param-value>/centra/base</param-value>
         </init-param>
         <init-param>
-            <param-name>layout-path</param-name>
-            <param-value>/centra/auto</param-value>
+            <param-name>action-path</param-name>
+            <param-value>/centra/data</param-value>
         </init-param>
     </filter>
     <filter-mapping>
@@ -217,12 +222,12 @@
         <filter-name>AutoFilter_Centre</filter-name>
         <filter-class>io.github.ihongs.action.serv.AutoFilter</filter-class>
         <init-param>
-            <param-name>action-path</param-name>
-            <param-value>/centre/auto</param-value>
+            <param-name>layout-path</param-name>
+            <param-value>/centre/base</param-value>
         </init-param>
         <init-param>
-            <param-name>layout-path</param-name>
-            <param-value>/centre/auto</param-value>
+            <param-name>action-path</param-name>
+            <param-value>/centre/data</param-value>
         </init-param>
     </filter>
     <filter-mapping>
@@ -236,16 +241,19 @@
         <filter-name>AutoFilter_Mosaic</filter-name>
         <filter-class>io.github.ihongs.action.serv.AutoFilter</filter-class>
         <init-param>
-            <param-name>action-path</param-name>
-            <param-value>/centre/mosaic/_auto_</param-value>
+            <param-name>layout-path</param-name>
+            <param-value>/centre/mosaic/__unit__</param-value>
         </init-param>
         <init-param>
-            <param-name>layout-path</param-name>
-            <param-value>/centre/mosaic/_auto_</param-value>
+            <param-name>action-path</param-name>
+            <param-value>/centre/mosaic/__unit__</param-value>
         </init-param>
         <init-param>
             <param-name>ignore-urls</param-name>
-            <param-value>/centre/mosaic/_auto_/*</param-value>
+            <param-value>
+                /centre/mosaic/__unit__/*;
+                /centre/mosaic/__main__/*
+            </param-value>
         </init-param>
     </filter>
     <filter-mapping>
