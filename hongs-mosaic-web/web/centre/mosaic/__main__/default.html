@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+    <head>
+        <title>用户单元</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <base href="../../../">
+        <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+        <link rel="stylesheet" type="text/css" href="static/assets/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="static/assets/css/hongscore.min.css"/>
+        <link rel="stylesheet" type="text/css" href="centra/base.css"/>
+        <!--[if glt IE8.0]>
+        <script type="text/javascript" src="static/addons/respond/respond.min.js"></script>
+        <![endif]-->
+        <script type="text/javascript" src="static/assets/jquery.min.js"></script>
+        <script type="text/javascript" src="static/assets/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="static/assets/bootstrap.min.js"></script>
+        <script type="text/javascript" src="static/assets/hongscore.min.js"></script>
+        <script type="text/javascript" src="common/conf/default.js"></script>
+        <script type="text/javascript" src="common/lang/default.js"></script>
+    </head>
+    <body>
+        <div id="context">
+            <div id="headbox">
+                <div id="menu-context" data-load="centra/head.jsp"></div>
+            </div>
+            <div id="bodybox">
+                <div id="main-context" class="container-fluid">
+                    <ol class="breadcrumb tabs laps hide row" data-toggle="hsTabs">
+                        <li class="back-crumb dont-close pull-right">
+                            <a href="#pane" data-href="centre/mosaic/__main__/pane/list.html">
+                                <i class="glyphicon glyphicon-th"></i>
+                                <b>面板</b>
+                            </a>
+                        </li>
+                        <li class="home-crumb active">
+                            <a href="#page" data-href="centre/mosaic/__main__/page/list.html">
+                                <i class="glyphicon glyphicon-book"></i>
+                                <b>文章</b>
+                            </a>
+                        </li>
+                        <li class="home-crumb active">
+                            <a href="#form" data-href="centre/mosaic/__main__/form/list.html">
+                                <i class="glyphicon glyphicon-list"></i>
+                                <b>表单</b>
+                            </a>
+                        </li>
+                    </ol>
+                    <div class="labs laps">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            (function($) {
+                if (location.hash) {
+                    $("#main-context a[href='"+location.hash+"']").addClass("active");
+                }
+            })(jQuery);
+        </script>
+    </body>
+</html>
