@@ -19,6 +19,10 @@
             <param name="path">static/upload/mosaic/${uid}/image</param>
             <param name="href">static/upload/mosiac/${uid}/image</param>
         </field>
+        <field text="状态" name="state" type="enum">
+            <param name="enum">state</param>
+            <param name="default">1</param>
+        </field>
         <field text="修改时间" name="mtime" type="date">
             <param name="type">timestamp</param>
             <param name="default">=%now</param>
@@ -34,7 +38,7 @@
     <!-- 面板 -->
     <form name="pane">
         <field>
-            <param name="form_id">mosiac.pane</param>
+            <param name="form_id">mosaic.pane</param>
         </field>
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
@@ -55,12 +59,16 @@
         <field name="items" type="form" repeated="yes">
             <param name="form">_pane_item</param>
         </field>
-        <field name="ctime" type="date">
+        <field text="状态" name="state" type="enum">
+            <param name="enum">state</param>
+            <param name="default">1</param>
+        </field>
+        <field text="创建时间" name="ctime" type="date">
             <param name="type">timestamp</param>
             <param name="default">=%now</param>
             <param name="deforce">create</param>
         </field>
-        <field name="mtime" type="date">
+        <field text="修改时间" name="mtime" type="date">
             <param name="type">timestamp</param>
             <param name="default">=%now</param>
             <param name="deforce">always</param>
@@ -92,7 +100,7 @@
     <!-- 内容 -->
     <form name="page">
         <field>
-            <param name="form_id">mosiac.page</param>
+            <param name="form_id">mosaic.page</param>
         </field>
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
@@ -119,12 +127,16 @@
         <field text="内容" name="html" type="textview">
             <param name="type">html</param>
         </field>
-        <field name="ctime" type="date">
+        <field text="状态" name="state" type="enum">
+            <param name="enum">state</param>
+            <param name="default">1</param>
+        </field>
+        <field text="创建时间" name="ctime" type="date">
             <param name="type">timestamp</param>
             <param name="default">=%now</param>
             <param name="deforce">create</param>
         </field>
-        <field name="mtime" type="date">
+        <field text="修改时间" name="mtime" type="date">
             <param name="type">timestamp</param>
             <param name="default">=%now</param>
             <param name="deforce">always</param>
@@ -134,7 +146,7 @@
     <!-- 表单 -->
     <form name="form">
         <field>
-            <param name="form_id">mosiac.form</param>
+            <param name="form_id">mosaic.form</param>
         </field>
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
@@ -162,22 +174,32 @@
             <param name="type">code</param>
             <param name="mode">json</param>
         </field>
-        <field name="ctime" type="date">
+        <field text="状态" name="state" type="enum">
+            <param name="enum">state</param>
+            <param name="default">1</param>
+        </field>
+        <field text="创建时间" name="ctime" type="date">
             <param name="type">timestamp</param>
             <param name="default">=%now</param>
             <param name="deforce">create</param>
         </field>
-        <field name="mtime" type="date">
+        <field text="修改时间" name="mtime" type="date">
             <param name="type">timestamp</param>
             <param name="default">=%now</param>
             <param name="deforce">always</param>
         </field>
     </form>
 
+    <enum name="state">
+        <value code="1">公开</value>
+        <value code="2">私密</value>
+        <value code="3">重审</value>
+        <value code="4">锁定</value>
+    </enum>
     <enum name="pane_type">
-        <value code="link">链接</value>
-        <value code="post">轮播</value>
         <value code="page">图文</value>
+        <value code="post">轮播</value>
+        <value code="link">链接</value>
     </enum>
     <enum name="page_type">
         <value code="page">图文</value>
