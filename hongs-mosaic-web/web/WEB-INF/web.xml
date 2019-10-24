@@ -10,14 +10,6 @@
         <param-name>debug</param-name>
         <param-value>3</param-value>
     </context-param>
-    <context-param>
-        <param-name>org.eclipse.jetty.servlet.Default.dirAllowed</param-name>
-        <param-value>false</param-value>
-    </context-param>
-    <context-param>
-        <param-name>org.eclipse.jetty.servlet.Default.useFileMappedBuffer</param-name>
-        <param-value>false</param-value>
-    </context-param>
     <!-- Acts Servlet -->
     <servlet>
         <servlet-name>Acts</servlet-name>
@@ -71,16 +63,6 @@
         <url-pattern>/common/conf/*</url-pattern>
         <url-pattern>/common/lang/*</url-pattern>
     </servlet-mapping>
-    <!-- XSRF Filter -->
-    <filter>
-        <filter-name>XsrfFilter</filter-name>
-        <filter-class>io.github.ihongs.normal.serv.XsrfFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>XsrfFilter</filter-name>
-        <url-pattern>*.act</url-pattern>
-        <url-pattern>*.api</url-pattern>
-    </filter-mapping>
     <!-- SPAR Filter -->
     <filter>
         <filter-name>SparFilter</filter-name>
@@ -90,40 +72,17 @@
         <filter-name>SparFilter</filter-name>
         <url-pattern>/public/*</url-pattern>
     </filter-mapping>
-    <!-- Sess Filter -->
-    <!--
+    <!-- XSRF Filter -->
     <filter>
-        <filter-name>SessFilter</filter-name>
-        <filter-class>io.github.ihongs.normal.serv.SessFilter</filter-class>
-        <init-param>
-            <param-name>record-max-age</param-name>
-            <param-value>604800</param-value>
-        </init-param>
-        <init-param>
-            <param-name>cookie-max-age</param-name>
-            <param-value>604800</param-value>
-        </init-param>
-        <init-param>
-            <param-name>attend-urls</param-name>
-            <param-value>
-                /common/auth/*;/common/lang/*
-            </param-value>
-        </init-param>
-        <init-param>
-            <param-name>ignore-urls</param-name>
-            <param-value>
-                *.js;*.css;*.png;*.gif;*.jpg;*.bmp
-            </param-value>
-        </init-param>
+        <filter-name>XsrfFilter</filter-name>
+        <filter-class>io.github.ihongs.normal.serv.XsrfFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>SessFilter</filter-name>
-        <url-pattern>/centra/*</url-pattern>
-        <url-pattern>/centre/*</url-pattern>
-        <url-pattern>/common/*</url-pattern>
+        <filter-name>XsrfFilter</filter-name>
+        <url-pattern>*.act</url-pattern>
+        <url-pattern>*.api</url-pattern>
         <url-pattern>/api/*</url-pattern>
     </filter-mapping>
-    //-->
     <!-- Auth Filter -->
     <filter>
         <filter-name>AuthFilter_Centra</filter-name>
@@ -199,11 +158,11 @@
         <filter-class>io.github.ihongs.action.serv.AutoFilter</filter-class>
         <init-param>
             <param-name>action-path</param-name>
-            <param-value>/centra/auto</param-value>
+            <param-value>/centra/data</param-value>
         </init-param>
         <init-param>
             <param-name>layout-path</param-name>
-            <param-value>/centra/auto</param-value>
+            <param-value>/centra/base</param-value>
         </init-param>
     </filter>
     <filter-mapping>
@@ -218,11 +177,11 @@
         <filter-class>io.github.ihongs.action.serv.AutoFilter</filter-class>
         <init-param>
             <param-name>action-path</param-name>
-            <param-value>/centre/auto</param-value>
+            <param-value>/centre/data</param-value>
         </init-param>
         <init-param>
             <param-name>layout-path</param-name>
-            <param-value>/centre/auto</param-value>
+            <param-value>/centre/base</param-value>
         </init-param>
     </filter>
     <filter-mapping>
@@ -237,15 +196,15 @@
         <filter-class>io.github.ihongs.action.serv.AutoFilter</filter-class>
         <init-param>
             <param-name>action-path</param-name>
-            <param-value>/centre/mosaic/_auto_</param-value>
+            <param-value>/centre/mosaic/__unit__</param-value>
         </init-param>
         <init-param>
             <param-name>layout-path</param-name>
-            <param-value>/centre/mosaic/_auto_</param-value>
+            <param-value>/centre/mosaic/__unit__</param-value>
         </init-param>
         <init-param>
             <param-name>ignore-urls</param-name>
-            <param-value>/centre/mosaic/_auto_/*</param-value>
+            <param-value>/centre/mosaic/__unit__/*</param-value>
         </init-param>
     </filter>
     <filter-mapping>
@@ -257,13 +216,13 @@
     </filter-mapping>
     <!-- Session Sets -->
     <session-config>
-        <session-timeout>10080</session-timeout><!--for minute, 7 days-->
+        <session-timeout>1440</session-timeout>
         <tracking-mode>COOKIE</tracking-mode>
+        <tracking-mode>URL</tracking-mode>
+        <tracking-mode>SSL</tracking-mode>
         <cookie-config>
-            <path>/</path>
-            <name>XXID</name>
-            <max-age>604800</max-age><!--for second, 7 days-->
             <http-only>true</http-only>
+            <name>SK</name>
         </cookie-config>
     </session-config>
     <!-- Default Tags -->
@@ -302,16 +261,6 @@
         <error-code>500</error-code>
         <location>/500.jsp</location>
     </error-page>
-    <!--
-    <error-page>
-        <exception-type>java.lang.Exception</exception-type>
-        <location>/500.jsp</location>
-    </error-page>
-    <error-page>
-        <exception-type>javax.servle.ServletException</exception-type>
-        <location>/500.jsp</location>
-    </error-page>
-    //-->
     <icon>
         <small-icon>/favicon.ico</small-icon>
         <large-icon>/favicon.ico</large-icon>
