@@ -310,7 +310,7 @@ public abstract class MosaicEntity extends Data {
         }
 
         String fid = getFormId();
-        String nid = getFormId();
+        String nid = getUnitId();
         dcUrls.add(Syno.inject(url, Synt.mapOf(
             "form_id", fid,
             "unit_id", nid,
