@@ -8,8 +8,10 @@ import io.github.ihongs.serv.matrix.Data;
 import io.github.ihongs.util.Dawn;
 import io.github.ihongs.util.Syno;
 import io.github.ihongs.util.Synt;
+import java.util.LinkedHashSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import org.apache.lucene.document.Document;
 
 /**
@@ -20,6 +22,7 @@ import org.apache.lucene.document.Document;
 public abstract class MosaicEntity extends Data {
 
     private String unitId = null;
+    private Set<String> dcUrls = new LinkedHashSet();
 
     protected MosaicEntity(String conf, String form) {
         super(conf, form);
