@@ -54,14 +54,14 @@ public abstract class MosaicEntity extends Data {
 
     /**
      * 保存记录
-     * @param ctime
      * @param id
      * @param rd
      * @return 有更新为 1, 无更新为 0
      * @throws HongsException
      */
     @Override
-    public int save(long ctime, String id, Map rd) throws HongsException {
+    public int put(String id, Map rd) throws HongsException {
+        long     ctime = System.currentTimeMillis() / 1000;
         Table    table = getTable( );
         String   fid   = getFormId();
         String   nid   = getUnitId();
@@ -164,14 +164,14 @@ public abstract class MosaicEntity extends Data {
 
     /**
      * 删除记录
-     * @param ctime
      * @param id
      * @param rd
      * @return 有更新为 1, 无更新为 0
      * @throws HongsException
      */
     @Override
-    public int drop(long ctime, String id, Map rd) throws HongsException {
+    public int del(String id, Map rd) throws HongsException {
+        long     ctime = System.currentTimeMillis() / 1000;
         Table    table = getTable( );
         String   fid   = getFormId();
         String   nid   = getUnitId();
@@ -226,14 +226,14 @@ public abstract class MosaicEntity extends Data {
 
     /**
      * 恢复记录
-     * @param ctime
      * @param id
      * @param rd
      * @return 有更新为 1, 无更新为 0
      * @throws HongsException
      */
     @Override
-    public int redo(long ctime, String id, Map rd) throws HongsException {
+    public int rev(String id, Map rd) throws HongsException {
+        long     ctime = System.currentTimeMillis() / 1000;
         Table    table = getTable( );
         String   fid   = getFormId();
         String   nid   = getUnitId();
@@ -305,7 +305,6 @@ public abstract class MosaicEntity extends Data {
      * @return 有回调为 1, 无回调为 0
      * @throws HongsException
      */
-    @Override
     public int call(long xtime, String id, String on) throws HongsException {
         String url = (String) getParams().get("callback");
         if (url == null || "".equals(url)) {
