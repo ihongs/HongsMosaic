@@ -10,7 +10,7 @@ import io.github.ihongs.action.anno.Preset;
 import io.github.ihongs.action.anno.Select;
 import io.github.ihongs.action.anno.Verify;
 import io.github.ihongs.dh.IEntity;
-import io.github.ihongs.dh.ModelGate;
+import io.github.ihongs.dh.JAction;
 import io.github.ihongs.serv.matrix.Data;
 import io.github.ihongs.serv.mosaic.MosaicEntity;
 import io.github.ihongs.serv.mosaic.MosaicFormEntity;
@@ -22,7 +22,7 @@ import java.util.Map;
  * @author Hongs
  */
 @Action("centre/mosaic/__unit__")
-public class MosaicFormAction extends ModelGate {
+public class MosaicFormAction extends JAction {
 
     /**
      * 获取模型对象
