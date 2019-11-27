@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author Hongs
  */
-@Action("centre/mosaic/__unit__")
+@Action("centre/mosaic/__site__")
 public class MosaicPaneAction extends SearchAction {
 
     /**
@@ -38,16 +38,16 @@ public class MosaicPaneAction extends SearchAction {
     throws HongsException {
         ActionRunner runner = (ActionRunner) helper.getAttribute(ActionRunner.class.getName());
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
-        String unitId = runner.getModule( );
-        if (unitId.length() > 14) {
-            unitId = unitId.substring( 15 ); // 格式: centre/mosaic/unitId
-        if (unitId.length() < 1 ) {
-            throw new HongsException(0x1100, "URI must be centre/mosaic/UNIT/pane/ACTION.act");
+        String siteId = runner.getModule( );
+        if (siteId.length() > 14) {
+            siteId = siteId.substring( 15 ); // 格式: centre/mosaic/siteId
+        if (siteId.length() < 1 ) {
+            throw new HongsException(0x1100, "URI must be centre/mosaic/SITE/pane/ACTION.act");
         }} else {
-            throw new HongsException(0x1100, "URI must be centre/mosaic/UNIT/pane/ACTION.act");
+            throw new HongsException(0x1100, "URI must be centre/mosaic/SITE/pane/ACTION.act");
         }
-        MosaicEntity entity = MosaicPaneEntity.getInstance(unitId);
-//      entity.setUnitId(unitId);
+        MosaicEntity entity = MosaicPaneEntity.getInstance(siteId);
+//      entity.setSiteId(siteId);
         entity.setUserId(userId);
         return entity;
     }

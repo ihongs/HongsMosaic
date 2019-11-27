@@ -200,16 +200,16 @@
         <filter-class>io.github.ihongs.action.serv.AutoFilter</filter-class>
         <init-param>
             <param-name>layout-path</param-name>
-            <param-value>/centre/mosaic/__unit__</param-value>
+            <param-value>/centre/mosaic/__site__</param-value>
         </init-param>
         <init-param>
             <param-name>action-path</param-name>
-            <param-value>/centre/mosaic/__unit__</param-value>
+            <param-value>/centre/mosaic/__site__</param-value>
         </init-param>
         <init-param>
             <param-name>ignore-urls</param-name>
             <param-value>
-                /centre/mosaic/__unit__/*;
+                /centre/mosaic/__site__/*;
                 /centre/mosaic/__main__/*
             </param-value>
         </init-param>
