@@ -101,7 +101,7 @@ public abstract class MosaicEntity extends Data {
 
         // 保存到索引库
         setDoc(id, dc);
-        call(id, "create");
+        call  (id, "create");
         return id;
     }
 
@@ -175,8 +175,10 @@ public abstract class MosaicEntity extends Data {
                 nd.put("site_id", sid);
                 nd.put("user_id", uid);
             } else {
-                if ( Synt.declare ( nd.get("state"), 0  )  ==   0    ) {
-                    throw new HongsException(0x1104, "记录已经删除了");
+                if (Synt.declare(nd.get("state"), 0 ) ==  0   ) {
+                    throw new HongsException(404, "Data item '"+id+"' is removed in "+getDbName())
+                        .setLocalizedContent("matrix.item.is.removed")
+                        .setLocalizedContext("matrix");
                 }
             }
 
@@ -201,7 +203,7 @@ public abstract class MosaicEntity extends Data {
 
         // 保存到索引库
         setDoc(id, dc);
-        call(id, "update");
+        call  (id, "update");
         return 1;
     }
 
@@ -266,11 +268,15 @@ public abstract class MosaicEntity extends Data {
                     .select("ctime,state")
                     .getOne( );
                 if (! od.isEmpty()) {
-                    if ( Synt.declare ( od.get("state"), 0  )  ==   0    ) {
-                        throw new HongsException(0x1104, "记录已经删除了");
+                    if (Synt.declare(od.get("state"), 0  ) ==  0   ) {
+                        throw new HongsException(404, "Data item '"+id+"' is removed in "+getDbName())
+                            .setLocalizedContent("matrix.item.is.removed")
+                            .setLocalizedContext("matrix");
                     }
-                    if ( Synt.declare ( od.get("ctime"), 0L )  >=  ctime ) {
-                        throw new HongsException(0x1100, "等会儿, 不要急");
+                    if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
+                        throw new HongsException(400, "Wait 1 second to put '"+id+"' in "+getDbName())
+                            .setLocalizedContent("matrix.wait.one.second")
+                            .setLocalizedContext("matrix");
                     }
                 }
             } else {
@@ -279,11 +285,15 @@ public abstract class MosaicEntity extends Data {
                     .select("ctime,state,data")
                     .getOne( );
                 if (! od.isEmpty()) {
-                    if ( Synt.declare ( od.get("state"), 0  )  ==   0    ) {
-                        throw new HongsException(0x1104, "记录已经删除了");
+                    if (Synt.declare(od.get("state"), 0  ) ==  0   ) {
+                        throw new HongsException(404, "Data item '"+id+"' is removed in "+getDbName())
+                            .setLocalizedContent("matrix.item.is.removed")
+                            .setLocalizedContext("matrix");
                     }
-                    if ( Synt.declare ( od.get("ctime"), 0L )  >=  ctime ) {
-                        throw new HongsException(0x1100, "等会儿, 不要急");
+                    if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
+                        throw new HongsException(400, "Wait 1 second to put '"+id+"' in "+getDbName())
+                            .setLocalizedContent("matrix.wait.one.second")
+                            .setLocalizedContext("matrix");
                     }
 
                     // 用快照补全数据
@@ -310,7 +320,6 @@ public abstract class MosaicEntity extends Data {
             nd.put("state",   t  );
             nd.put(     "id", id );
             nd.put("form_id", fid);
-            nd.put("site_id", sid);
             nd.put("user_id", uid);
 
             // 数据快照和日志标题
@@ -331,7 +340,7 @@ public abstract class MosaicEntity extends Data {
 
         // 保存到索引库
         setDoc(id, dc);
-        call(id, "update");
+        call  (id, "update");
         return 1;
     }
 
