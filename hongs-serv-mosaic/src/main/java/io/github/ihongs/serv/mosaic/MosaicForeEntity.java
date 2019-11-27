@@ -16,19 +16,19 @@ public class MosaicForeEntity extends MosaicEntity {
     /**
      * 获取实例
      * 生命周期将交由 Core 维护
-     * @param unit
+     * @param site
      * @param form
      * @return
      */
-    public static MosaicForeEntity getInstance(String unit, String form) {
+    public static MosaicForeEntity getInstance(String site, String form) {
         MosaicForeEntity inst;
         Core   core = Core.getInstance();
-        String name = MosaicForeEntity.class.getName() +":"+ unit +":"+ form ;
+        String name = MosaicForeEntity.class.getName() +":"+ site +":"+ form ;
         if (core.containsKey(name)) {
             inst = (MosaicForeEntity) core.got( name );
         } else {
-            unit = Syno.splitPath (unit);
-            inst = new MosaicForeEntity("mosaic/"+ unit +"/fore/"+ form,form);
+            site = Syno.splitPath (site);
+            inst = new MosaicForeEntity("mosaic/"+ site +"/fore/"+ form,form);
             core.put ( name, inst );
         }
         return inst;

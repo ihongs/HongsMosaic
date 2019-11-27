@@ -20,19 +20,19 @@ public class MosaicPageEntity extends MosaicEntity {
     /**
      * 获取实例
      * 生命周期将交由 Core 维护
-     * @param unit
+     * @param site
      * @return
      */
-    public static MosaicPageEntity getInstance(String unit) {
+    public static MosaicPageEntity getInstance(String site) {
         MosaicPageEntity inst;
         Core   core = Core.getInstance( );
-        String name = MosaicPageEntity.class.getName() +":"+ unit;
+        String name = MosaicPageEntity.class.getName() +":"+ site;
         if (core.containsKey(name)) {
             inst = (MosaicPageEntity) core.got( name );
         } else {
-            unit = Syno.splitPath( unit );
+            site = Syno.splitPath(site );
             inst = new MosaicPageEntity();
-            inst.setUnitId ( unit );
+            inst.setSiteId (site );
             core.put ( name, inst );
         }
         return inst;

@@ -20,19 +20,19 @@ public class MosaicPaneEntity extends MosaicEntity {
     /**
      * 获取实例
      * 生命周期将交由 Core 维护
-     * @param unit
+     * @param site
      * @return
      */
-    public static MosaicPaneEntity getInstance(String unit) {
+    public static MosaicPaneEntity getInstance(String site) {
         MosaicPaneEntity inst;
         Core   core = Core.getInstance( );
-        String name = MosaicPaneEntity.class.getName() +":"+ unit;
+        String name = MosaicPaneEntity.class.getName() +":"+ site;
         if (core.containsKey(name)) {
             inst = (MosaicPaneEntity) core.got( name );
         } else {
-            unit = Syno.splitPath( unit );
+            site = Syno.splitPath(site );
             inst = new MosaicPaneEntity();
-            inst.setUnitId ( unit );
+            inst.setSiteId (site );
             core.put ( name, inst );
         }
         return inst;

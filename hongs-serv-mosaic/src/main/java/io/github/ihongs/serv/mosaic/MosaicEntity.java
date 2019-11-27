@@ -21,7 +21,7 @@ import org.apache.lucene.document.Document;
  */
 public abstract class MosaicEntity extends Data {
 
-    private String unitId = null;
+    private String siteId = null;
     private final Map<String, String> dcUrls = new LinkedHashMap();
 
     protected MosaicEntity(String conf, String form) {
@@ -30,26 +30,26 @@ public abstract class MosaicEntity extends Data {
 
     @Override
     public String getPartId() {
-        return getFormId() + "." + getUnitId();
+        return getFormId() + "." + getSiteId();
     }
 
-    public String getUnitId() {
-        if ( null == unitId ) {
+    public String getSiteId() {
+        if ( null == siteId ) {
             try {
-                unitId = (String) ActionHelper.getInstance()
+                siteId = (String) ActionHelper.getInstance()
                                 . getSessibute(Cnst.UID_SES);
             } catch (UnsupportedOperationException e ) {
-                throw new NullPointerException("Call setUnitId first");
+                throw new NullPointerException("Call setSiteId first");
             }
-            if ( null == unitId ) {
-                throw new NullPointerException("Call setUnitId first");
+            if ( null == siteId ) {
+                throw new NullPointerException("Call setSiteId first");
             }
         }
-        return unitId;
+        return siteId;
     }
 
-    public void setUnitId(String cuId) {
-        unitId = cuId;
+    public void setSiteId(String cuId) {
+        siteId = cuId;
     }
 
     /**
@@ -71,7 +71,7 @@ public abstract class MosaicEntity extends Data {
         Table table = getTable();
         if (table != null) {
             String   fid   = getFormId();
-            String   sid   = getUnitId();
+            String   sid   = getSiteId();
             String   uid   = getUserId();
             long     ctime = System.currentTimeMillis() / 1000;
 
@@ -81,7 +81,7 @@ public abstract class MosaicEntity extends Data {
             nd.put("state",   1  );
             nd.put(     "id", id );
             nd.put("form_id", fid);
-            nd.put("unit_id", sid);
+            nd.put("site_id", sid);
             nd.put("user_id", uid);
 
             // 数据快照和日志标题
@@ -152,11 +152,11 @@ public abstract class MosaicEntity extends Data {
         Table table = getTable();
         if (table != null) {
             String   fid   = getFormId();
-            String   sid   = getUnitId();
+            String   sid   = getSiteId();
             String   uid   = getUserId();
             long     ctime = System.currentTimeMillis() / 1000;
             Object[] param = new String[] {id, fid, "0"};
-            String   where = "`id`=? AND `form_id`=? AND `unit_id`=? AND `etime`=?";
+            String   where = "`id`=? AND `form_id`=? AND `site_id`=? AND `etime`=?";
 
             /**
              * 此类里的提交方法并不会将对应的操作记录数据进行提交,
@@ -172,7 +172,7 @@ public abstract class MosaicEntity extends Data {
                 nd.put("state",   1  );
                 nd.put(     "id", id );
                 nd.put("form_id", fid);
-                nd.put("unit_id", sid);
+                nd.put("site_id", sid);
                 nd.put("user_id", uid);
             } else {
                 if ( Synt.declare ( nd.get("state"), 0  )  ==   0    ) {
@@ -252,11 +252,11 @@ public abstract class MosaicEntity extends Data {
         Table table = getTable();
         if (table != null) {
             String   fid   = getFormId();
-            String   sid   = getUnitId();
+            String   sid   = getSiteId();
             String   uid   = getUserId();
             long     ctime = System.currentTimeMillis() / 1000;
             Object[] param = new String[] {id, fid, "0"};
-            String   where = "`id`=? AND `form_id`=? AND `unit_id`=? AND `etime`=?";
+            String   where = "`id`=? AND `form_id`=? AND `site_id`=? AND `etime`=?";
 
             //** 检查记录状态 **/
 
@@ -310,7 +310,7 @@ public abstract class MosaicEntity extends Data {
             nd.put("state",   t  );
             nd.put(     "id", id );
             nd.put("form_id", fid);
-            nd.put("unit_id", sid);
+            nd.put("site_id", sid);
             nd.put("user_id", uid);
 
             // 数据快照和日志标题
@@ -350,11 +350,11 @@ public abstract class MosaicEntity extends Data {
         }
 
         String   fid   = getFormId();
-        String   sid   = getUnitId();
+        String   sid   = getSiteId();
         String   uid   = getUserId();
         long     ctime = System.currentTimeMillis() / 1000;
         Object[] param = new String[] {id, fid, "0"};
-        String   where = "`id`=? AND `form_id`=? AND `unit_id`=? AND `etime`=?";
+        String   where = "`id`=? AND `form_id`=? AND `site_id`=? AND `etime`=?";
 
         //** 检查记录状态 **/
 
@@ -384,7 +384,7 @@ public abstract class MosaicEntity extends Data {
         nd.put("state",   0  );
         nd.put(     "id", id );
         nd.put("form_id", fid);
-        nd.put("unit_id", sid);
+        nd.put("site_id", sid);
         nd.put("user_id", uid);
 
         // 拷贝快照和日志标题
@@ -424,14 +424,14 @@ public abstract class MosaicEntity extends Data {
         }
 
         String   fid   = getFormId();
-        String   sid   = getUnitId();
+        String   sid   = getSiteId();
         String   uid   = getUserId();
         long     ctime = System.currentTimeMillis() / 1000 ;
         long     rtime = Synt.declare (rd.get("rtime"), 0L);
         Object[] param = new String[] {id, fid, "0" };
-        String   where = "`id`=? AND `form_id`=? AND `unit_id`=? AND `etime`=?";
+        String   where = "`id`=? AND `form_id`=? AND `site_id`=? AND `etime`=?";
         Object[] para2 = new Object[] {id, fid,rtime};
-        String   wher2 = "`id`=? AND `form_id`=? AND `unit_id`=? AND `ctime`=?";
+        String   wher2 = "`id`=? AND `form_id`=? AND `site_id`=? AND `ctime`=?";
 
         //** 获取旧的数据 **/
 
@@ -467,7 +467,7 @@ public abstract class MosaicEntity extends Data {
         nd.put("etime",   0  );
         nd.put("state",   3  );
         nd.put("form_id", fid);
-        nd.put("unit_id", sid);
+        nd.put("site_id", sid);
         nd.put("user_id", uid);
 
         // 操作备注和终端代码
@@ -507,10 +507,10 @@ public abstract class MosaicEntity extends Data {
         }
 
         String fid = getFormId();
-        String sid = getUnitId();
+        String sid = getSiteId();
         dcUrls.put(id, Syno.inject(url, Synt.mapOf(
             "form_id", fid,
-            "unit_id", sid,
+            "site_id", sid,
             "id"     , id ,
             "type"   , on
         )));

@@ -86,7 +86,7 @@ public class MosaicFilter extends ActionDriver {
                 pos  = url.indexOf  ("/",1);
             if (pos >= 1) {
                 act  = url.substring(0+pos);
-                act  = "/__unit__"  +  act ;
+                act  = "/__site__"  +  act ;
             } else {
                 throw  new ServletException( "Wrong url!" );
             }
@@ -104,7 +104,7 @@ public class MosaicFilter extends ActionDriver {
             int pos  = url.indexOf  ("/",1);
             if (pos >= 1) {
                 act  = url.substring(0+pos);
-                act  = "/__unit__"  +  act ;
+                act  = "/__site__"  +  act ;
             } else {
                 throw  new ServletException( "Wrong url." );
             }
