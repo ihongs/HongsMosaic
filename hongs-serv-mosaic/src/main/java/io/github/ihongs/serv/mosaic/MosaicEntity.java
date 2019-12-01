@@ -69,11 +69,11 @@ public abstract class MosaicEntity extends Data {
 
         // 保存到数据库
         Table table = getTable();
+        long  ctime = System.currentTimeMillis() / 1000;
         if (table != null) {
             String   fid   = getFormId();
             String   sid   = getSiteId();
             String   uid   = getUserId();
-            long     ctime = System.currentTimeMillis() / 1000;
 
             Map nd = new HashMap();
             nd.put("ctime", ctime);
@@ -101,7 +101,7 @@ public abstract class MosaicEntity extends Data {
 
         // 保存到索引库
         setDoc(id, dc);
-        call  (id, "create");
+        call  (id, "create", ctime);
         return id;
     }
 
@@ -150,12 +150,12 @@ public abstract class MosaicEntity extends Data {
 
         // 保存到数据库
         Table table = getTable();
+        long  ctime = System.currentTimeMillis() / 1000;
         if (table != null) {
             String   fid   = getFormId();
             String   sid   = getSiteId();
             String   uid   = getUserId();
-            long     ctime = System.currentTimeMillis() / 1000;
-            Object[] param = new String[] {id, fid, "0"};
+            Object[] param = new String[] {id, fid, sid, "0"};
             String   where = "`id`=? AND `form_id`=? AND `site_id`=? AND `etime`=?";
 
             /**
@@ -203,7 +203,7 @@ public abstract class MosaicEntity extends Data {
 
         // 保存到索引库
         setDoc(id, dc);
-        call  (id, "update");
+        call  (id, "update", ctime);
         return 1;
     }
 
@@ -252,12 +252,12 @@ public abstract class MosaicEntity extends Data {
 
         // 保存到数据库
         Table table = getTable();
+        long  ctime = System.currentTimeMillis() / 1000;
         if (table != null) {
             String   fid   = getFormId();
             String   sid   = getSiteId();
             String   uid   = getUserId();
-            long     ctime = System.currentTimeMillis() / 1000;
-            Object[] param = new String[] {id, fid, "0"};
+            Object[] param = new String[] {id, fid, sid, "0" };
             String   where = "`id`=? AND `form_id`=? AND `site_id`=? AND `etime`=?";
 
             //** 检查记录状态 **/
@@ -320,6 +320,7 @@ public abstract class MosaicEntity extends Data {
             nd.put("state",   t  );
             nd.put(     "id", id );
             nd.put("form_id", fid);
+            nd.put("site_id", sid);
             nd.put("user_id", uid);
 
             // 数据快照和日志标题
@@ -340,7 +341,7 @@ public abstract class MosaicEntity extends Data {
 
         // 保存到索引库
         setDoc(id, dc);
-        call  (id, "update");
+        call  (id, "update", ctime);
         return 1;
     }
 
@@ -362,7 +363,7 @@ public abstract class MosaicEntity extends Data {
         String   sid   = getSiteId();
         String   uid   = getUserId();
         long     ctime = System.currentTimeMillis() / 1000;
-        Object[] param = new String[] {id, fid, "0"};
+        Object[] param = new String[] {id, fid, sid, "0" };
         String   where = "`id`=? AND `form_id`=? AND `site_id`=? AND `etime`=?";
 
         //** 检查记录状态 **/
@@ -373,14 +374,14 @@ public abstract class MosaicEntity extends Data {
             .getOne( );
         if (od.isEmpty()) {
              delDoc( id ); return 0; // 规避关系库无而搜索库有
-        //  throw new HongsException(0x1104, "找不到原始记录");
         }
-        if ( Synt.declare ( od.get("state"), 0  )  ==   0    ) {
+        if (Synt.declare(od.get("state"), 0  ) ==  0   ) {
              delDoc( id ); return 0; // 删除是幂等的可重复调用
-        //  throw new HongsException(0x1100, "禁操作删除记录");
         }
-        if ( Synt.declare ( od.get("ctime"), 0L )  >=  ctime ) {
-            throw new HongsException(0x1100, "等会儿, 不要急");
+        if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
+            throw new HongsException(400, "Wait 1 second to del '"+id+"' in "+getDbName())
+                .setLocalizedContent("matrix.wait.one.second")
+                .setLocalizedContext("matrix");
         }
 
         //** 保存到数据库 **/
@@ -414,7 +415,7 @@ public abstract class MosaicEntity extends Data {
         //** 从索引库删除 **/
 
         delDoc(id);
-        call(id, "delete");
+        call  (id, "delete", ctime);
         return 1;
     }
 
@@ -429,7 +430,9 @@ public abstract class MosaicEntity extends Data {
     public int rev(String id, Map rd) throws HongsException {
         Table table = getTable();
         if (table == null) {
-            throw new HongsException(0x1100, "资源不支持恢复");
+            throw new HongsException(405, "Data table for '"+getDbName()+"' is not exists")
+                .setLocalizedContent("matrix.rev.unsupported")
+                .setLocalizedContext("matrix");
         }
 
         String   fid   = getFormId();
@@ -437,9 +440,9 @@ public abstract class MosaicEntity extends Data {
         String   uid   = getUserId();
         long     ctime = System.currentTimeMillis() / 1000 ;
         long     rtime = Synt.declare (rd.get("rtime"), 0L);
-        Object[] param = new String[] {id, fid, "0" };
+        Object[] param = new String[] {id, fid, sid, "0"  };
         String   where = "`id`=? AND `form_id`=? AND `site_id`=? AND `etime`=?";
-        Object[] para2 = new Object[] {id, fid,rtime};
+        Object[] para2 = new Object[] {id, fid, sid, rtime};
         String   wher2 = "`id`=? AND `form_id`=? AND `site_id`=? AND `ctime`=?";
 
         //** 获取旧的数据 **/
@@ -449,22 +452,30 @@ public abstract class MosaicEntity extends Data {
             .select("ctime")
             .getOne( );
         if (od.isEmpty()) {
-        //  throw new HongsException(0x1104, "找不到原始记录");
+        //  throw new HongsException(404, "Can not find current '"+id+"' in "+getDbName())
+        //      .setLocalizedContent("matrix.wait.one.second")
+        //      .setLocalizedContext("matrix");
         } else
-        if ( Synt.declare ( od.get("ctime"), 0L )  >=  ctime ) {
-            throw new HongsException(0x1100, "等会儿, 不要急");
+        if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
+            throw new HongsException(400, "Wait 1 second to del '"+id+"' in "+getDbName())
+                .setLocalizedContent("matrix.wait.one.second")
+                .setLocalizedContext("matrix");
         }
         Map nd = table.fetchCase()
             .filter( wher2, para2)
         //  .assort("ctime  DESC")
             .getOne( );
         if (nd.isEmpty()) {
-            throw new HongsException(0x1100, "找不到恢复起源");
+            throw new HongsException(404, "Empty '"+id+"' at '"+ctime+"' in "+getDbName())
+                .setLocalizedContent("matrix.node.not.exists")
+                .setLocalizedContext("matrix");
         }
         // 删除时保留的是删除前的快照, 即使为最终记录仍然可以恢复
-        if ( Synt.declare ( nd.get("state"), 0  )  !=   0    ) {
-        if ( Synt.declare ( nd.get("etime"), 0L )  ==   0L   ) {
-            throw new HongsException(0x1100, "这已是最终记录");
+        if (Synt.declare(nd.get("state"), 0  ) !=  0   ) {
+        if (Synt.declare(nd.get("etime"), 0L ) ==  0L  ) {
+            throw new HongsException(400, "Alive '"+id+"' at '"+ctime+"' in "+getDbName())
+                .setLocalizedContent("matrix.node.is.current")
+                .setLocalizedContext("matrix");
         }}
 
         //** 保存到数据库 **/
@@ -498,7 +509,7 @@ public abstract class MosaicEntity extends Data {
         Document dc = padDoc(dd);
 
         setDoc(id, dc);
-        call(id, "revert");
+        call  (id, "revert", ctime);
         return 1;
     }
 
@@ -506,10 +517,11 @@ public abstract class MosaicEntity extends Data {
      * 外部回调
      * @param id
      * @param on
+     * @param ct
      * @return 有回调为 1, 无回调为 0
      * @throws HongsException
      */
-    public int call(String id, String on) throws HongsException {
+    public int call(String id, String on, long ct) throws HongsException {
         String url = (String) getParams().get("callback");
         if (url == null || "".equals(url)) {
             return 0;
