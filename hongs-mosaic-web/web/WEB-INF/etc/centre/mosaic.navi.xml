@@ -1,0 +1,8 @@
+<root>
+    <rsname>@centre</rsname>
+    <menu text="微站" href="common/menu.act?m=centre/mosaic">
+        <menu text="面板" href="centre/#mosaic.pane" hrel="centre/mosaic/__main__/pane/list.html"></menu>
+        <menu text="内容" href="centre/#mosaic.page" hrel="centre/mosaic/__main__/page/list.html"></menu>
+        <menu text="表单" href="centre/#mosaic.form" hrel="centre/mosaic/__main__/form/list.html"></menu>
+    </menu>
+</root>
