@@ -39,6 +39,7 @@ public class MosaicPaneAction extends SearchAction {
         ActionRunner runner = (ActionRunner) helper.getAttribute(ActionRunner.class.getName());
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
         String siteId = runner.getModule( );
+
         if (siteId.length() > 14) {
             siteId = siteId.substring( 15 ); // 格式: centre/mosaic/siteId
         if (siteId.length() < 1 ) {
@@ -46,6 +47,14 @@ public class MosaicPaneAction extends SearchAction {
         }} else {
             throw new HongsException(0x1100, "URI must be centre/mosaic/SITE/pane/ACTION.act");
         }
+
+        if (siteId.equals( "0" )) {
+            siteId  =  userId;
+        if (siteId ==  null
+        ||  siteId.length() < 1 ) {
+            throw new HongsException(0x1104, "Login required");
+        }}
+
         MosaicEntity entity = MosaicPaneEntity.getInstance(siteId);
 //      entity.setSiteId(siteId);
         entity.setUserId(userId);

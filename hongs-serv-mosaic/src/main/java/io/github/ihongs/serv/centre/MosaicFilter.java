@@ -50,17 +50,16 @@ public class MosaicFilter extends ActionDriver {
         // 跳过指定路径
         if (ignore != null && ignore.ignore(pre+url)) {
             chain.doFilter( req , rsp );
-            return;
+            return ;
+        }
+
+        // 规避脚本注入
+        if (url.endsWith(   ".jsp"   )) {
+            throw new ServletException("Wrong uri?");
         }
 
         // 跳过应用接口
         if (url.endsWith(Cnst.API_EXT)) {
-            chain.doFilter( req , rsp );
-            return ;
-        }
-
-        // 跳过内部目录
-        if (url.startsWith(   "/_"   )) {
             chain.doFilter( req , rsp );
             return ;
         }
@@ -85,7 +84,17 @@ public class MosaicFilter extends ActionDriver {
             String act ;
                 pos  = url.indexOf  ("/",1);
             if (pos >= 1) {
-                act  = url.substring(0+pos);
+                act  = url.substring(pos+0);
+
+                // 去除 fore 的 FORM_ID
+                if (act.startsWith("/fore/")) {
+                        pos  = url.indexOf  ("/",1);
+                    if (pos >= 1) {
+                        act  = url.substring(pos+0);
+                        act  = "/fore"+act ;
+                    }
+                }
+
                 act  = "/__site__"  +  act ;
             } else {
                 throw  new ServletException( "Wrong url!" );
@@ -103,7 +112,17 @@ public class MosaicFilter extends ActionDriver {
             String act ;
             int pos  = url.indexOf  ("/",1);
             if (pos >= 1) {
-                act  = url.substring(0+pos);
+                act  = url.substring(pos+0);
+
+                // 去除 fore 的 FORM_ID
+                if (act.startsWith("/fore/")) {
+                        pos  = url.indexOf  ("/",1);
+                    if (pos >= 1) {
+                        act  = url.substring(pos+0);
+                        act  = "/fore"+act ;
+                    }
+                }
+
                 act  = "/__site__"  +  act ;
             } else {
                 throw  new ServletException( "Wrong url." );
