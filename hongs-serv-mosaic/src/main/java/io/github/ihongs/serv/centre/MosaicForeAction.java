@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author Hongs
  */
-@Action("centre/mosaic/__site__")
+@Action("centre/site")
 public class MosaicForeAction extends JAction {
 
     /**
@@ -40,14 +40,23 @@ public class MosaicForeAction extends JAction {
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
         String siteId = runner.getModule( );
         String formId = runner.getEntity( );
-               siteId = siteId.substring(0 , -5 + siteId.length()); // 去掉 /fore
-        if (siteId.length() > 14) {
-            siteId = siteId.substring( 15 ); // 格式: centre/mosaic/siteId
+
+            siteId = siteId.substring(  0  , siteId.length() - 5 ); // 去掉 /fore
+        if (siteId.length() > 12) {
+            siteId = siteId.substring( 12 ); // 格式: centre/site/siteId
         if (siteId.length() < 1 ) {
-            throw new HongsException(0x1100, "URI must be centre/mosaic/SITE/fore/FORM/ACTION.act");
+            throw new HongsException(0x1100, "URI must be centre/site/SITE/fore/FORM/ACTION.act");
         }} else {
-            throw new HongsException(0x1100, "URI must be centre/mosaic/SITE/fore/FORM/ACTION.act");
+            throw new HongsException(0x1100, "URI must be centre/site/SITE/fore/FORM/ACTION.act");
         }
+
+        if (siteId.equals( "0" )) {
+            siteId  =  userId;
+        if (siteId ==  null
+        ||  siteId.length() < 1 ) {
+            throw new HongsException(0x1104, "Login required");
+        }}
+
         MosaicEntity entity = MosaicForeEntity.getInstance(siteId, formId);
 //      entity.setSiteId(siteId);
         entity.setUserId(userId);
