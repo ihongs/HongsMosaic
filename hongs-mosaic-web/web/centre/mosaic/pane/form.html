@@ -1,0 +1,49 @@
+<div id="centre-mosaic-pane-form">
+    <form action="" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="id"/>
+        <div class="form-group row">
+            <label class="col-sm-4 col-md-3 control-label form-control-static text-right">名称</label>
+            <div class="col-sm-8 col-md-6">
+                <input type="text" name="name" class="form-control"/>
+            </div>
+            <div class="col-sm-8 col-md-3 col-sm-offset-4 col-md-offset-0 help-block text-error form-control-static"></div>
+            <div class="col-sm-8 col-md-6 col-sm-offset-4 col-md-offset-3 help-block text-muted form-control-static"></div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-md-3 control-label form-control-static text-right">简介</label>
+            <div class="col-sm-8 col-md-6">
+                <textarae name="note" class="form-control"/>
+            </div>
+            <div class="col-sm-8 col-md-3 col-sm-offset-4 col-md-offset-0 help-block text-error form-control-static"></div>
+            <div class="col-sm-8 col-md-6 col-sm-offset-4 col-md-offset-3 help-block text-muted form-control-static"></div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-md-3 control-label form-control-static text-right">标签</label>
+            <div class="col-sm-8 col-md-6">
+                <input type="text" name="name" class="form-control" data-toggle="tagsinput"/>
+            </div>
+            <div class="col-sm-8 col-md-3 col-sm-offset-4 col-md-offset-0 help-block text-error form-control-static"></div>
+            <div class="col-sm-8 col-md-6 col-sm-offset-4 col-md-offset-3 help-block text-muted form-control-static"></div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-md-3 control-label form-control-static text-right">图标</label>
+            <div class="col-sm-8 col-md-6">
+                <input type="file" name="logo" class="form-ignored invisible"/>
+                <ul class="pickbox" data-fn="logo" data-ft="_view" data-keep="keep" data-size="300*300"></ul>
+                <button type="button" class="btn btn-default form-control" data-toggle="hsView">浏览...</button>
+            </div>
+            <div class="col-sm-8 col-md-3 col-sm-offset-4 col-md-offset-0 help-block text-error form-control-static"></div>
+            <div class="col-sm-8 col-md-6 col-sm-offset-4 col-md-offset-3 help-block text-muted form-control-static"></div>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-sm-8 col-md-6 col-sm-offset-4 col-md-offset-3">
+                <button type="submit" class="commit btn btn-primary">提交</button>
+                <button type="button" class="cancel btn btn-link"   >取消</button>
+            </div>
+        </div>
+        <br/>
+    </form>
+</div>
+<script type="text/javascript">
+</script>
