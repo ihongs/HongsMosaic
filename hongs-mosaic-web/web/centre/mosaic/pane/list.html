@@ -1,14 +1,22 @@
-<div id="centre-mosaic-pane-list"
-     data-module="hsList"
-     data-load-url="centre/mosaic/0/pane/search.act">
-    <form class="row findbox">
-        <div class="col-md-6">
-            <button type="button" class="create btn btn-primary">新建</button>
-        </div>
-        <div class="col-md-6">
-            <div class="input-group">
+<div id="centre-mosaic-pane-list">
+    <form class="findbox toolbox board row">
+    <div class="col-md-6 col-sm-8 center-block">
+        <div style="display: table; width: 100%;">
+        <div style="display: table-cell; width: 15px; vertical-align: middle;">
+            <div class="btn-group">
+                <button type="button" class="create btn btn-primary" style="margin-right: 15px;">创建</button>
             </div>
         </div>
+        <div style="display: table-cell; width: 100%; vertical-align: middle;">
+            <div class="input-group">
+                <input type="search" class="form-control" name="wd" placeholder="" />
+                <span class="input-group-btn">
+                    <button type="submit" class="search btn btn-default" title="搜索"><span class="glyphicon glyphicon-search"></span></button>
+                </span>
+            </div>
+        </div>
+        </div>
+    </div>
     </form>
     <!-- 列表 -->
     <div class="itembox col-md-4 col-sm-6" style="display: none; padding: 0 7.5px 15.0px 7.5px;" >
@@ -39,3 +47,27 @@
     <div class="pagebox clearfix" style="text-align: center;">
     </div>
 </div>
+<script type="text/javascript">
+(function($) {
+    var context = H$("#centre-mosaic-pane-list");
+
+    var listobj = context.hsList({
+        _url: "centre/mosaic/0/pane/search.act",
+        sendUrls: [
+            [ "centre/mosaic/0/pane/delete.act",
+              ".delete",
+              "您确定要删除吗?\r\n一旦删除, 就无法再恢复了." ]
+        ],
+        openUrls: [
+            [ "centre/mosaic/pane/form.html",
+              ".create", "@" ],
+            [ "centre/mosaic/pane/form.html?id={ID}",
+              ".update", "@" ],
+            [ "centre/site/" + HsCUID + "/pane/{ID}/",
+              ".review", "_blank"]
+        ]
+    });
+
+    listobj.load();
+})(jQuery);
+</script>

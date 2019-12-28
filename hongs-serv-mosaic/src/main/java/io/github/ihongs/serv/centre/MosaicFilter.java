@@ -21,11 +21,27 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class MosaicFilter extends ActionDriver {
 
+    private String action;
+    private String acting;
+    private String layout;
     private PasserHelper ignore = null;
 
     @Override
     public void init(FilterConfig cnf) throws ServletException {
         super.init(cnf);
+
+        action = cnf.getInitParameter("action-path");
+        acting = cnf.getInitParameter("acting-path");
+        layout = cnf.getInitParameter("layout-path");
+        if (action == null) {
+            action ="/centre/site";
+        }
+        if (acting == null) {
+            acting =  action + "/__mian__";
+        }
+        if (layout == null) {
+            layout =  action + "/__base__";
+        }
 
         // 获取不包含的URL
         this.ignore = new PasserHelper(
@@ -70,49 +86,49 @@ public class MosaicFilter extends ActionDriver {
             int pos  = url.lastIndexOf("/");
             if (pos >= 1) {
                 ast  = url.substring(0,pos);
-                ast  = "/__main__"  +  ast + ".jsp";
+                ast  = acting + ast +".jsp";
             } else {
                 throw  new ServletException( "Wrong url!" );
             }
-            File src = new File(Core.BASE_PATH + pre + url);
+            File src = new File(Core.BASE_PATH + ast);
             if ( src.exists()) {
-                include( req , rsp , pre + url , pre + ast);
+                include( req , rsp , pre + url , ast);
                 return ;
             }
 
             // 模板动作
             String act ;
-                pos  = url.indexOf  ("/",1);
+                pos  = url.indexOf  ("/" , 1);
             if (pos >= 1) {
-                act  = url.substring(pos+0);
+                act  = url.substring(pos + 0);
 
                 // 去除 fore 的 FORM_ID
                 if (act.startsWith("/fore/")) {
-                        pos  = url.indexOf  ("/",1);
+                        pos  = url.indexOf  ("/" , 1);
                     if (pos >= 1) {
-                        act  = url.substring(pos+0);
-                        act  = "/fore"+act ;
+                        act  = url.substring(pos + 0);
+                        act  = "/fore" + act ;
                     }
                 }
 
-                act  = "/__site__"  +  act ;
+                act = action + act ;
+                include( req , rsp , pre + url , act);
             } else {
                 throw  new ServletException( "Wrong url!" );
             }
-            /**/include( req , rsp , pre + url , pre + act);
         } else {
             // 用户资源
             File src = new File(Core.BASE_PATH + pre + url);
             if ( src.exists()) {
-                chain.doFilter ( req, rsp );
+                chain.doFilter (req, rsp);
                 return ;
             }
 
             // 模板资源
             String act ;
-            int pos  = url.indexOf  ("/",1);
+            int pos  = url.indexOf  ("/" , 1);
             if (pos >= 1) {
-                act  = url.substring(pos+0);
+                act  = url.substring(pos + 0);
 
                 // 去除 fore 的 FORM_ID
                 if (act.startsWith("/fore/")) {
@@ -123,11 +139,11 @@ public class MosaicFilter extends ActionDriver {
                     }
                 }
 
-                act  = "/__site__"  +  act ;
+                act = layout + act ;
+                forward( req , rsp , pre + url , act);
             } else {
                 throw  new ServletException( "Wrong url." );
             }
-            /**/forward( req , rsp , pre + url , pre + act);
         }
     }
 

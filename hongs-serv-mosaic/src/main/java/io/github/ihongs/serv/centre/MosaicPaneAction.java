@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author Hongs
  */
-@Action("centre/mosaic/__site__")
+@Action("centre/site")
 public class MosaicPaneAction extends SearchAction {
 
     /**
@@ -40,12 +40,12 @@ public class MosaicPaneAction extends SearchAction {
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
         String siteId = runner.getModule( );
 
-        if (siteId.length() > 14) {
-            siteId = siteId.substring( 15 ); // 格式: centre/mosaic/siteId
+        if (siteId.length() > 12) {
+            siteId = siteId.substring( 12 ); // 格式: centre/site/siteId
         if (siteId.length() < 1 ) {
-            throw new HongsException(0x1100, "URI must be centre/mosaic/SITE/pane/ACTION.act");
+            throw new HongsException(0x1100, "URI must be centre/site/SITE/pane/ACTION.act");
         }} else {
-            throw new HongsException(0x1100, "URI must be centre/mosaic/SITE/pane/ACTION.act");
+            throw new HongsException(0x1100, "URI must be centre/site/SITE/pane/ACTION.act");
         }
 
         if (siteId.equals( "0" )) {
