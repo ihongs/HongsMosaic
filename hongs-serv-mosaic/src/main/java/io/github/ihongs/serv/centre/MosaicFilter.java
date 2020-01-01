@@ -7,6 +7,7 @@ import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.action.PasserHelper;
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Pattern;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -21,10 +22,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class MosaicFilter extends ActionDriver {
 
+    private String prefix;
     private String action;
     private String acting;
     private String layout;
     private PasserHelper ignore = null;
+
+    private static final Pattern DENY_JSPS = Pattern.compile("(/_|\\.)[^/]*\\.jsp$"); // [_#$]
 
     @Override
     public void init(FilterConfig cnf) throws ServletException {
@@ -33,6 +37,7 @@ public class MosaicFilter extends ActionDriver {
         action = cnf.getInitParameter("action-path");
         acting = cnf.getInitParameter("acting-path");
         layout = cnf.getInitParameter("layout-path");
+        prefix = cnf.getInitParameter("prefix-path");
         if (action == null) {
             action ="/centre/site";
         }
@@ -41,6 +46,9 @@ public class MosaicFilter extends ActionDriver {
         }
         if (layout == null) {
             layout =  action + "/__base__";
+        }
+        if (prefix == null) {
+            prefix =  action ;
         }
 
         // 获取不包含的URL
@@ -60,23 +68,26 @@ public class MosaicFilter extends ActionDriver {
             throws IOException, ServletException {
         HttpServletResponse rsp = hlpr.getResponse();
         HttpServletRequest  req = hlpr.getRequest( );
-        String pre = req.getServletPath();
-        String url = req.getPathInfo(   );
+        String url = ActionDriver.getRecentPath(req);
+        String ref = ActionDriver.getOriginPath(req);
 
         // 跳过指定路径
-        if (ignore != null && ignore.ignore(pre+url)) {
-            chain.doFilter( req , rsp );
+        if (ignore != null && ignore.ignore(url)) {
+            chain.doFilter(req, rsp);
             return ;
         }
 
-        // 规避脚本注入
-        if (url.endsWith(   ".jsp"   )) {
-            throw new ServletException("Wrong uri?");
+        // 禁止访问动作脚本, 避免绕过权限过滤
+        if (DENY_JSPS.matcher(ref).find()) {
+            rsp.sendError(HttpServletResponse.SC_NOT_FOUND, "What's your problem?");
+            return;
         }
+
+        ref = url.substring(prefix.length());
 
         // 跳过应用接口
         if (url.endsWith(Cnst.API_EXT)) {
-            chain.doFilter( req , rsp );
+            chain.doFilter(req, rsp);
             return ;
         }
 
@@ -88,37 +99,37 @@ public class MosaicFilter extends ActionDriver {
                 ast  = url.substring(0,pos);
                 ast  = acting + ast +".jsp";
             } else {
-                throw  new ServletException( "Wrong url!" );
+                throw  new ServletException("Wrong url!");
             }
             File src = new File(Core.BASE_PATH + ast);
             if ( src.exists()) {
-                include( req , rsp , pre + url , ast);
+                include(req, rsp, url, ast);
                 return ;
             }
 
             // 模板动作
             String act ;
-                pos  = url.indexOf  ("/" , 1);
+                pos  = ref.indexOf  ("/" , 1);
             if (pos >= 1) {
-                act  = url.substring(pos + 0);
+                act  = ref.substring(pos + 0);
 
                 // 去除 fore 的 FORM_ID
                 if (act.startsWith("/fore/")) {
-                        pos  = url.indexOf  ("/" , 1);
+                        pos  = ref.indexOf  ("/" , 1);
                     if (pos >= 1) {
-                        act  = url.substring(pos + 0);
-                        act  = "/fore" + act ;
+                        act  = ref.substring(pos + 0);
+                        act  = "/fore"+act ;
                     }
                 }
 
-                act = action + act ;
-                include( req , rsp , pre + url , act);
-            } else {
-                throw  new ServletException( "Wrong url!" );
+                ref = prefix + ref;
+                act = action + act;
+                include(req, rsp, ref, act);
+                return;
             }
         } else {
             // 用户资源
-            File src = new File(Core.BASE_PATH + pre + url);
+            File src = new File(Core.BASE_PATH + url);
             if ( src.exists()) {
                 chain.doFilter (req, rsp);
                 return ;
@@ -126,25 +137,26 @@ public class MosaicFilter extends ActionDriver {
 
             // 模板资源
             String act ;
-            int pos  = url.indexOf  ("/" , 1);
+            int pos  = ref.indexOf  ("/" , 1);
             if (pos >= 1) {
-                act  = url.substring(pos + 0);
+                act  = ref.substring(pos + 0);
 
                 // 去除 fore 的 FORM_ID
                 if (act.startsWith("/fore/")) {
-                        pos  = url.indexOf  ("/",1);
+                        pos  = ref.indexOf  ("/" , 1);
                     if (pos >= 1) {
-                        act  = url.substring(pos+0);
+                        act  = ref.substring(pos + 0);
                         act  = "/fore"+act ;
                     }
                 }
 
-                act = layout + act ;
-                forward( req , rsp , pre + url , act);
-            } else {
-                throw  new ServletException( "Wrong url." );
+                ref = prefix + ref;
+                act = layout + act;
+                forward(req, rsp, ref, act);
             }
         }
+
+        throw new ServletException("Wrong url.");
     }
 
     private void include(ServletRequest req, ServletResponse rsp, String url, String uri)
