@@ -2,7 +2,7 @@
     <form action="" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="id"/>
         <div class="form-group row">
-            <label class="col-sm-4 col-md-3 control-label form-control-static text-right">名称</label>
+            <label class="col-sm-4 col-md-3 control-label form-control-static text-right">标题</label>
             <div class="col-sm-8 col-md-6">
                 <input type="text" name="name" class="form-control"/>
             </div>
@@ -53,6 +53,14 @@
             <div class="col-sm-8 col-md-3 col-sm-offset-4 col-md-offset-0 help-block text-error form-control-static"></div>
             <div class="col-sm-8 col-md-6 col-sm-offset-4 col-md-offset-3 help-block text-muted form-control-static"></div>
         </div>
+        <div class="form-group row">
+            <label class="col-xs-3 col-md-2 control-label form-control-static text-right">内容</label>
+            <div class="col-xs-9 col-md-8">
+                <textarea name="body" data-type="html" style="width:100%; height:15em; border:0;"></textarea>
+            </div>
+            <div class="col-xs-9 col-md-2 col-xs-offset-3 col-md-offset-0 help-block text-error form-control-static"></div>
+            <div class="col-xs-9 col-md-8 col-xs-offset-3 col-md-offset-2 help-block text-muted form-control-static"></div>
+        </div>
         <hr/>
         <div class="row">
             <div class="col-sm-8 col-md-6 col-sm-offset-4 col-md-offset-3">
@@ -66,12 +74,11 @@
 <script type="text/javascript">
 (function($) {
     var context = H$("#centre-mosaic-page-form");
+    var loadbox = context.closest(".loadbox");
     
-    var formobj = context.hsForm({
-        _url: "",
-        loadUrls: [
-            [ "" ]
-        ]
+    context.hsForm({
+        loadUrl : "centre/mosaic/page/search.act",
+        loadData: loadbox.hsData()
     });
 })(jQuery);
 </script>
