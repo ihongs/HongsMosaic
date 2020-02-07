@@ -4,6 +4,7 @@ import io.github.ihongs.Cnst;
 import io.github.ihongs.Core;
 import io.github.ihongs.action.ActionDriver;
 import io.github.ihongs.action.ActionHelper;
+import io.github.ihongs.action.ActionRunner;
 import io.github.ihongs.action.PasserHelper;
 import java.io.File;
 import java.io.IOException;
@@ -22,10 +23,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class MosaicFilter extends ActionDriver {
 
-    private String prefix;
     private String action;
-    private String acting;
     private String layout;
+    private String script;
+    private String prefix;
+    private String acting;
     private PasserHelper ignore = null;
 
     private static final Pattern DENY_JSPS = Pattern.compile("(/_|\\.)[^/]*\\.jsp$"); // [_#$]
@@ -35,14 +37,14 @@ public class MosaicFilter extends ActionDriver {
         super.init(cnf);
 
         action = cnf.getInitParameter("action-path");
-        acting = cnf.getInitParameter("acting-path");
+        script = cnf.getInitParameter("script-path");
         layout = cnf.getInitParameter("layout-path");
         prefix = cnf.getInitParameter("prefix-path");
         if (action == null) {
             action ="/centre/site";
         }
-        if (acting == null) {
-            acting =  action + "/__mian__";
+        if (script == null) {
+            script =  action + "/__main__";
         }
         if (layout == null) {
             layout =  action + "/__base__";
@@ -50,6 +52,7 @@ public class MosaicFilter extends ActionDriver {
         if (prefix == null) {
             prefix =  action ;
         }
+        acting = action.substring(1);
 
         // 获取不包含的URL
         this.ignore = new PasserHelper(
@@ -97,13 +100,21 @@ public class MosaicFilter extends ActionDriver {
             int pos  = url.lastIndexOf("/");
             if (pos >= 1) {
                 ast  = url.substring(0,pos);
-                ast  = acting + ast +".jsp";
+                ast  = script + ast +".jsp";
             } else {
                 throw  new ServletException("Wrong url!");
             }
             File src = new File(Core.BASE_PATH + ast);
             if ( src.exists()) {
                 include(req, rsp, url, ast);
+                return ;
+            }
+
+            // 内置动作
+            ast = Cnst.ACT_EXT ;
+            ast = ref.substring( 0 , ref.length() - ast.length()  );
+            if (ActionRunner.getActions().containsKey(acting + ast)) {
+                chain.doFilter (req, rsp);
                 return ;
             }
 
@@ -153,10 +164,11 @@ public class MosaicFilter extends ActionDriver {
                 ref = prefix + ref;
                 act = layout + act;
                 forward(req, rsp, ref, act);
+                return;
             }
         }
 
-        throw new ServletException("Wrong url.");
+        chain.doFilter (req, rsp);
     }
 
     private void include(ServletRequest req, ServletResponse rsp, String url, String uri)
