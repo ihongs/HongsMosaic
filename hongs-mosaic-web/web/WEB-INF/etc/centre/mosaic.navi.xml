@@ -1,5 +1,5 @@
 <root>
-    <rsname>@centre</rsname>
+    <rsname>#centre</rsname>
     <menu text="微站" href="common/menu.act?m=centre/mosaic">
         <menu text="面板" href="centre/mosaic/#pane" hrel="centre/mosaic/pane/list.html">
             <role name="centre">
