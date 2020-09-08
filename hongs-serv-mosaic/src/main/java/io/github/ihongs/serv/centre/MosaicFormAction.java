@@ -98,7 +98,6 @@ public class MosaicFormAction extends JAction {
     @Action("form/create")
     @Preset(conf="", form="", defs={":defence"})
     @Verify(conf="", form="")
-    @Select(conf="", form="")
     @CommitSuccess
     @Override
     public void create(ActionHelper helper) throws HongsException {

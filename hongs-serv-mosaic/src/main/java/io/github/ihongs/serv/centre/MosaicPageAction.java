@@ -90,7 +90,6 @@ public class MosaicPageAction extends SearchAction {
     @Action("page/create")
     @Preset(conf="", form="", defs={":defence"})
     @Verify(conf="", form="")
-    @Select(conf="", form="")
     @CommitSuccess
     @Override
     public void create(ActionHelper helper) throws HongsException {
