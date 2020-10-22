@@ -5,7 +5,6 @@ import io.github.ihongs.Core;
 import io.github.ihongs.action.ActionDriver;
 import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.action.ActionRunner;
-import io.github.ihongs.action.PasserHelper;
 import java.io.File;
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -28,7 +27,7 @@ public class MosaicFilter extends ActionDriver {
     private String script;
     private String prefix;
     private String acting;
-    private PasserHelper ignore = null;
+    private URLPatterns ignore = null;
 
     private static final Pattern DENY_JSPS = Pattern.compile("(/_|\\.)[^/]*\\.jsp$"); // [_#$]
 
@@ -55,7 +54,7 @@ public class MosaicFilter extends ActionDriver {
         acting = action.substring(1);
 
         // 获取不包含的URL
-        this.ignore = new PasserHelper(
+        this.ignore = new URLPatterns(
             cnf.getInitParameter("ignore-urls"),
             cnf.getInitParameter("attend-urls")
         );
@@ -75,7 +74,7 @@ public class MosaicFilter extends ActionDriver {
         String ref = ActionDriver.getOriginPath(req);
 
         // 跳过指定路径
-        if (ignore != null && ignore.ignore(url)) {
+        if (ignore != null && ignore.matches(url)) {
             chain.doFilter(req, rsp);
             return ;
         }
