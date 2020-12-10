@@ -8,7 +8,7 @@
         <link rel="icon" type="image/x-icon" href="favicon.ico"/>
         <link rel="stylesheet" type="text/css" href="static/assets/css/bootstrap.min.css"/>
         <link rel="stylesheet" type="text/css" href="static/assets/css/hongscore.min.css"/>
-        <link rel="stylesheet" type="text/css" href="centre/base.min.css"/>
+        <link rel="stylesheet" type="text/css" href="static/centre/base.min.css"/>
         <!--[if glt IE8.0]>
         <script type="text/javascript" src="static/addons/respond/respond.min.js"></script>
         <![endif]-->
@@ -16,24 +16,18 @@
         <script type="text/javascript" src="static/assets/jquery-ui.min.js"></script>
         <script type="text/javascript" src="static/assets/bootstrap.min.js"></script>
         <script type="text/javascript" src="static/assets/hongscore.min.js"></script>
-        <script type="text/javascript" src="static/assets/hongsedit.min.js"></script>
+        <script type="text/javascript" src="static/assets/hongsedge.min.js"></script>
         <script type="text/javascript" src="common/conf/default.js"></script>
         <script type="text/javascript" src="common/lang/default.js"></script>
-        <script type="text/javascript" src="centre/base.min.js"></script>
     </head>
     <body>
-        <nav id="headbox" class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="row" data-load="centre/head.jsp"></div>
+        <div id="context">
+            <div id="headbox">
+                <div data-load="centre/head.jsp"></div>
             </div>
-        </nav>
-        <div id="bodybox">
-            <div class="container" id="main-context">加载中...</div>
+            <div id="bodybox">
+                <div id="main-context" class="container">加载中...</div>
+            </div>
         </div>
-        <nav id="footbox" class="navbar navbar-default navbar-fixed-bottom">
-            <div class="container">
-                <div class="row" data-load="centre/foot.jsp"></div>
-            </div>
-        </nav>
     </body>
 </html>
