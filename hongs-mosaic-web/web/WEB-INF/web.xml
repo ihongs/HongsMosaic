@@ -72,12 +72,25 @@
         <filter-name>SparFilter</filter-name>
         <url-pattern>/public/*</url-pattern>
     </filter-mapping>
+    <!-- XRSH Filter -->
+    <filter>
+        <filter-name>XrshFilter</filter-name>
+        <filter-class>io.github.ihongs.normal.serv.XrshFilter</filter-class>
+        <init-param>
+            <param-name>url-include</param-name>
+            <param-value>*.jsp;*.php;*.py</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>XrshFilter</filter-name>
+        <url-pattern>/static/*</url-pattern>
+    </filter-mapping>
     <!-- XSRF Filter -->
     <filter>
         <filter-name>XsrfFilter</filter-name>
         <filter-class>io.github.ihongs.normal.serv.XsrfFilter</filter-class>
         <init-param>
-            <param-name>ignore-urls</param-name>
+            <param-name>url-exclude</param-name>
             <param-value>/centre/oauth2/*</param-value>
         </init-param>
     </filter>
@@ -104,10 +117,10 @@
             <param-value>/centra/login.html</param-value>
         </init-param>
         <init-param>
-            <param-name>ignore-urls</param-name>
+            <param-name>url-exclude</param-name>
             <param-value>
-                *.js;*.css;*.png;*.gif;*.jpg;*.bmp;*.api;/api/*;
-                /centra/sign/*;/centra/login.html;
+                *.js;*.css;*.png;*.jpg;*.gif;*.bmp;*.api;
+                /centra/sign/*;/centra/login.html
             </param-value>
         </init-param>
     </filter>
@@ -134,10 +147,10 @@
             <param-value>/centre/login.html</param-value>
         </init-param>
         <init-param>
-            <param-name>ignore-urls</param-name>
+            <param-name>url-exclude</param-name>
             <param-value>
-                *.js;*.css;*.png;*.gif;*.jpg;*.bmp;*.api;/api/*;
-                /centre/sign/*;/centre/login.html;
+                *.js;*.css;*.png;*.jpg;*.gif;*.bmp;*.api;
+                /centre/sign/*;/centre/login.html
             </param-value>
         </init-param>
     </filter>
@@ -213,7 +226,7 @@
         <tracking-mode>COOKIE</tracking-mode>
         <cookie-config>
             <http-only>true</http-only>
-            <name>SK</name>
+            <name>SID</name>
         </cookie-config>
     </session-config>
     <!-- Default Tags -->
