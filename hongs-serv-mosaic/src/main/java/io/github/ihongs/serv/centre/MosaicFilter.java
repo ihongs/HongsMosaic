@@ -29,8 +29,6 @@ public class MosaicFilter extends ActionDriver {
     private String acting;
     private URLPatterns ignore = null;
 
-    private static final Pattern DENY_JSPS = Pattern.compile("(/_|\\.)[^/]*\\.jsp$"); // [_#$]
-
     @Override
     public void init(FilterConfig cnf) throws ServletException {
         super.init(cnf);
@@ -55,8 +53,8 @@ public class MosaicFilter extends ActionDriver {
 
         // 获取不包含的URL
         this.ignore = new URLPatterns(
-            cnf.getInitParameter("ignore-urls"),
-            cnf.getInitParameter("attend-urls")
+            cnf.getInitParameter("url-exclude"),
+            cnf.getInitParameter("url-include")
         );
     }
 
@@ -79,22 +77,12 @@ public class MosaicFilter extends ActionDriver {
             return ;
         }
 
-        // 禁止访问动作脚本, 避免绕过权限过滤
-        if (DENY_JSPS.matcher(ref).find()) {
-            rsp.sendError(HttpServletResponse.SC_NOT_FOUND, "What's your problem?");
-            return;
-        }
-
         ref = url.substring(prefix.length());
 
-        // 跳过应用接口
         if (url.endsWith(Cnst.API_EXT)) {
-            chain.doFilter(req, rsp);
-            return ;
-        }
-
+            // 应用接口, 直接跳过
+        } else
         if (url.endsWith(Cnst.ACT_EXT)) {
-            // 定制脚本
             String ast ;
             int pos  = url.lastIndexOf("/");
             if (pos >= 1) {
@@ -103,6 +91,8 @@ public class MosaicFilter extends ActionDriver {
             } else {
                 throw  new ServletException("Wrong url!");
             }
+            
+            // 定制脚本
             File src = new File(Core.BASE_PATH + ast);
             if ( src.exists()) {
                 include(req, rsp, url, ast);

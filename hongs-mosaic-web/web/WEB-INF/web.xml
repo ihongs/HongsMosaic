@@ -204,7 +204,7 @@
         <filter-name>AutoFilter_Mosaic</filter-name>
         <filter-class>io.github.ihongs.serv.centre.MosaicFilter</filter-class>
         <init-param>
-            <param-name>ignore-urls</param-name>
+            <param-name>url-exclude</param-name>
             <param-value>
                 /centre/site/__base__/*;
                 /centre/site/__main__/*
