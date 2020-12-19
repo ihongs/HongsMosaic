@@ -43,16 +43,16 @@ public class MosaicPageAction extends SearchAction {
         if (siteId.length() > 12) {
             siteId = siteId.substring( 12 ); // 格式: centre/site/siteId
         if (siteId.length() < 1 ) {
-            throw new HongsException(0x1100, "URI must be centre/site/SITE/page/ACTION.act");
+            throw new HongsException (400, "URI must be centre/site/SITE/page/ACTION.act");
         }} else {
-            throw new HongsException(0x1100, "URI must be centre/site/SITE/page/ACTION.act");
+            throw new HongsException (400, "URI must be centre/site/SITE/page/ACTION.act");
         }
 
         if (siteId.equals( "0" )) {
             siteId  =  userId;
         if (siteId ==  null
         ||  siteId.length() < 1 ) {
-            throw new HongsException(0x1104, "Login required");
+            throw new HongsException (401, "Login required");
         }}
 
         MosaicEntity entity = MosaicPageEntity.getInstance(siteId);
