@@ -4,5 +4,12 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://ihongs.github.io/hongs-core db.xsd">
     <config link="centra"/>
     <tables>
+        <table name="data"
+               tableName="a_mosaic_data"
+               primaryKey="id">
+            <param name="srchable">name,memo</param>
+            <param name="check.value">0</param><!-- 不检查字段值 -->
+            <param name="field.state">-</param><!-- 正常查阅删除 -->
+        </table>
     </tables>
 </db>

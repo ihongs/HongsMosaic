@@ -4,6 +4,8 @@ import io.github.ihongs.Cnst;
 import io.github.ihongs.Core;
 import io.github.ihongs.HongsException;
 import io.github.ihongs.action.ActionHelper;
+import io.github.ihongs.db.DB;
+import io.github.ihongs.db.Model;
 import io.github.ihongs.db.Table;
 import io.github.ihongs.serv.matrix.Data;
 import io.github.ihongs.util.Dawn;
@@ -26,6 +28,24 @@ public abstract class MosaicEntity extends Data {
 
     protected MosaicEntity(String conf, String form) {
         super(conf, form);
+    }
+
+    @Override
+    public Model getModel() throws HongsException {
+        String tn = Synt.declare(getParams().get("db-model"), "mosaic.data");
+        if ("".equals(tn) || "none".equals(tn)) {
+            return null;
+        }
+        return DB.getInstance("matrix").getModel(tn);
+    }
+
+    @Override
+    public Table getTable() throws HongsException {
+        String tn = Synt.declare(getParams().get("db-table"), "mosaic.data");
+        if ("".equals(tn) || "none".equals(tn)) {
+            return null;
+        }
+        return DB.getInstance("matrix").getTable(tn);
     }
 
     @Override

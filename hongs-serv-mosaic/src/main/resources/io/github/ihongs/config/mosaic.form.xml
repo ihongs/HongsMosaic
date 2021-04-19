@@ -3,6 +3,9 @@
 
     <!-- 基类 -->
     <form name="mosaic">
+        <field>
+            <param name="db-path">mosaic/data</param>
+        </field>
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
             <param name="maxlength">1000</param>
@@ -15,9 +18,12 @@
             <param name="maxlength">100</param>
             <param name="slice">,</param>
         </field>
-        <field text="图标" name="logo" type="image" rule="MosaicPath,Thumb">
-            <param name="path">static/upload/mosaic/${uid}/image</param>
-            <param name="href">static/upload/mosiac/${uid}/image</param>
+        <field text="图标" name="logo" type="image" rule="MosaicImage">
+            <param name="path">static/mosaic/${uid}/upload/image</param>
+            <param name="href">static/mosaic/${uid}/upload/image</param>
+            <param name="thumb-size">300*300</param>
+            <param name="thumb-mode">keep</param>
+            <param name="thumb-extn">png</param>
         </field>
         <field text="状态" name="state" type="enum">
             <param name="enum">state</param>
@@ -39,6 +45,8 @@
     <form name="pane">
         <field>
             <param name="form_id">mosaic.pane</param>
+            <param name="part_id">mosaic.pane</param>
+            <param name="db-path">mosaic/data</param>
         </field>
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
@@ -52,9 +60,12 @@
             <param name="maxlength">100</param>
             <param name="slice">,</param>
         </field>
-        <field text="图标" name="logo" type="image" rule="MosaicPath,Thumb">
-            <param name="path">static/upload/mosaic/${uid}/image</param>
-            <param name="href">static/upload/mosiac/${uid}/image</param>
+        <field text="图标" name="logo" type="image" rule="MosaicImage">
+            <param name="path">static/mosaic/${uid}/upload/image</param>
+            <param name="href">static/mosaic/${uid}/upload/image</param>
+            <param name="thumb-size">300*300</param>
+            <param name="thumb-mode">keep</param>
+            <param name="thumb-extn">png</param>
         </field>
         <field name="items" type="form" repeated="yes">
             <param name="form">_pane_item</param>
@@ -82,9 +93,12 @@
         <field text="简介" name="note" type="text">
             <param name="maxlength">1000</param>
         </field>
-        <field text="图标" name="logo" type="image" rule="MosaicPath,Thumb">
-            <param name="path">static/upload/mosaic/${uid}/image</param>
-            <param name="href">static/upload/mosaic/${uid}/image</param>
+        <field text="图标" name="logo" type="image" rule="MosaicImage">
+            <param name="path">static/mosaic/${uid}/upload/image</param>
+            <param name="href">static/mosaic/${uid}/upload/image</param>
+            <param name="thumb-size">300*300</param>
+            <param name="thumb-mode">keep</param>
+            <param name="thumb-extn">png</param>
         </field>
         <field text="类型" name="type" type="enum">
             <param name="enum">pane_type</param>
@@ -101,6 +115,8 @@
     <form name="page">
         <field>
             <param name="form_id">mosaic.page</param>
+            <param name="part_id">mosaic.page</param>
+            <param name="db-path">mosaic/data</param>
         </field>
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
@@ -114,9 +130,12 @@
             <param name="maxlength">100</param>
             <param name="slice">,</param>
         </field>
-        <field text="图标" name="logo" type="image" rule="MosaicPath,Thumb">
-            <param name="path">static/upload/mosaic/${uid}/image</param>
-            <param name="href">static/upload/mosiac/${uid}/image</param>
+        <field text="图标" name="logo" type="image" rule="MosaicImage">
+            <param name="path">static/mosaic/${uid}/upload/image</param>
+            <param name="href">static/mosaic/${uid}/upload/image</param>
+            <param name="thumb-size">300*300</param>
+            <param name="thumb-mode">keep</param>
+            <param name="thumb-extn">png</param>
         </field>
         <field text="类型" name="type" type="enum">
             <param name="enum">page_type</param>
@@ -147,6 +166,8 @@
     <form name="form">
         <field>
             <param name="form_id">mosaic.form</param>
+            <param name="part_id">mosaic.form</param>
+            <param name="db-path">mosaic/data</param>
         </field>
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
@@ -160,9 +181,12 @@
             <param name="maxlength">100</param>
             <param name="slice">,</param>
         </field>
-        <field text="图标" name="logo" type="image" rule="MosaicPath,Thumb">
-            <param name="path">static/upload/mosaic/${uid}/image</param>
-            <param name="href">static/upload/mosiac/${uid}/image</param>
+        <field text="图标" name="logo" type="image" rule="MosaicImage">
+            <param name="path">static/mosaic/${uid}/upload/image</param>
+            <param name="href">static/mosaic/${uid}/upload/image</param>
+            <param name="thumb-size">300*300</param>
+            <param name="thumb-mode">keep</param>
+            <param name="thumb-extn">png</param>
         </field>
         <field text="类型" name="type" type="enum">
             <param name="enum">form_type</param>

@@ -28,7 +28,7 @@ public class MosaicFormEntity extends MosaicEntity {
         Core   core = Core.getInstance( );
         String name = MosaicFormEntity.class.getName() +":"+ site;
         if (core.containsKey(name)) {
-            inst = (MosaicFormEntity) core.got( name );
+            inst = (MosaicFormEntity) core.get( name );
         } else {
             site = Syno.splitPath(site );
             inst = new MosaicFormEntity();

@@ -23,21 +23,23 @@ public class MosaicCaller extends Async<String> implements Core.Singleton {
     }
 
     public static MosaicCaller getInstance() throws HongsException {
-        return Core.GLOBAL_CORE.get(MosaicCaller.class.getName(),
-        new Supplier<MosaicCaller> () {
-            @Override
-            public MosaicCaller get() {
-                CoreConfig conf = CoreConfig.getInstance("mosaic");
-                try {
-                    return new MosaicCaller(
-                        conf.getProperty("core.mosaic.data.caller.max.tasks", Integer.MAX_VALUE),
-                        conf.getProperty("core.mosaic.data.caller.max.servs", 1)
-                    );
-                } catch (HongsException x) {
-                    throw x.toExemption( );
+        return Core.getOrPutInGlobal(
+            MosaicCaller.class.getName (),
+            new Supplier<MosaicCaller> () {
+                @Override
+                public MosaicCaller get() {
+                    CoreConfig conf = CoreConfig.getInstance("mosaic");
+                    try {
+                        return new MosaicCaller(
+                            conf.getProperty("core.mosaic.data.caller.max.tasks", Integer.MAX_VALUE),
+                            conf.getProperty("core.mosaic.data.caller.max.servs", 1)
+                        );
+                    } catch (HongsException x) {
+                        throw x.toExemption( );
+                    }
                 }
             }
-        });
+        );
     }
 
     @Override

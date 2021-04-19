@@ -25,7 +25,7 @@
             <div class="panel-body" style="display: table; width: 100%;">
                 <div style="display: table-cell; width: 10px; padding: 0px; vertical-align: top;">
                     <div class="review" style="height: 100px; overflow: hidden; cursor: pointer;">
-                        <div data-fn="logo" style="width: 100px; height: 100px; margin-right: 15px; border-radius: 4px;"></div>
+                        <div data-fn="logo" data-ft="_logo" style="width: 100px; height: 100px; margin-right: 15px; border-radius: 4px;"></div>
                     </div>
                 </div>
                 <div style="display: table-cell; width: 100%; padding: 0px; vertical-align: top;">
@@ -33,8 +33,7 @@
                         <div data-fn="name" style="color: #444;"></div>
                         <div data-fn="note" style="color: #888;"></div>
                     </div>
-                    <div data-ft="edit" data-fn="owner" class="btn-group" style="position: absolute; right: 0; bottom: 0; opacity: 0.8; display: none;">
-                        <button type="button" class="btn btn-sm btn-default spread"><span class="glyphicon glyphicon-list "></span></button>
+                    <div data-fn="owner" data-ft="_edit" class="btn-group" style="position: absolute; right: 0; bottom: 0; opacity: 0.8;">
                         <button type="button" class="btn btn-sm btn-default update"><span class="glyphicon glyphicon-edit "></span></button>
                         <button type="button" class="btn btn-sm btn-default delete"><span class="glyphicon glyphicon-trash"></span></button>
                     </div>
@@ -65,7 +64,11 @@
               ".update", "@" ],
             [ "centre/site/" +H$.uid()+ "/page/{ID}/",
               ".review", "_blank" ]
-        ]
+        ],
+        fillList: hsListFillItem,
+        fillPage: hsListFillMore,
+        _fill__logo : hsListFillLogo,
+        _fill__edit : hsListShowEdit
     });
 
     listobj.load();
