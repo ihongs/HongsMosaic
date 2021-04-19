@@ -25,7 +25,7 @@ public class MosaicForeEntity extends MosaicEntity {
         Core   core = Core.getInstance();
         String name = MosaicForeEntity.class.getName() +":"+ site +":"+ form ;
         if (core.containsKey(name)) {
-            inst = (MosaicForeEntity) core.got( name );
+            inst = (MosaicForeEntity) core.get( name );
         } else {
             site = Syno.splitPath (site);
             inst = new MosaicForeEntity("mosaic/"+ site +"/fore/"+ form,form);

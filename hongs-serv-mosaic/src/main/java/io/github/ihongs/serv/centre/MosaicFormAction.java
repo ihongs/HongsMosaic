@@ -5,8 +5,6 @@ import io.github.ihongs.HongsException;
 import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.action.ActionRunner;
 import io.github.ihongs.action.anno.Action;
-import io.github.ihongs.action.anno.CommitSuccess;
-import io.github.ihongs.action.anno.Preset;
 import io.github.ihongs.action.anno.Select;
 import io.github.ihongs.action.anno.Verify;
 import io.github.ihongs.dh.IEntity;
@@ -21,7 +19,7 @@ import java.util.Map;
  *
  * @author Hongs
  */
-@Action("centre/site")
+@Action("centre/site/form")
 public class MosaicFormAction extends JAction {
 
     /**
@@ -77,48 +75,6 @@ public class MosaicFormAction extends JAction {
             Map  fcs =  dat.getFields();
             helper.setAttribute("form:"+ mod +"."+ ent, fcs);
         }
-    }
-
-    @Action("form/select")
-    @Preset(conf="", form="")
-    @Select(conf="", form="")
-    @Override
-    public void select(ActionHelper helper) throws HongsException {
-        super.select(helper);
-    }
-
-    @Action("form/search")
-    @Preset(conf="", form="")
-    @Select(conf="", form="")
-    @Override
-    public void search(ActionHelper helper) throws HongsException {
-        super.search(helper);
-    }
-
-    @Action("form/create")
-    @Preset(conf="", form="", defs={":defence"})
-    @Verify(conf="", form="")
-    @CommitSuccess
-    @Override
-    public void create(ActionHelper helper) throws HongsException {
-        super.create(helper);
-    }
-
-    @Action("form/update")
-    @Preset(conf="", form="", defs={":defence"})
-    @Verify(conf="", form="")
-    @CommitSuccess
-    @Override
-    public void update(ActionHelper helper) throws HongsException {
-        super.update(helper);
-    }
-
-    @Action("form/delete")
-    @Preset(conf="", form="", defs={":defence"})
-    @CommitSuccess
-    @Override
-    public void delete(ActionHelper helper) throws HongsException {
-        super.delete(helper);
     }
 
 }

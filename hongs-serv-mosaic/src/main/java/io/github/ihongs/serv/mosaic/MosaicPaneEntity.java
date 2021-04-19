@@ -28,7 +28,7 @@ public class MosaicPaneEntity extends MosaicEntity {
         Core   core = Core.getInstance( );
         String name = MosaicPaneEntity.class.getName() +":"+ site;
         if (core.containsKey(name)) {
-            inst = (MosaicPaneEntity) core.got( name );
+            inst = (MosaicPaneEntity) core.get( name );
         } else {
             site = Syno.splitPath(site );
             inst = new MosaicPaneEntity();

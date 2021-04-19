@@ -33,7 +33,7 @@
                         <div data-fn="name" style="color: #444;"></div>
                         <div data-fn="note" style="color: #888;"></div>
                     </div>
-                    <div data-ft="edit" data-fn="owner" class="btn-group" style="position: absolute; right: 0; bottom: 0; opacity: 0.8; display: none;">
+                    <div data-ft="edit" data-fn="owner" class="btn-group" style="position: absolute; right: 0; bottom: 0; opacity: 0.8;">
                         <button type="button" class="btn btn-sm btn-default spread"><span class="glyphicon glyphicon-list "></span></button>
                         <button type="button" class="btn btn-sm btn-default update"><span class="glyphicon glyphicon-edit "></span></button>
                         <button type="button" class="btn btn-sm btn-default delete"><span class="glyphicon glyphicon-trash"></span></button>
@@ -65,7 +65,11 @@
               ".update", "@" ],
             [ "centre/site/" +H$.uid()+ "/pane/{ID}/",
               ".review", "_blank"]
-        ]
+        ],
+        fillList: hsListFillItem,
+        fillPage: hsListFillMore,
+        _fill__logo : hsListFillLogo,
+        _fill__edit : hsListShowEdit
     });
 
     listobj.load();
