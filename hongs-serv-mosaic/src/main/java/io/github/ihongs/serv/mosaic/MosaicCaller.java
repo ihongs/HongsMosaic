@@ -23,7 +23,7 @@ public class MosaicCaller extends Async<String> implements Core.Singleton {
     }
 
     public static MosaicCaller getInstance() throws HongsException {
-        return Core.getOrPutInGlobal(
+        return Core.GLOBAL_CORE.get (
             MosaicCaller.class.getName (),
             new Supplier<MosaicCaller> () {
                 @Override
