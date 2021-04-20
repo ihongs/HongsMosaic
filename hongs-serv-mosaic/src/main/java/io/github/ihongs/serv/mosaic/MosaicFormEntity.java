@@ -33,7 +33,7 @@ public class MosaicFormEntity extends MosaicEntity {
             site = Syno.splitPath(site );
             inst = new MosaicFormEntity();
             inst.setSiteId (site );
-            core.put ( name, inst );
+            core.set ( name, inst );
         }
         return inst;
     }

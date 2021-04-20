@@ -33,7 +33,7 @@ public class MosaicPageEntity extends MosaicEntity {
             site = Syno.splitPath(site );
             inst = new MosaicPageEntity();
             inst.setSiteId (site );
-            core.put ( name, inst );
+            core.set ( name, inst );
         }
         return inst;
     }
