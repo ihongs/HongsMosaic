@@ -27,7 +27,7 @@ public class MosaicPageEntity extends MosaicEntity {
         MosaicPageEntity inst;
         Core   core = Core.getInstance( );
         String name = MosaicPageEntity.class.getName() +":"+ site;
-        if (core.containsKey(name)) {
+        if (core.isset(name)) {
             inst = (MosaicPageEntity) core.get( name );
         } else {
             site = Syno.splitPath(site );
