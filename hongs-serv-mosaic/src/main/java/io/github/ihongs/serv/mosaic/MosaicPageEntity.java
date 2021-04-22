@@ -24,16 +24,14 @@ public class MosaicPageEntity extends MosaicEntity {
      * @return
      */
     public static MosaicPageEntity getInstance(String site) {
-        MosaicPageEntity inst;
         Core   core = Core.getInstance( );
-        String name = MosaicPageEntity.class.getName() +":"+ site;
-        if (core.isset(name)) {
-            inst = (MosaicPageEntity) core.get( name );
-        } else {
-            site = Syno.splitPath(site );
+        String name = MosaicPageEntity.class.getName() +":"+ site  ;
+        MosaicPageEntity inst = (MosaicPageEntity) core.get( name );
+        if (inst == null) {
+            site = Syno.splitPath( site );
             inst = new MosaicPageEntity();
-            inst.setSiteId (site );
-            core.set ( name, inst );
+            inst.setSiteId(site);
+            core.set(name, inst);
         }
         return inst;
     }

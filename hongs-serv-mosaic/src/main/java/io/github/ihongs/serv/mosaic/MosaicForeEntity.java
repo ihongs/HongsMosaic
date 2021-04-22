@@ -21,12 +21,10 @@ public class MosaicForeEntity extends MosaicEntity {
      * @return
      */
     public static MosaicForeEntity getInstance(String site, String form) {
-        MosaicForeEntity inst;
         Core   core = Core.getInstance();
         String name = MosaicForeEntity.class.getName() +":"+ site +":"+ form ;
-        if (core.isset(name)) {
-            inst = (MosaicForeEntity) core.get( name );
-        } else {
+        MosaicForeEntity inst = (MosaicForeEntity) core.get( name );
+        if (inst == null) {
             site = Syno.splitPath (site);
             inst = new MosaicForeEntity("mosaic/"+ site +"/fore/"+ form,form);
             core.set ( name, inst );
