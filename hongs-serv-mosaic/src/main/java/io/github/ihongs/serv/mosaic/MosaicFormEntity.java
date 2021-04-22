@@ -24,16 +24,14 @@ public class MosaicFormEntity extends MosaicEntity {
      * @return
      */
     public static MosaicFormEntity getInstance(String site) {
-        MosaicFormEntity inst;
         Core   core = Core.getInstance( );
-        String name = MosaicFormEntity.class.getName() +":"+ site;
-        if (core.isset(name)) {
-            inst = (MosaicFormEntity) core.get( name );
-        } else {
-            site = Syno.splitPath(site );
+        String name = MosaicFormEntity.class.getName() +":"+ site  ;
+        MosaicFormEntity inst = (MosaicFormEntity) core.get( name );
+        if (inst == null) {
+            site = Syno.splitPath( site );
             inst = new MosaicFormEntity();
-            inst.setSiteId (site );
-            core.set ( name, inst );
+            inst.setSiteId(site);
+            core.set(name, inst);
         }
         return inst;
     }
