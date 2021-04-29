@@ -81,9 +81,10 @@ public abstract class MosaicEntity extends Data {
     @Override
     public String add(Map rd) throws HongsException {
         String id = Core.newIdentity();
-        Map    dd = rd;
+        Map    dd = new HashMap();
+        padInf(dd , rd);
 
-        // 构建文档对象, 会重组 name,word 的取值, 用于下方记录
+        // 构建文档对象
         dd.put(Cnst.ID_KEY , id);
         Document dc = padDoc(dd);
 
@@ -92,7 +93,6 @@ public abstract class MosaicEntity extends Data {
         long  ctime = System.currentTimeMillis() / 1000;
         if (table != null) {
             String   fid   = getFormId();
-            String   sid   = getSiteId();
             String   uid   = getUserId();
 
             Map nd = new HashMap();
@@ -101,19 +101,18 @@ public abstract class MosaicEntity extends Data {
             nd.put("state",   1  );
             nd.put(     "id", id );
             nd.put("form_id", fid);
-            nd.put("site_id", sid);
             nd.put("user_id", uid);
 
             // 数据快照和日志标题
             nd.put("data", Dawn.toString(dd, true));
-            nd.put("name",     cutText(dd, "name"));
+            nd.put("name",     getText(dd, "name"));
 
             // 操作备注和终端代码
             if (rd.containsKey("memo")) {
-                nd.put("memo", cutText(rd, "memo"));
+                nd.put("memo", getText(rd, "memo"));
             }
             if (rd.containsKey("meno")) {
-                nd.put("meno", cutText(rd, "meno"));
+                nd.put("meno", getText(rd, "meno"));
             }
 
             table.insert(nd);
@@ -139,32 +138,15 @@ public abstract class MosaicEntity extends Data {
      */
     @Override
     public int set(String id, Map rd) throws HongsException {
-        // 合并新旧数据
-        int i  = 0;
-    //  int t  = 2;
         Map dd = get(id);
-    //  if (dd.isEmpty()) t = 1;
-        Map<String,Map> fs = getFields();
-        for(String fn : fs . keySet( ) ) {
-            if (  "id". equals(fn)) {
-                dd.put(fn , id);
-            } else
-            if (rd.containsKey(fn)) {
-                Object fr = rd.get(fn);
-                Object fo = dd.get(fn);
-                dd.put(fn , fr);
-                // 跳过环境字段, 比如修改时间
-                if (! canSkip(fn,fr,fo)) {
-                    i ++;
-                }
-            }
-        }
+        int t  = dd.isEmpty()? 1:2 ;
+        int i  = padInf ( dd , rd );
         // 无更新不存储
         if (i == 0) {
           return 0;
         }
 
-        // 构建文档对象, 会重组 name,word 的取值, 用于下方记录
+        // 构建文档对象
         dd.put(Cnst.ID_KEY , id);
         Document dc = padDoc(dd);
 
@@ -173,45 +155,44 @@ public abstract class MosaicEntity extends Data {
         long  ctime = System.currentTimeMillis() / 1000;
         if (table != null) {
             String   fid   = getFormId();
-            String   sid   = getSiteId();
             String   uid   = getUserId();
-            Object[] param = new String[] {id, fid, sid, "0"};
-            String   where = "`id`=? AND `form_id`=? AND `site_id`=? AND `etime`=?";
+            Object[] param = new String[] {id, fid, "0"};
+            String   where = "`id`=? AND `form_id`=? AND `etime`=?";
 
-            /**
-             * 此类里的提交方法并不会将对应的操作记录数据进行提交,
-             * 好在关系数据库事务内可查到前面插入但还未提交的记录.
-             */
             Map nd = table.fetchCase()
                 .filter( where,param )
                 .select("ctime,state")
                 .getOne( );
-            if (nd.isEmpty()) {
-                nd.put("ctime", ctime);
-                nd.put("etime",   0  );
-                nd.put("state",   1  );
-                nd.put(     "id", id );
-                nd.put("form_id", fid);
-                nd.put("site_id", sid);
-                nd.put("user_id", uid);
-            } else {
+            if (! nd.isEmpty()) {
                 if (Synt.declare(nd.get("state"), 0 ) ==  0   ) {
                     throw new HongsException(404, "Data item '"+id+"' is removed in "+getDbName())
                         .setLocalizedContent("matrix.item.is.removed")
                         .setLocalizedContext("matrix");
-                }
+                } /* 没有新增, 不必限时
+                if (Synt.declare(nd.get("ctime"), 0L ) >= ctime) {
+                    throw new HongsException(400, "Wait 1 second to put '"+id+"' in "+getDbName())
+                        .setLocalizedContent("matrix.wait.one.second")
+                        .setLocalizedContext("matrix");
+                } */
+            } else {
+                nd.put("ctime", ctime);
+                nd.put("etime",   0  );
+                nd.put("state",   t  );
+                nd.put(     "id", id );
+                nd.put("form_id", fid);
+                nd.put("user_id", uid);
             }
 
             // 数据快照和日志标题
             nd.put("data", Dawn.toString(dd, true));
-            nd.put("name",     cutText(dd, "name"));
+            nd.put("name",     getText(dd, "name"));
 
             // 操作备注和终端代码
             if (rd.containsKey("memo")) {
-                nd.put("memo", cutText(rd, "memo"));
+                nd.put("memo", getText(rd, "memo"));
             }
             if (rd.containsKey("meno")) {
-                nd.put("meno", cutText(rd, "meno"));
+                nd.put("meno", getText(rd, "meno"));
             }
 
             if (nd.containsKey("etime") == false ) {
@@ -241,32 +222,15 @@ public abstract class MosaicEntity extends Data {
      */
     @Override
     public int put(String id, Map rd) throws HongsException {
-        // 合并新旧数据
-        int i  = 0;
-        int t  = 2;
         Map dd = get(id);
-        if (dd.isEmpty()) t = 1;
-        Map<String,Map> fs = getFields();
-        for(String fn : fs . keySet( ) ) {
-            if (  "id". equals(fn)) {
-                dd.put(fn , id);
-            } else
-            if (rd.containsKey(fn)) {
-                Object fr = rd.get(fn);
-                Object fo = dd.get(fn);
-                dd.put(fn , fr);
-                // 跳过环境字段, 比如修改时间
-                if (! canSkip(fn,fr,fo)) {
-                    i ++;
-                }
-            }
-        }
+        int t  = dd.isEmpty()? 1:2 ;
+        int i  = padInf ( dd , rd );
         // 无更新不存储
         if (i == 0) {
           return 0;
         }
 
-        // 构建文档对象, 会重组 name,word 的取值, 用于下方记录
+        // 构建文档对象
         dd.put(Cnst.ID_KEY , id);
         Document dc = padDoc(dd);
 
@@ -275,84 +239,52 @@ public abstract class MosaicEntity extends Data {
         long  ctime = System.currentTimeMillis() / 1000;
         if (table != null) {
             String   fid   = getFormId();
-            String   sid   = getSiteId();
             String   uid   = getUserId();
-            Object[] param = new String[] {id, fid, sid, "0" };
-            String   where = "`id`=? AND `form_id`=? AND `site_id`=? AND `etime`=?";
+            Object[] param = new String[] {id, fid, "0"};
+            String   where = "`id`=? AND `form_id`=? AND `etime`=?";
 
             //** 检查记录状态 **/
 
-            if (t == 2) {
-                Map od = table.fetchCase()
-                    .filter( where,param )
-                    .select("ctime,state")
-                    .getOne( );
-                if (! od.isEmpty()) {
-                    if (Synt.declare(od.get("state"), 0  ) ==  0   ) {
-                        throw new HongsException(404, "Data item '"+id+"' is removed in "+getDbName())
-                            .setLocalizedContent("matrix.item.is.removed")
-                            .setLocalizedContext("matrix");
-                    }
-                    if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
-                        throw new HongsException(400, "Wait 1 second to put '"+id+"' in "+getDbName())
-                            .setLocalizedContent("matrix.wait.one.second")
-                            .setLocalizedContext("matrix");
-                    }
+            Map od = table.fetchCase()
+                .filter( where,param )
+                .select("ctime,state")
+                .getOne( );
+            if (! od.isEmpty()) {
+                if (Synt.declare(od.get("state"), 0  ) ==  0   ) {
+                    throw new HongsException(404, "Data item '"+id+"' is removed in "+getDbName())
+                        .setLocalizedContent("matrix.item.is.removed")
+                        .setLocalizedContext("matrix");
                 }
-            } else {
-                Map od = table.fetchCase()
-                    .filter( where,param )
-                    .select("ctime,state,data")
-                    .getOne( );
-                if (! od.isEmpty()) {
-                    if (Synt.declare(od.get("state"), 0  ) ==  0   ) {
-                        throw new HongsException(404, "Data item '"+id+"' is removed in "+getDbName())
-                            .setLocalizedContent("matrix.item.is.removed")
-                            .setLocalizedContext("matrix");
-                    }
-                    if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
-                        throw new HongsException(400, "Wait 1 second to put '"+id+"' in "+getDbName())
-                            .setLocalizedContent("matrix.wait.one.second")
-                            .setLocalizedContext("matrix");
-                    }
-
-                    // 用快照补全数据
-                    Map<Object, Object> bd = (Map) Dawn.toObject( (String) od.get("data"));
-                    for (Map.Entry et : bd.entrySet()) {
-                        Object k = et.getKey( );
-                        if (dd.containsKey(k)
-                        || !fs.containsKey(k) ) {
-                            continue;
-                        }
-                        dd.put(k,et.getValue());
-                    }
-                    t = 2 ;
+                if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
+                    throw new HongsException(400, "Wait 1 second to put '"+id+"' in "+getDbName())
+                        .setLocalizedContent("matrix.wait.one.second")
+                        .setLocalizedContext("matrix");
                 }
             }
 
             //** 保存到数据库 **/
 
             Map ud = new HashMap();
-            Map nd = new HashMap();
             ud.put("etime", ctime);
+
+            Map nd = new HashMap();
             nd.put("ctime", ctime);
             nd.put("etime",   0  );
             nd.put("state",   t  );
             nd.put(     "id", id );
             nd.put("form_id", fid);
-            nd.put("site_id", sid);
             nd.put("user_id", uid);
 
             // 数据快照和日志标题
             nd.put("data", Dawn.toString(dd, true));
-            nd.put("name",     cutText(dd, "name"));
+            nd.put("name",     getText(dd, "name"));
 
             // 操作备注和终端代码
             if (rd.containsKey("memo")) {
-                nd.put("memo", cutText(rd, "memo"));
+                nd.put("memo", getText(rd, "memo"));
             }
             if (rd.containsKey("meno")) {
-                nd.put("meno", cutText(rd, "meno"));
+                nd.put("meno", getText(rd, "meno"));
             }
 
             table.update(ud, where, param);
@@ -376,15 +308,15 @@ public abstract class MosaicEntity extends Data {
     public int del(String id, Map rd) throws HongsException {
         Table table = getTable();
         if (table == null) {
-            delDoc(id); return 1;
+            delDoc(id);
+            return 1;
         }
 
         String   fid   = getFormId();
-        String   sid   = getSiteId();
         String   uid   = getUserId();
         long     ctime = System.currentTimeMillis() / 1000;
-        Object[] param = new String[] {id, fid, sid, "0" };
-        String   where = "`id`=? AND `form_id`=? AND `site_id`=? AND `etime`=?";
+        Object[] param = new String[] {id, fid, "0"};
+        String   where = "`id`=? AND `form_id`=? AND `etime`=?";
 
         //** 检查记录状态 **/
 
@@ -414,7 +346,6 @@ public abstract class MosaicEntity extends Data {
         nd.put("state",   0  );
         nd.put(     "id", id );
         nd.put("form_id", fid);
-        nd.put("site_id", sid);
         nd.put("user_id", uid);
 
         // 拷贝快照和日志标题
@@ -423,10 +354,10 @@ public abstract class MosaicEntity extends Data {
 
         // 操作备注和终端代码
         if (rd.containsKey("memo")) {
-            nd.put("memo", cutText(rd, "memo"));
+            nd.put("memo", getText(rd, "memo"));
         }
         if (rd.containsKey("meno")) {
-            nd.put("meno", cutText(rd, "meno"));
+            nd.put("meno", getText(rd, "meno"));
         }
 
         table.update(ud, where, param);
@@ -456,14 +387,13 @@ public abstract class MosaicEntity extends Data {
         }
 
         String   fid   = getFormId();
-        String   sid   = getSiteId();
         String   uid   = getUserId();
         long     ctime = System.currentTimeMillis() / 1000 ;
         long     rtime = Synt.declare (rd.get("rtime"), 0L);
-        Object[] param = new String[] {id, fid, sid, "0"  };
-        String   where = "`id`=? AND `form_id`=? AND `site_id`=? AND `etime`=?";
-        Object[] para2 = new Object[] {id, fid, sid, rtime};
-        String   wher2 = "`id`=? AND `form_id`=? AND `site_id`=? AND `ctime`=?";
+        Object[] param = new String[] {id, fid, "0" };
+        String   where = "`id`=? AND `form_id`=? AND `etime`=?";
+        Object[] para2 = new Object[] {id, fid,rtime};
+        String   wher2 = "`id`=? AND `form_id`=? AND `ctime`=?";
 
         //** 获取旧的数据 **/
 
@@ -481,6 +411,7 @@ public abstract class MosaicEntity extends Data {
                 .setLocalizedContent("matrix.wait.one.second")
                 .setLocalizedContext("matrix");
         }
+
         Map nd = table.fetchCase()
             .filter( wher2, para2)
         //  .assort("ctime  DESC")
@@ -507,15 +438,14 @@ public abstract class MosaicEntity extends Data {
         nd.put("etime",   0  );
         nd.put("state",   3  );
         nd.put("form_id", fid);
-        nd.put("site_id", sid);
         nd.put("user_id", uid);
 
         // 操作备注和终端代码
         if (rd.containsKey("memo")) {
-            nd.put("memo", cutText(rd, "memo"));
+            nd.put("memo", getText(rd, "memo"));
         }
         if (rd.containsKey("meno")) {
-            nd.put("meno", cutText(rd, "meno"));
+            nd.put("meno", getText(rd, "meno"));
         }
 
         table.update(ud, where, param);
