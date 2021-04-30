@@ -69,10 +69,10 @@ public abstract class MosaicEntity extends Data {
     }
 
     @Override
-    public String add(String id, Map rd, long ctime) throws HongsException {
-        super.add (id, rd, ctime);
+    public int add(String id, Map rd, long ctime) throws HongsException {
+        int i = super.add(id, rd, ctime);
         call(id, "create", ctime);
-        return id;
+        return i;
     }
 
     @Override
@@ -123,7 +123,8 @@ public abstract class MosaicEntity extends Data {
             "form_id", fid,
             "site_id", sid,
             "id"     , id ,
-            "type"   , on
+            "type"   , on ,
+            "time"   , ct
         )));
 
         return 1 ;
