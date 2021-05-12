@@ -140,8 +140,6 @@ public abstract class MosaicEntity extends Data {
             for(String du : dcUrls.values()) {
                 dc.add(du);
             }
-        } catch (HongsException e) {
-            throw e.toExemption( );
         } finally {
             dcUrls.clear();
         }
