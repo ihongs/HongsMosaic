@@ -22,7 +22,7 @@ public class MosaicCaller extends Async<String> implements Core.Singleton {
         super(MosaicCaller.class.getName( ), maxTasks, maxServs);
     }
 
-    public static MosaicCaller getInstance() throws HongsException {
+    public static MosaicCaller getInstance() {
         return Core.GLOBAL_CORE.get (
             MosaicCaller.class.getName (),
             new Supplier<MosaicCaller> () {
