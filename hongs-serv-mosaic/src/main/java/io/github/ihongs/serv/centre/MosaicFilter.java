@@ -27,7 +27,7 @@ public class MosaicFilter extends ActionDriver {
     private String script;
     private String prefix;
     private String acting;
-    private URLPatterns ignore = null;
+    private URLPatterns patter = null;
 
     @Override
     public void init(FilterConfig cnf) throws ServletException {
@@ -52,9 +52,9 @@ public class MosaicFilter extends ActionDriver {
         acting = action.substring(1);
 
         // 获取不包含的URL
-        this.ignore = new URLPatterns(
-            cnf.getInitParameter("url-exclude"),
-            cnf.getInitParameter("url-include")
+        patter = new URLPatterns(
+            cnf.getInitParameter("url-include"),
+            cnf.getInitParameter("url-exclude")
         );
     }
 
@@ -72,7 +72,7 @@ public class MosaicFilter extends ActionDriver {
         String ref = ActionDriver.getOriginPath(req);
 
         // 跳过指定路径
-        if (ignore != null && ignore.matches(url)) {
+        if (patter != null && ! patter.matches (url)) {
             chain.doFilter(req, rsp);
             return ;
         }
