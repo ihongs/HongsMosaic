@@ -23,7 +23,7 @@ public class MosaicCaller extends Async<String> implements Core.Singleton {
     }
 
     public static MosaicCaller getInstance() {
-        return Core.GLOBAL_CORE.get (
+        return Core.GLOBAL_CORE.got (
             MosaicCaller.class.getName (),
             new Supplier<MosaicCaller> () {
                 @Override
