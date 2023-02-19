@@ -31,7 +31,7 @@ cd HongsMosaic
 mvn package
 cd hongs-mosaic-web/target/HongsMosaic
 # 初始设置
-sh bin/hdo system.setup --DEBUG 0
+sh bin/hdo source.setup --DEBUG 0
 # 启动服务
 sh bin/hdo server.start --DEBUG 1
 ```
