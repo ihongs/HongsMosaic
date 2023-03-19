@@ -3,6 +3,7 @@ package io.github.ihongs.util.verify;
 import io.github.ihongs.Cnst;
 import io.github.ihongs.HongsExemption;
 import io.github.ihongs.action.ActionHelper;
+import io.github.ihongs.util.Syno;
 
 /**
  *
@@ -21,7 +22,8 @@ public class MosaicFile extends IsFile {
                 if (uid == null) {
                     throw new HongsExemption(401);
                 }
-                return uri.replace("${uid}", uid);
+                uid = Syno.splitPath (uid);
+                return uri.replace("${SID}", uid);
             }
         }
         return prm;

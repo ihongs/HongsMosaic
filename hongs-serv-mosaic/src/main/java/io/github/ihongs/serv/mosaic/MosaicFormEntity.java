@@ -9,12 +9,8 @@ import io.github.ihongs.util.Syno;
  */
 public class MosaicFormEntity extends MosaicEntity {
 
-    protected MosaicFormEntity(String conf, String form) {
-        super(conf, form);
-    }
-
-    public MosaicFormEntity() {
-        super("mosaic", "form");
+    private MosaicFormEntity(String siteId) {
+        super("mosaic", "form", siteId);
     }
 
     /**
@@ -24,13 +20,11 @@ public class MosaicFormEntity extends MosaicEntity {
      * @return
      */
     public static MosaicFormEntity getInstance(String site) {
-        Core   core = Core.getInstance( );
+        Core   core = Core.getInstance();
         String name = MosaicFormEntity.class.getName() +":"+ site  ;
         MosaicFormEntity inst = (MosaicFormEntity) core.get( name );
         if (inst == null) {
-            site = Syno.splitPath( site );
-            inst = new MosaicFormEntity();
-            inst.setSiteId(site);
+            inst  = new MosaicFormEntity(site);
             core.set(name, inst);
         }
         return inst;

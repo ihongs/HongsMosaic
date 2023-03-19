@@ -7,7 +7,6 @@ import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.action.ActionRunner;
 import java.io.File;
 import java.io.IOException;
-import java.util.regex.Pattern;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -69,7 +68,6 @@ public class MosaicFilter extends ActionDriver {
         HttpServletResponse rsp = hlpr.getResponse();
         HttpServletRequest  req = hlpr.getRequest( );
         String url = ActionDriver.getRecentPath(req);
-        String ref = ActionDriver.getOriginPath(req);
 
         // 跳过指定路径
         if (patter != null && ! patter.matches (url)) {
@@ -77,7 +75,7 @@ public class MosaicFilter extends ActionDriver {
             return ;
         }
 
-        ref = url.substring(prefix.length());
+        String ref = url.substring(prefix.length( ));
 
         if (url.endsWith(Cnst.API_EXT)) {
             // 应用接口, 直接跳过

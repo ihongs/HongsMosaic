@@ -1,7 +1,6 @@
 package io.github.ihongs.serv.mosaic;
 
 import io.github.ihongs.Core;
-import io.github.ihongs.util.Syno;
 
 /**
  * 面板模型
@@ -9,12 +8,8 @@ import io.github.ihongs.util.Syno;
  */
 public class MosaicPaneEntity extends MosaicEntity {
     
-    public MosaicPaneEntity(String conf, String form) {
-        super(conf, form);
-    }
-
-    public MosaicPaneEntity() {
-        super("mosaic", "pane");
+    private MosaicPaneEntity(String siteId) {
+        super("mosaic", "pane", siteId);
     }
 
     /**
@@ -24,13 +19,11 @@ public class MosaicPaneEntity extends MosaicEntity {
      * @return
      */
     public static MosaicPaneEntity getInstance(String site) {
-        Core   core = Core.getInstance( );
+        Core   core = Core.getInstance();
         String name = MosaicPaneEntity.class.getName() +":"+ site  ;
         MosaicPaneEntity inst = (MosaicPaneEntity) core.get( name );
         if (inst == null) {
-            site = Syno.splitPath( site );
-            inst = new MosaicPaneEntity();
-            inst.setSiteId(site);
+            inst  = new MosaicPaneEntity(site);
             core.set(name, inst);
         }
         return inst;

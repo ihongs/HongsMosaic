@@ -9,8 +9,8 @@ import io.github.ihongs.util.Syno;
  */
 public class MosaicForeEntity extends MosaicEntity {
 
-    protected MosaicForeEntity(String conf, String form) {
-        super(conf, form);
+    protected MosaicForeEntity(String conf, String form, String siteId) {
+        super(conf, form, siteId);
     }
 
     /**
@@ -25,9 +25,10 @@ public class MosaicForeEntity extends MosaicEntity {
         String name = MosaicForeEntity.class.getName() +":"+ site +":"+ form ;
         MosaicForeEntity inst = (MosaicForeEntity) core.get( name );
         if (inst == null) {
-            site = Syno.splitPath (site);
-            inst = new MosaicForeEntity("mosaic/"+ site +"/fore/"+ form,form);
-            core.set ( name, inst );
+            String  path;
+            path  = Syno.splitPath(site);
+            inst  = new MosaicForeEntity("mosaic/"+ path +"/fore/"+ form, form, site);
+            core.set(name, inst);
         }
         return inst;
     }
