@@ -6,14 +6,14 @@ import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.action.anno.Action;
 import io.github.ihongs.dh.IEntity;
 import io.github.ihongs.serv.mosaic.MosaicEntity;
-import io.github.ihongs.serv.mosaic.MosaicPaneEntity;
+import io.github.ihongs.serv.mosaic.MosaicRootEntity;
 
 /**
  *
  * @author Hongs
  */
-@Action("centre/site/pane")
-public class MosaicPaneAction extends MosaicAction {
+@Action("centre/site/root")
+public class MosaicRootAction extends MosaicAction {
 
     /**
      * 获取模型对象
@@ -29,9 +29,24 @@ public class MosaicPaneAction extends MosaicAction {
     throws HongsException {
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
         String siteId = (String) helper.getAttribute(SITE_ID_ATTR);
-        MosaicEntity entity = MosaicPaneEntity.getInstance(siteId);
+        MosaicEntity entity = MosaicRootEntity.getInstance(siteId);
         entity.setUserId(userId);
         return entity;
+    }
+
+    @Override
+    public void create(ActionHelper helper) throws HongsException {
+        throw new HongsException(405);
+    }
+
+    @Override
+    public void update(ActionHelper helper) throws HongsException {
+        throw new HongsException(405);
+    }
+
+    @Override
+    public void delete(ActionHelper helper) throws HongsException {
+        throw new HongsException(405);
     }
 
 }

@@ -3,13 +3,13 @@ package io.github.ihongs.serv.mosaic;
 import io.github.ihongs.Core;
 
 /**
- * 表单模型
+ *
  * @author Hongs
  */
-public class MosaicFormEntity extends MosaicEntity {
+public class MosaicRootEntity extends MosaicEntity {
 
-    private MosaicFormEntity(String siteId) {
-        super("mosaic", "form", siteId);
+    private MosaicRootEntity(String siteId) {
+        super("mosaic", "data", siteId);
     }
 
     /**
@@ -18,12 +18,12 @@ public class MosaicFormEntity extends MosaicEntity {
      * @param site
      * @return
      */
-    public static MosaicFormEntity getInstance(String site) {
+    public static MosaicRootEntity getInstance(String site) {
         Core   core = Core.getInstance();
         String name = MosaicFormEntity.class.getName() +":"+ site  ;
-        MosaicFormEntity inst = (MosaicFormEntity) core.get( name );
+        MosaicRootEntity inst = (MosaicRootEntity) core.get( name );
         if (inst == null) {
-            inst  = new MosaicFormEntity(site);
+            inst  = new MosaicRootEntity(site);
             core.set(name, inst);
         }
         return inst;

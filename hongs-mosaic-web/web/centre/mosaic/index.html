@@ -6,28 +6,57 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <base href="../../">
         <link rel="icon" type="image/x-icon" href="favicon.ico"/>
-        <link rel="stylesheet" type="text/css" href="static/assets/css/bootstrap.min.css"/>
-        <link rel="stylesheet" type="text/css" href="static/assets/css/hongscore.min.css"/>
-        <link rel="stylesheet" type="text/css" href="static/centre/base.min.css"/>
+        <link rel="stylesheet" type="text/css" href="static/assets/css/common.min.css"/>
+        <link rel="stylesheet" type="text/css" href="static/assets/css/centre.min.css"/>
         <!--[if glt IE8.0]>
         <script type="text/javascript" src="static/addons/respond/respond.min.js"></script>
         <![endif]-->
-        <script type="text/javascript" src="static/assets/jquery.min.js"></script>
-        <script type="text/javascript" src="static/assets/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="static/assets/bootstrap.min.js"></script>
-        <script type="text/javascript" src="static/assets/hongscore.min.js"></script>
-        <script type="text/javascript" src="static/assets/hongsedge.min.js"></script>
+        <script type="text/javascript" src="static/assets/common.min.js"></script>
         <script type="text/javascript" src="common/conf/default.js"></script>
         <script type="text/javascript" src="common/lang/default.js"></script>
+        <script type="text/javascript" src="common/auth/centre.js" ></script>
+        <script type="text/javascript">
+            jQuery(function( ) {
+                if(! H$.uid()) {
+                    location.replace(H$("/centre/"));
+                }
+            });
+        </script>
     </head>
-    <body>
+    <body class="toper-open">
         <div id="context">
             <div id="headbox">
-                <div data-load="centre/head.jsp"></div>
+                <div id="menu-context" data-load="centre/head.jsp"></div>
             </div>
             <div id="bodybox">
-                <div id="main-context" class="container">加载中...</div>
+                <div id="main-context" class="container labs laps">
+                    <div></div>
+                </div>
             </div>
         </div>
+        <script type="text/javascript">
+            $(window).on( "hashchange", function() {
+                var menubar = $( "#main-menubar" );
+                var a, b, h ;
+
+                h = location.href.replace(/^\w+:\/\/[^\/]+/, '');
+                a = menubar .find("a[href='"+h+"']");
+                b = menubar ;
+
+                // 可能因参数、锚而找不到
+                if (a.size() === 0) {
+                    h = h.replace( /#.*/, '');
+                    a = menubar.find("a[href='"+h+"']");
+                if (a.size() === 0) {
+                    h = h.replace(/\?.*/, '');
+                    a = menubar.find("a[href='"+h+"']");
+                }}
+
+                // 找到了菜单, 刷新
+                if (a.size() !== 0) {
+                    location.reload ( );
+                }
+            });
+        </script>
     </body>
 </html>

@@ -1,32 +1,12 @@
 <root>
     <rsname>#centre</rsname>
-    <menu text="微站" href="common/menu.act?m=centre/mosaic">
-        <menu text="面板" href="centre/mosaic/#pane" hrel="centre/mosaic/pane/list.html">
-            <role name="centre">
-                <action>centre/mosaic/pane/select.act</action>
-                <action>centre/mosaic/pane/search.act</action>
-                <action>centre/mosaic/pane/create.act</action>
-                <action>centre/mosaic/pane/update.act</action>
-                <action>centre/mosaic/pane/delete.act</action>
-            </role>
-        </menu>
-        <menu text="内容" href="centre/mosaic/#page" hrel="centre/mosaic/page/list.html">
-            <role name="centre">
-                <action>centre/mosaic/page/select.act</action>
-                <action>centre/mosaic/page/search.act</action>
-                <action>centre/mosaic/page/create.act</action>
-                <action>centre/mosaic/page/update.act</action>
-                <action>centre/mosaic/page/delete.act</action>
-            </role>
-        </menu>
-        <menu text="表单" href="centre/mosaic/#form" hrel="centre/mosaic/form/list.html">
-            <role name="centre">
-                <action>centre/mosaic/form/select.act</action>
-                <action>centre/mosaic/form/search.act</action>
-                <action>centre/mosaic/form/create.act</action>
-                <action>centre/mosaic/form/update.act</action>
-                <action>centre/mosaic/form/delete.act</action>
-            </role>
-        </menu>
+    <menu text="微站" href="centre/mosaic/" hrel="centre/mosaic/site/list.html">
+        <role name="centre">
+            <action>centre/mosaic/site/select.act</action>
+            <action>centre/mosaic/site/search.act</action>
+            <action>centre/mosaic/site/create.act</action>
+            <action>centre/mosaic/site/update.act</action>
+            <action>centre/mosaic/site/delete.act</action>
+        </role>
     </menu>
 </root>

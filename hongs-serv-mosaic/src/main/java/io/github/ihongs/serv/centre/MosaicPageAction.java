@@ -3,24 +3,17 @@ package io.github.ihongs.serv.centre;
 import io.github.ihongs.Cnst;
 import io.github.ihongs.HongsException;
 import io.github.ihongs.action.ActionHelper;
-import io.github.ihongs.action.ActionRunner;
 import io.github.ihongs.action.anno.Action;
-import io.github.ihongs.action.anno.Select;
-import io.github.ihongs.action.anno.Verify;
 import io.github.ihongs.dh.IEntity;
-import io.github.ihongs.dh.search.SearchAction;
-import io.github.ihongs.serv.matrix.Data;
 import io.github.ihongs.serv.mosaic.MosaicEntity;
 import io.github.ihongs.serv.mosaic.MosaicPageEntity;
-import java.lang.reflect.Method;
-import java.util.Map;
 
 /**
  *
  * @author Hongs
  */
 @Action("centre/site/page")
-public class MosaicPageAction extends SearchAction {
+public class MosaicPageAction extends MosaicAction {
 
     /**
      * 获取模型对象
@@ -34,47 +27,11 @@ public class MosaicPageAction extends SearchAction {
     @Override
     public IEntity getEntity(ActionHelper helper)
     throws HongsException {
-        ActionRunner runner = (ActionRunner) helper.getAttribute(ActionRunner.class.getName());
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
-        String siteId = runner.getModule( );
-
-        if (siteId.length() > 12) {
-            siteId = siteId.substring( 12 ); // 格式: centre/site/siteId
-        if (siteId.length() < 1 ) {
-            throw new HongsException (400, "URI must be centre/site/SITE/page/ACTION.act");
-        }} else {
-            throw new HongsException (400, "URI must be centre/site/SITE/page/ACTION.act");
-        }
-
-        if (siteId.equals( "0" )) {
-            siteId  =  userId;
-        if (siteId ==  null
-        ||  siteId.length() < 1 ) {
-            throw new HongsException (401, "Login required");
-        }}
-
+        String siteId = (String) helper.getAttribute(SITE_ID_ATTR);
         MosaicEntity entity = MosaicPageEntity.getInstance(siteId);
-//      entity.setSiteId(siteId);
         entity.setUserId(userId);
         return entity;
-    }
-
-    @Override
-    public void acting(ActionHelper helper, ActionRunner runner)
-    throws HongsException {
-        super.acting(helper, runner);
-
-        String ent = runner.getEntity();
-        String mod = runner.getModule();
-        Method met = runner.getMethod();
-
-        // 绑定特制的表单
-        if (met.isAnnotationPresent(Select.class)
-        ||  met.isAnnotationPresent(Verify.class)) {
-            Data dat = (Data) getEntity(helper);
-            Map  fcs =  dat.getFields();
-            helper.setAttribute("form:"+ mod +"."+ ent, fcs);
-        }
     }
 
 }

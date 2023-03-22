@@ -21,12 +21,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class MosaicFilter extends ActionDriver {
 
+    public static final String SITE_ID_ATTR = MosaicFilter.class.getName() + ":SITE";
+
     private String action;
     private String layout;
     private String script;
     private String prefix;
     private String acting;
-    private URLPatterns patter = null;
+    private PathPattern patter = null;
 
     @Override
     public void init(FilterConfig cnf) throws ServletException {
@@ -51,7 +53,7 @@ public class MosaicFilter extends ActionDriver {
         acting = action.substring(1);
 
         // 获取不包含的URL
-        patter = new URLPatterns(
+        patter = new PathPattern(
             cnf.getInitParameter("url-include"),
             cnf.getInitParameter("url-exclude")
         );
@@ -77,19 +79,27 @@ public class MosaicFilter extends ActionDriver {
 
         String ref = url.substring(prefix.length( ));
 
+        // 截取站点的ID
+        String sid = ref;
+        int pos  = sid. indexOf ( "/" );
+        if (pos != -1 ) {
+            sid  = sid.substring(0,pos);
+        }
+        hlpr.setAttribute(SITE_ID_ATTR,sid);
+
         if (url.endsWith(Cnst.API_EXT)) {
             // 应用接口, 直接跳过
         } else
         if (url.endsWith(Cnst.ACT_EXT)) {
             String ast ;
-            int pos  = url.lastIndexOf("/");
+                pos  = url.lastIndexOf("/");
             if (pos >= 1) {
                 ast  = url.substring(0,pos);
                 ast  = script + ast +".jsp";
             } else {
                 throw  new ServletException("Wrong url!");
             }
-            
+
             // 定制脚本
             File src = new File(Core.BASE_PATH + ast);
             if ( src.exists()) {
@@ -135,7 +145,7 @@ public class MosaicFilter extends ActionDriver {
 
             // 模板资源
             String act ;
-            int pos  = ref.indexOf  ("/" , 1);
+                pos  = ref.indexOf  ("/" , 1);
             if (pos >= 1) {
                 act  = ref.substring(pos + 0);
 

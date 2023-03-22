@@ -1,0 +1,77 @@
+<div id="centre-mosaic-site-list">
+    <form class="findbox toolbox board row">
+    <div class="col-md-6 col-sm-8 center-block">
+        <div style="display: table; width: 100%;">
+        <div style="display: table-cell; width: 15px; vertical-align: middle;">
+            <div class="btn-group">
+                <button type="button" class="create btn btn-primary" style="margin-right: 15px;">创建</button>
+            </div>
+        </div>
+        <div style="display: table-cell; width: 100%; vertical-align: middle;">
+            <div class="input-group">
+                <input type="search" class="form-control" name="wd" placeholder="" />
+                <span class="input-group-btn">
+                    <button type="submit" class="search btn btn-default" title="搜索"><span class="bi bi-hi-search"></span></button>
+                </span>
+            </div>
+        </div>
+        </div>
+    </div>
+    </form>
+    <!-- 列表 -->
+    <div class="itembox col-md-4 col-sm-6 col-xs-12" style="display: none; padding: 0 7.5px 15px 7.5px;">
+        <input type="hidden" name="id" data-fn="id" data-fl="$(this).val(v) && undefined" />
+        <div class="panel panel-default" style="margin: 0; padding: 0; position: relative;">
+            <div class="panel-body" style="display: table; width: 100%;">
+                <div style="display: table-cell; width: 10px; padding: 0px; vertical-align: top;">
+                    <div class="review" style="height: 100px; overflow: hidden; cursor: pointer;">
+                        <div data-fn="logo" style="width: 100px; height: 100px; margin-right: 15px; border-radius: 4px;"></div>
+                    </div>
+                </div>
+                <div style="display: table-cell; width: 100%; padding: 0px; vertical-align: top;">
+                    <div class="review" style="height: 100px; overflow: hidden; cursor: pointer;">
+                        <div data-fn="name" style="color: #444;"></div>
+                        <div data-fn="note" style="color: #888;"></div>
+                    </div>
+                    <div data-ft="edit" data-fn="owner" class="btn-group" style="position: absolute; right: 0; bottom: 0; opacity: 0.8;">
+                        <button type="button" class="btn btn-sm btn-default spread"><span class="bi bi-list"     ></span></button>
+                        <button type="button" class="btn btn-sm btn-default update"><span class="bi bi-hi-modify"></span></button>
+                        <button type="button" class="btn btn-sm btn-default delete"><span class="bi bi-hi-remove"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="listbox clearfix flex-center" style="margin: 0 -7.5px 5px -7.5px;">
+    </div>
+    <div class="pagebox clearfix text-center">
+    </div>
+</div>
+<script type="text/javascript">
+(function($) {
+    var context = H$("#centre-mosaic-site-list");
+
+    var listobj = context.hsList({
+        _url: "centre/mosaic/site/search.act",
+        sendUrls: [
+            [ "centre/mosaic/site/delete.act",
+              ".delete",
+              "您确定要删除吗?\r\n一旦删除, 就无法再恢复了." ]
+        ],
+        openUrls: [
+            [ "centre/mosaic/site/form.html",
+              ".create", "@" ],
+            [ "centre/mosaic/site/form.html?id={ID}",
+              ".update", "@" ],
+            [ "centre/site/{ID}/root/list.html",
+              ".review", "_blank"]
+        ],
+        fillList: hsListFillItem,
+        fillPage: hsListFillMore,
+        _fill__logo : hsListFillLogo,
+        _fill__edit : hsListShowEdit
+    });
+
+    listobj.load();
+})(jQuery);
+</script>

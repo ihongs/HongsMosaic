@@ -1,19 +1,18 @@
-package io.github.ihongs.serv.centre;
+package io.github.ihongs.serv.centra;
 
 import io.github.ihongs.Cnst;
 import io.github.ihongs.HongsException;
 import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.action.anno.Action;
 import io.github.ihongs.dh.IEntity;
-import io.github.ihongs.serv.mosaic.MosaicEntity;
-import io.github.ihongs.serv.mosaic.MosaicPaneEntity;
+import io.github.ihongs.serv.matrix.Data;
 
 /**
- *
+ * 管理动作
  * @author Hongs
  */
-@Action("centre/site/pane")
-public class MosaicPaneAction extends MosaicAction {
+@Action("centra/mosaic/root")
+public class MosaicRootAction extends DataAction {
 
     /**
      * 获取模型对象
@@ -27,9 +26,9 @@ public class MosaicPaneAction extends MosaicAction {
     @Override
     public IEntity getEntity(ActionHelper helper)
     throws HongsException {
+        Data   entity = Data.getInstance("mosaic", "root");
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
-        String siteId = (String) helper.getAttribute(SITE_ID_ATTR);
-        MosaicEntity entity = MosaicPaneEntity.getInstance(siteId);
+//      if  (  userId == null  ) userId = Cnst.GUS_UID; // 禁止匿名
         entity.setUserId(userId);
         return entity;
     }
