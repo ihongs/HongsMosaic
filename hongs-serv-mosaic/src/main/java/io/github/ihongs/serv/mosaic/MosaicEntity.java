@@ -1,6 +1,7 @@
 package io.github.ihongs.serv.mosaic;
 
 import io.github.ihongs.Cnst;
+import io.github.ihongs.Core;
 import io.github.ihongs.HongsException;
 import io.github.ihongs.HongsExemption;
 import io.github.ihongs.db.DB;
@@ -26,7 +27,7 @@ import org.apache.lucene.search.TermQuery;
  * 按照用户存放
  * @author Hongs
  */
-abstract public class MosaicEntity extends Data {
+public class MosaicEntity extends Data {
 
     /**
      * 分站字段名
@@ -41,6 +42,11 @@ abstract public class MosaicEntity extends Data {
     protected MosaicEntity(String conf, String form, String site) {
         super(conf , form);
         this. site = site ;
+    }
+    
+    public static MosaicEntity getInstance(String conf, String form, String site) {
+        String name = MosaicEntity.class.getName() +":"+ conf +":"+ form +":"+ site;
+        return Core.getInstance().got(name, ()->new MosaicEntity(conf, form, site));
     }
 
     public String getSiteId() {

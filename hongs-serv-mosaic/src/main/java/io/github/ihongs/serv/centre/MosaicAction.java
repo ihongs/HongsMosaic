@@ -73,7 +73,7 @@ public abstract class MosaicAction extends SearchAction {
         ||  met.isAnnotationPresent(Verify.class)) {
             Data dat = (Data) getEntity(helper);
             Map  fcs =  dat.getFields();
-            helper.setAttribute("form:"+ mod +"."+ ent, fcs);
+            helper.setAttribute("form:"+ mod +":"+ ent, fcs);
         }
     }
 

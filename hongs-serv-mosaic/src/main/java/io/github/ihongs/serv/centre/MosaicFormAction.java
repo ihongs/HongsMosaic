@@ -6,7 +6,6 @@ import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.action.anno.Action;
 import io.github.ihongs.dh.IEntity;
 import io.github.ihongs.serv.mosaic.MosaicEntity;
-import io.github.ihongs.serv.mosaic.MosaicFormEntity;
 
 /**
  *
@@ -29,7 +28,7 @@ public class MosaicFormAction extends MosaicAction {
     throws HongsException {
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
         String siteId = (String) helper.getAttribute(SITE_ID_ATTR);
-        MosaicEntity entity = MosaicFormEntity.getInstance(siteId);
+        MosaicEntity entity = MosaicEntity.getInstance("mosaic", "form", siteId);
         entity.setUserId(userId);
         return entity;
     }

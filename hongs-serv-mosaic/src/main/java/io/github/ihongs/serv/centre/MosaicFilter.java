@@ -79,45 +79,46 @@ public class MosaicFilter extends ActionDriver {
 
         String ref = url.substring(prefix.length( ));
 
-        // 截取站点的ID
-        String sid = ref;
-        int pos  = sid. indexOf ( "/" );
-        if (pos != -1 ) {
-            sid  = sid.substring(0,pos);
+        // 站点编号
+        String sid = (String) hlpr.getAttribute(SITE_ID_ATTR);
+        if (sid == null) {
+            int end = ref. indexOf ("/", 1);
+            if (end > 0) {
+                sid = ref.substring(1, end);
+                hlpr.setAttribute(SITE_ID_ATTR, sid);
+            }
         }
-        hlpr.setAttribute(SITE_ID_ATTR,sid);
 
         if (url.endsWith(Cnst.API_EXT)) {
             // 应用接口, 直接跳过
         } else
         if (url.endsWith(Cnst.ACT_EXT)) {
+            // 内置动作
             String ast ;
-                pos  = url.lastIndexOf("/");
-            if (pos >= 1) {
-                ast  = url.substring(0,pos);
+            ast = Cnst.ACT_EXT ;
+            ast = ref.substring( 0 , ref.length( ) - ast.length( ) );
+            if (ActionRunner.getActions().containsKey(acting + ast)) {
+                chain.doFilter (req, rsp);
+                return ;
+            }
+
+            // 定制脚本
+            int poz  = url.lastIndexOf("/");
+            if (poz >= 1) {
+                ast  = url.substring(0,poz);
                 ast  = script + ast +".jsp";
             } else {
                 throw  new ServletException("Wrong url!");
             }
-
-            // 定制脚本
             File src = new File(Core.BASE_PATH + ast);
             if ( src.exists()) {
                 include(req, rsp, url, ast);
                 return ;
             }
 
-            // 内置动作
-            ast = Cnst.ACT_EXT ;
-            ast = ref.substring( 0 , ref.length() - ast.length()  );
-            if (ActionRunner.getActions().containsKey(acting + ast)) {
-                chain.doFilter (req, rsp);
-                return ;
-            }
-
             // 模板动作
             String act ;
-                pos  = ref.indexOf  ("/" , 1);
+            int pos  = ref.indexOf  ("/" , 1);
             if (pos >= 1) {
                 act  = ref.substring(pos + 0);
 
@@ -145,7 +146,7 @@ public class MosaicFilter extends ActionDriver {
 
             // 模板资源
             String act ;
-                pos  = ref.indexOf  ("/" , 1);
+            int pos  = ref.indexOf  ("/" , 1);
             if (pos >= 1) {
                 act  = ref.substring(pos + 0);
 

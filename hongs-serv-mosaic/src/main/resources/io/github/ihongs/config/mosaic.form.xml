@@ -5,8 +5,9 @@
     <form name="site">
         <field text="站点">
             <param name="form_id">mosaic.site</param>
-            <param name="part_id">mosaic.site</param>
             <param name="db-path">mosaic/site</param>
+            <param name="db-name">mosaic/site</param>
+            <param name="db-table">mosaic.data</param>
         </field>
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
@@ -21,15 +22,15 @@
             <param name="slice">,</param>
         </field>
         <field text="图标" name="logo" type="image" rule="MosaicImage">
-            <param name="path">static/mosaic/${SITE}/upload/image</param>
-            <param name="href">static/mosaic/${SITE}/upload/image</param>
+            <param name="path">static/mosaic/${SITE}/upload/logo</param>
+            <param name="href">static/mosaic/${SITE}/upload/logo</param>
             <param name="thumb-size">300*300</param>
             <param name="thumb-mode">keep</param>
             <param name="thumb-kind">png</param>
         </field>
         <field text="状态" name="state" type="enum">
             <param name="enum">state</param>
-            <param name="default">3</param>
+            <param name="default">21</param>
         </field>
         <field text="管理员" name="owner" type="fork" repeated="yes" required="yes">
             <param name="data-at">centra/master/user/list</param>
@@ -51,14 +52,20 @@
     <!-- 基类 -->
     <form name="root">
         <field text="内容">
-            <param name="db-path">mosaic/data</param>
+            <param name="form_id">mosaic.root</param>
+            <param name="db-path">mosaic/root</param>
+            <param name="db-name">mosaic/root</param>
+            <param name="db-table">mosaic.data</param>
         </field>
         <field name="id" type="hidden"></field>
         <field text="类别" name="pd" type="enum">
             <param name="enum">class</param>
+            <param name="sortable">no</param>
+            <param name="statable">no</param>
         </field>
         <field text="站点" name="sd" type="fork">
             <param name="data-at">centra/mosaic/site/search</param>
+            <param name="data-ak">site</param>
         </field>
         <field text="名称" name="name" type="text">
             <param name="maxlength">1000</param>
@@ -72,11 +79,28 @@
             <param name="slice">,</param>
         </field>
         <field text="图标" name="logo" type="image" rule="MosaicImage">
-            <param name="path">static/mosaic/${SITE}/upload/image</param>
-            <param name="href">static/mosaic/${SITE}/upload/image</param>
+            <param name="path">static/mosaic/${SITE}/upload/logo</param>
+            <param name="href">static/mosaic/${SITE}/upload/logo</param>
             <param name="thumb-size">300*300</param>
             <param name="thumb-mode">keep</param>
             <param name="thumb-kind">png</param>
+        </field>
+        <field text="类型" name="type" type="enum">
+            <param name="readonly">yes</param>
+            <param name="enum">types</param>
+        </field>
+        <field name="link" type="text">
+            <param name="unreadable">yes</param>
+            <param name="unwritable">yes</param>
+        </field>
+        <field name="html" type="textview">
+            <param name="unreadable">yes</param>
+            <param name="unwritable">yes</param>
+            <param name="type">html</param>
+        </field>
+        <field name="list" type="json" repeated="yes">
+            <param name="unreadable">yes</param>
+            <param name="unwritable">yes</param>
         </field>
         <field text="状态" name="state" type="enum">
             <param name="enum">state</param>
@@ -97,14 +121,20 @@
         </field>
     </form>
 
-    <!-- 面板 -->
-    <form name="pane">
+    <!-- 图文 -->
+    <form name="page">
         <field>
-            <param name="form_id">mosaic.pane</param>
-            <param name="part_id">mosaic.pane</param>
-            <param name="db-path">mosaic/data</param>
+            <param name="form_id">mosaic.page</param>
+            <param name="part_id">mosaic.page</param>
+            <param name="db-path">mosaic/root</param>
+            <param name="db-name">mosaic/root</param>
+            <param name="db-table">mosaic.data</param>
         </field>
         <field name="id" type="hidden"></field>
+        <field name="sd" type="hidden">
+            <param name="disabled">yes</param>
+            <param name="unstored">yes</param>
+        </field>
         <field text="名称" name="name" type="text">
             <param name="maxlength">1000</param>
         </field>
@@ -117,13 +147,138 @@
             <param name="slice">,</param>
         </field>
         <field text="图标" name="logo" type="image" rule="MosaicImage">
-            <param name="path">static/mosaic/${SITE}/upload/image</param>
-            <param name="href">static/mosaic/${SITE}/upload/image</param>
+            <param name="path">static/mosaic/${SITE}/upload/logo</param>
+            <param name="href">static/mosaic/${SITE}/upload/logo</param>
             <param name="thumb-size">300*300</param>
             <param name="thumb-mode">keep</param>
             <param name="thumb-kind">png</param>
         </field>
-        <field name="list" type="form" repeated="yes">
+        <field text="链接" name="link" type="text">
+            <param name="maxlength">1000</param>
+        </field>
+        <field text="内容" name="html" type="textview">
+            <param name="type">html</param>
+        </field>
+        <field text="状态" name="state" type="enum">
+            <param name="enum">state</param>
+            <param name="default">1</param>
+        </field>
+        <field text="发布时间" name="ptime" type="date">
+            <param name="type">timestamp</param>
+        </field>
+        <field text="创建时间" name="ctime" type="date">
+            <param name="type">timestamp</param>
+            <param name="default">=%now</param>
+            <param name="deforce">create</param>
+        </field>
+        <field text="修改时间" name="mtime" type="date">
+            <param name="type">timestamp</param>
+            <param name="default">=%now</param>
+            <param name="deforce">always</param>
+        </field>
+    </form>
+
+    <!-- 轮播 -->
+    <form name="post">
+        <field>
+            <param name="form_id">mosaic.post</param>
+            <param name="part_id">mosaic.post</param>
+            <param name="db-path">mosaic/root</param>
+            <param name="db-name">mosaic/root</param>
+            <param name="db-table">mosaic.data</param>
+        </field>
+        <field name="id" type="hidden"></field>
+        <field name="sd" type="hidden">
+            <param name="disabled">yes</param>
+            <param name="unstored">yes</param>
+        </field>
+        <field text="名称" name="name" type="text">
+            <param name="maxlength">1000</param>
+        </field>
+        <field text="简介" name="note" type="text">
+            <param name="maxlength">1000</param>
+        </field>
+        <field text="标签" name="tags" type="text" repeated="yes">
+            <param name="maxrepeat">100</param>
+            <param name="maxlength">100</param>
+            <param name="slice">,</param>
+        </field>
+        <field text="图标" name="logo" type="image" rule="MosaicImage">
+            <param name="path">static/mosaic/${SITE}/upload/logo</param>
+            <param name="href">static/mosaic/${SITE}/upload/logo</param>
+            <param name="thumb-size">300*300</param>
+            <param name="thumb-mode">keep</param>
+            <param name="thumb-kind">png</param>
+        </field>
+        <field text="图片" name="list" type="form" repeated="yes">
+            <param name="form">_post_item</param>
+        </field>
+        <field text="状态" name="state" type="enum">
+            <param name="enum">state</param>
+            <param name="default">1</param>
+        </field>
+        <field text="发布时间" name="ptime" type="date">
+            <param name="type">timestamp</param>
+        </field>
+        <field text="创建时间" name="ctime" type="date">
+            <param name="type">timestamp</param>
+            <param name="default">=%now</param>
+            <param name="deforce">create</param>
+        </field>
+        <field text="修改时间" name="mtime" type="date">
+            <param name="type">timestamp</param>
+            <param name="default">=%now</param>
+            <param name="deforce">always</param>
+        </field>
+    </form>
+    <!-- 轮播图片 -->
+    <form name="_post_item">
+        <field text="图片" name="post" type="file" rule="MosaicFile">
+            <param name="path">static/mosaic/${SITE}/upload/post</param>
+            <param name="href">static/mosaic/${SITE}/upload/post</param>
+            <param name="type">image/*</param>
+        </field>
+        <field text="简介" name="note" type="text">
+            <param name="maxlength">1000</param>
+        </field>
+        <field text="链接" name="link" type="text">
+            <param name="maxlength">1000</param>
+        </field>
+    </form>
+
+    <!-- 面板 -->
+    <form name="pane">
+        <field>
+            <param name="form_id">mosaic.pane</param>
+            <param name="part_id">mosaic.pane</param>
+            <param name="db-path">mosaic/root</param>
+            <param name="db-name">mosaic/root</param>
+            <param name="db-table">mosaic.data</param>
+        </field>
+        <field name="id" type="hidden"></field>
+        <field name="sd" type="hidden">
+            <param name="disabled">yes</param>
+            <param name="unstored">yes</param>
+        </field>
+        <field text="名称" name="name" type="text">
+            <param name="maxlength">1000</param>
+        </field>
+        <field text="简介" name="note" type="text">
+            <param name="maxlength">1000</param>
+        </field>
+        <field text="标签" name="tags" type="text" repeated="yes">
+            <param name="maxrepeat">100</param>
+            <param name="maxlength">100</param>
+            <param name="slice">,</param>
+        </field>
+        <field text="图标" name="logo" type="image" rule="MosaicImage">
+            <param name="path">static/mosaic/${SITE}/upload/logo</param>
+            <param name="href">static/mosaic/${SITE}/upload/logo</param>
+            <param name="thumb-size">300*300</param>
+            <param name="thumb-mode">keep</param>
+            <param name="thumb-kind">png</param>
+        </field>
+        <field text="条目" name="list" type="form" repeated="yes">
             <param name="form">_pane_item</param>
         </field>
         <field text="状态" name="state" type="enum">
@@ -153,14 +308,17 @@
             <param name="maxlength">1000</param>
         </field>
         <field text="图标" name="logo" type="image" rule="MosaicImage">
-            <param name="path">static/mosaic/${SITE}/upload/image</param>
-            <param name="href">static/mosaic/${SITE}/upload/image</param>
+            <param name="path">static/mosaic/${SITE}/upload/logo</param>
+            <param name="href">static/mosaic/${SITE}/upload/logo</param>
             <param name="thumb-size">300*300</param>
             <param name="thumb-mode">keep</param>
             <param name="thumb-kind">png</param>
         </field>
+        <field text="尺寸" name="size" type="enum">
+            <param name="enum">pool_size</param>
+        </field>
         <field text="类型" name="type" type="enum">
-            <param name="enum">pane_type</param>
+            <param name="enum">pool_type</param>
         </field>
         <field text="链接" name="link" type="text">
             <param name="maxlength">1000</param>
@@ -168,70 +326,25 @@
         <field text="内容" name="html" type="textview">
             <param name="type">html</param>
         </field>
-    </form>
-
-    <!-- 内容 -->
-    <form name="page">
-        <field>
-            <param name="form_id">mosaic.page</param>
-            <param name="part_id">mosaic.page</param>
-            <param name="db-path">mosaic/data</param>
-        </field>
-        <field name="id" type="hidden"></field>
-        <field text="名称" name="name" type="text">
-            <param name="maxlength">1000</param>
-        </field>
-        <field text="简介" name="note" type="text">
-            <param name="maxlength">1000</param>
-        </field>
-        <field text="标签" name="tags" type="text" repeated="yes">
-            <param name="maxrepeat">100</param>
-            <param name="maxlength">100</param>
-            <param name="slice">,</param>
-        </field>
-        <field text="图标" name="logo" type="image" rule="MosaicImage">
-            <param name="path">static/mosaic/${SITE}/upload/image</param>
-            <param name="href">static/mosaic/${SITE}/upload/image</param>
-            <param name="thumb-size">300*300</param>
-            <param name="thumb-mode">keep</param>
-            <param name="thumb-kind">png</param>
-        </field>
-        <field text="类型" name="type" type="enum">
-            <param name="enum">page_type</param>
-        </field>
-        <field text="链接" name="link" type="text">
-            <param name="maxlength">1000</param>
-        </field>
-        <field text="内容" name="html" type="textview">
-            <param name="type">html</param>
-        </field>
-        <field text="状态" name="state" type="enum">
-            <param name="enum">state</param>
-            <param name="default">1</param>
-        </field>
-        <field text="发布时间" name="ptime" type="date">
-            <param name="type">timestamp</param>
-        </field>
-        <field text="创建时间" name="ctime" type="date">
-            <param name="type">timestamp</param>
-            <param name="default">=%now</param>
-            <param name="deforce">create</param>
-        </field>
-        <field text="修改时间" name="mtime" type="date">
-            <param name="type">timestamp</param>
-            <param name="default">=%now</param>
-            <param name="deforce">always</param>
+        <field text="图片" name="post" type="form" repeated="yes">
+            <param name="form">_pone_item</param>
         </field>
     </form>
 
     <!-- 表单 -->
     <form name="form">
         <field>
-            <param name="form_id">mosaic.form</param>
-            <param name="part_id">mosaic.form</param>
-            <param name="db-path">mosaic/data</param>
+            <param name="form_id">mosaic.root</param>
+            <param name="part_id">mosaic.root</param>
+            <param name="db-path">mosaic/root</param>
+            <param name="db-name">mosaic/root</param>
+            <param name="db-table">mosaic.data</param>
         </field>
         <field name="id" type="hidden"></field>
+        <field name="sd" type="hidden">
+            <param name="disabled">yes</param>
+            <param name="unstored">yes</param>
+        </field>
         <field text="名称" name="name" type="text">
             <param name="maxlength">1000</param>
         </field>
@@ -244,8 +357,8 @@
             <param name="slice">,</param>
         </field>
         <field text="图标" name="logo" type="image" rule="MosaicImage">
-            <param name="path">static/mosaic/${SITE}/upload/image</param>
-            <param name="href">static/mosaic/${SITE}/upload/image</param>
+            <param name="path">static/mosaic/${SITE}/upload/logo</param>
+            <param name="href">static/mosaic/${SITE}/upload/logo</param>
             <param name="thumb-size">300*300</param>
             <param name="thumb-mode">keep</param>
             <param name="thumb-kind">png</param>
@@ -253,12 +366,7 @@
         <field text="类型" name="type" type="enum">
             <param name="enum">form_type</param>
         </field>
-        <field text="内容" name="html" type="textview">
-            <param name="type">html</param>
-        </field>
-        <field text="配置" name="conf" type="textview">
-            <param name="type">code</param>
-            <param name="mode">json</param>
+        <field text="字段" name="list" type="json" repeated="yes">
         </field>
         <field text="状态" name="state" type="enum">
             <param name="enum">state</param>
@@ -283,8 +391,8 @@
     <form name="fore">
         <field>
             <param name="form_id">mosaic.fore</param>
-            <param name="part_id">mosaic.fore</param>
             <param name="db-path">mosaic/fore</param>
+            <param name="db-name">mosaic/fore</param>
         </field>
         <field name="id" type="hidden"></field>
         <field text="时间" name="ctime" type="date">
@@ -301,32 +409,46 @@
 
     <enum name="state">
         <value code="1" >公开</value>
-        <value code="4" >隐藏</value>
+        <value code="4" >下线</value>
         <value code="11">审核已通过</value>
         <value code="14">审核不通过</value>
         <value code="21">审核</value>
         <value code="24">锁定</value>
     </enum>
-    <enum name="class">
-        <value code="pane">面板</value>
-        <value code="page">图文</value>
-        <value code="form">表单</value>
+    <enum name="forms">
+        <value code="mosaic.page">图文</value>
+        <value code="mosaic.pane">轮播</value>
+        <value code="mosaic.pool">面板</value>
+        <value code="mosaic.form">表单</value>
     </enum>
-    <enum name="pane_type">
+    <enum name="types">
         <value code="page">图文</value>
-        <value code="post">轮播</value>
+        <value code="pane">轮播</value>
+        <value code="pool">面板</value>
+        <value code="form">表单</value>
+        <value code="vote">投票</value>
+        <value code="list">列表</value>
+        <value code="link">链接</value>
+    </enum>
+    <enum name="pool_type">
+        <value code="page">图文</value>
+        <value code="pane">轮播</value>
+        <value code="pool">面板</value>
+        <value code="form">表单</value>
         <value code="list">列表</value>
         <value code="link">链接</value>
     </enum>
     <enum name="page_type">
         <value code="page">图文</value>
-        <value code="post">轮播</value>
-        <value code="list">列表</value>
         <value code="link">链接</value>
     </enum>
     <enum name="form_type">
         <value code="form">表单</value>
         <value code="vote">投票</value>
+    </enum>
+    <enum name="pool_size">
+        <value code="1">小</value>
+        <value code="3">大</value>
     </enum>
 
 </root>
