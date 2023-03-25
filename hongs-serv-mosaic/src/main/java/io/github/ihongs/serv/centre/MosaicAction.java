@@ -27,6 +27,7 @@ public abstract class MosaicAction extends SearchAction {
     throws HongsException {
         super.acting(helper, runner);
 
+        String uid = (String) helper.getSessibute(Cnst.UID_SES);
         String sid = (String) helper.getAttribute(SITE_ID_ATTR);
         if (sid == null || sid.isEmpty()) {
             throw new HongsException(400, "Site not exists");
@@ -51,7 +52,6 @@ public abstract class MosaicAction extends SearchAction {
             case "update":
             case "delete":
                 // 只能管理自己的内容
-                String uid = (String) helper.getSessibute(Cnst.UID_SES);
                 if (null == uid) {
                     throw new HongsException(401, "Login required");
                 }
@@ -60,8 +60,11 @@ public abstract class MosaicAction extends SearchAction {
                 }
                 break;
             case "search":
-                // 只能查阅公开的内容
-                Dict.put(helper.getRequestData(), 1, Cnst.AR_KEY, "x", "state");
+                // 限定查阅公开的内容
+                if (null == uid
+                ||  null == owner || ! owner.contains(uid)) {
+                    Dict.put(helper.getRequestData(), 1, Cnst.AR_KEY, null, "state");
+                }
                 break;
         }
 

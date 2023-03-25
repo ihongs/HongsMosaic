@@ -10,7 +10,7 @@ import io.github.ihongs.action.anno.Verify;
 import io.github.ihongs.dh.IEntity;
 import io.github.ihongs.dh.search.SearchAction;
 import io.github.ihongs.serv.matrix.Data;
-import io.github.ihongs.serv.mosaic.MosaicEntity;
+import io.github.ihongs.serv.mosaic.MosaicDataEntity;
 import io.github.ihongs.util.Dict;
 import io.github.ihongs.util.Syno;
 import io.github.ihongs.util.Synt;
@@ -95,7 +95,7 @@ public class MosaicForeAction extends SearchAction {
         String siteId = (String) helper.getAttribute(SITE_ID_ATTR);
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
         String confId = "mosaic/fore/"+ Syno.splitPath(siteId) +"/"+ formId;
-        MosaicEntity entity = MosaicEntity.getInstance(confId,formId,siteId);
+        MosaicDataEntity entity = MosaicDataEntity.getInstance(confId, formId, siteId);
         entity.setUserId(userId);
         return entity;
     }

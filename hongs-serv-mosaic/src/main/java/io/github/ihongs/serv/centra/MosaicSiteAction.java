@@ -24,9 +24,8 @@ public class MosaicSiteAction extends DataAction {
     @Override
     public IEntity getEntity(ActionHelper helper)
     throws HongsException {
-        Data   entity = Data.getInstance("mosaic", "site");
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
-//      if  (  userId == null  ) userId = Cnst.GUS_UID; // 禁止匿名
+        Data   entity = Data.getInstance("mosaic", "site");
         entity.setUserId(userId);
         return entity;
     }

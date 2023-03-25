@@ -7,6 +7,7 @@ import io.github.ihongs.action.ActionRunner;
 import io.github.ihongs.action.anno.Action;
 import io.github.ihongs.dh.IEntity;
 import io.github.ihongs.serv.matrix.Data;
+import io.github.ihongs.serv.mosaic.MosaicSiteEntity;
 import io.github.ihongs.util.Dict;
 import io.github.ihongs.util.Synt;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class MosaicSiteAction extends DataAction {
     public void acting(ActionHelper helper, ActionRunner runner)
     throws HongsException {
         super.acting(helper, runner);
-        
+
         // 限制操作范围
         Map    req = helper.getRequestData();
         String act = runner.getHandle();
@@ -36,11 +37,11 @@ public class MosaicSiteAction extends DataAction {
             case "amount":
             case "update":
             case "delete":
-                Dict.del(req, "owner");
-                Dict.put(req, uid, Cnst.AR_KEY, "x", "owner");
+                req .remove("owner");
+                Dict.put(req, uid, Cnst.AR_KEY, null, "owner");
                 break;
             case "create":
-                Dict.put(req, Synt.setOf(uid), "owner");
+                req .put( "owner", Synt.setOf(uid) );
                 break;
         }
     }
@@ -58,7 +59,7 @@ public class MosaicSiteAction extends DataAction {
     public IEntity getEntity(ActionHelper helper)
     throws HongsException {
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
-        Data entity = Data.getInstance("mosaic", "site");
+        MosaicSiteEntity entity = MosaicSiteEntity.getInstance("mosaic", "site");
         entity.setUserId(userId);
         return entity;
     }

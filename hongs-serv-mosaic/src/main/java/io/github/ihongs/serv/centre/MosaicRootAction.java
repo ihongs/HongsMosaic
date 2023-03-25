@@ -10,6 +10,7 @@ import io.github.ihongs.action.anno.Verify;
 import io.github.ihongs.dh.IEntity;
 import io.github.ihongs.dh.search.SearchAction;
 import io.github.ihongs.serv.matrix.Data;
+import io.github.ihongs.serv.mosaic.MosaicRootEntity;
 import io.github.ihongs.util.Dict;
 import io.github.ihongs.util.Synt;
 import java.lang.reflect.Method;
@@ -30,6 +31,7 @@ public class MosaicRootAction extends SearchAction {
     throws HongsException {
         super.acting(helper, runner);
 
+        String uid = (String) helper.getSessibute(Cnst.UID_SES);
         String sid = (String) helper.getAttribute(SITE_ID_ATTR);
         if (sid == null || sid.isEmpty()) {
             throw new HongsException(400, "Site not exists");
@@ -50,22 +52,14 @@ public class MosaicRootAction extends SearchAction {
         }
         Set owner  = Synt. asSet (row.get("owner"));
         switch ( runner.getHandle() ) {
-            case "update":
-            case "delete":
-                // 只能管理自己的内容
-                String uid = (String) helper.getSessibute(Cnst.UID_SES);
-                if (null == uid) {
-                    throw new HongsException(401, "Login required");
-                }
-                if (null == owner || ! owner.contains(uid)) {
-                    throw new HongsException(403, "Power required");
-                }
-                // 限定操作本站的内容
-                Dict.put(helper.getRequestData(), sid, Cnst.AR_KEY, "x", "sd");
-                break;
             case "search":
+                // 限定查阅公开的内容
+                if (null == uid
+                ||  null == owner || ! owner.contains(uid)) {
+                    Dict.put(helper.getRequestData(), 1, Cnst.AR_KEY, null, "state");
+                }
                 // 限定查阅本站的内容
-                Dict.put(helper.getRequestData(), sid, Cnst.AR_KEY, "x", "sd");
+                /**/Dict.put(helper.getRequestData(), sid, Cnst.AR_KEY, null, "sd" );
                 break;
         }
 
@@ -93,9 +87,8 @@ public class MosaicRootAction extends SearchAction {
     @Override
     public IEntity getEntity(ActionHelper helper)
     throws HongsException {
-    //  String siteId = (String) helper.getAttribute(SITE_ID_ATTR);
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
-        Data   entity = Data.getInstance("mosaic", "root");
+        MosaicRootEntity entity = MosaicRootEntity.getInstance("mosaic", "root");
         entity.setUserId(userId);
         return entity;
     }

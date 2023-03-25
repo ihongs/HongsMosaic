@@ -5,7 +5,7 @@ import io.github.ihongs.HongsException;
 import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.action.anno.Action;
 import io.github.ihongs.dh.IEntity;
-import io.github.ihongs.serv.mosaic.MosaicEntity;
+import io.github.ihongs.serv.mosaic.MosaicDataEntity;
 
 /**
  *
@@ -28,7 +28,7 @@ public class MosaicPaneAction extends MosaicAction {
     throws HongsException {
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
         String siteId = (String) helper.getAttribute(SITE_ID_ATTR);
-        MosaicEntity entity = MosaicEntity.getInstance("mosaic", "pane", siteId);
+        MosaicDataEntity entity = MosaicDataEntity.getInstance("mosaic", "pane", siteId);
         entity.setUserId(userId);
         return entity;
     }

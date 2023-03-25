@@ -8,6 +8,7 @@
             <param name="db-path">mosaic/site</param>
             <param name="db-name">mosaic/site</param>
             <param name="db-table">mosaic.data</param>
+            <param name="db-class">io.github.ihongs.serv.mosaic.MosaicSiteEntity</param>
         </field>
         <field name="id" type="hidden"></field>
         <field text="名称" name="name" type="text">
@@ -52,10 +53,10 @@
     <!-- 基类 -->
     <form name="root">
         <field text="内容">
-            <param name="form_id">mosaic.root</param>
             <param name="db-path">mosaic/root</param>
             <param name="db-name">mosaic/root</param>
             <param name="db-table">mosaic.data</param>
+            <param name="db-class">io.github.ihongs.serv.mosaic.MosaicRootEntity</param>
         </field>
         <field name="id" type="hidden"></field>
         <field text="类别" name="pd" type="enum">
@@ -109,6 +110,9 @@
         <field text="发布时间" name="ptime" type="date">
             <param name="type">timestamp</param>
         </field>
+        <field text="截至时间" name="etime" type="date">
+            <param name="type">timestamp</param>
+        </field>
         <field text="修改时间" name="mtime" type="date">
             <param name="type">timestamp</param>
             <param name="default">=%now</param>
@@ -129,12 +133,9 @@
             <param name="db-path">mosaic/root</param>
             <param name="db-name">mosaic/root</param>
             <param name="db-table">mosaic.data</param>
+            <param name="db-class">io.github.ihongs.serv.mosaic.MosaicDataEntity</param>
         </field>
         <field name="id" type="hidden"></field>
-        <field name="sd" type="hidden">
-            <param name="disabled">yes</param>
-            <param name="unstored">yes</param>
-        </field>
         <field text="名称" name="name" type="text">
             <param name="maxlength">1000</param>
         </field>
@@ -186,12 +187,9 @@
             <param name="db-path">mosaic/root</param>
             <param name="db-name">mosaic/root</param>
             <param name="db-table">mosaic.data</param>
+            <param name="db-class">io.github.ihongs.serv.mosaic.MosaicDataEntity</param>
         </field>
         <field name="id" type="hidden"></field>
-        <field name="sd" type="hidden">
-            <param name="disabled">yes</param>
-            <param name="unstored">yes</param>
-        </field>
         <field text="名称" name="name" type="text">
             <param name="maxlength">1000</param>
         </field>
@@ -254,12 +252,9 @@
             <param name="db-path">mosaic/root</param>
             <param name="db-name">mosaic/root</param>
             <param name="db-table">mosaic.data</param>
+            <param name="db-class">io.github.ihongs.serv.mosaic.MosaicDataEntity</param>
         </field>
         <field name="id" type="hidden"></field>
-        <field name="sd" type="hidden">
-            <param name="disabled">yes</param>
-            <param name="unstored">yes</param>
-        </field>
         <field text="名称" name="name" type="text">
             <param name="maxlength">1000</param>
         </field>
@@ -339,12 +334,9 @@
             <param name="db-path">mosaic/root</param>
             <param name="db-name">mosaic/root</param>
             <param name="db-table">mosaic.data</param>
+            <param name="db-class">io.github.ihongs.serv.mosaic.MosaicDataEntity</param>
         </field>
         <field name="id" type="hidden"></field>
-        <field name="sd" type="hidden">
-            <param name="disabled">yes</param>
-            <param name="unstored">yes</param>
-        </field>
         <field text="名称" name="name" type="text">
             <param name="maxlength">1000</param>
         </field>
@@ -372,7 +364,10 @@
             <param name="enum">state</param>
             <param name="default">1</param>
         </field>
-        <field text="发布时间" name="ptime" type="date">
+        <field text="开始时间" name="ptime" type="date">
+            <param name="type">timestamp</param>
+        </field>
+        <field text="截至时间" name="etime" type="date">
             <param name="type">timestamp</param>
         </field>
         <field text="创建时间" name="ctime" type="date">
