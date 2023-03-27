@@ -3,15 +3,23 @@ package io.github.ihongs.serv.centra;
 import io.github.ihongs.Cnst;
 import io.github.ihongs.HongsException;
 import io.github.ihongs.action.ActionHelper;
+import io.github.ihongs.action.anno.Action;
+import io.github.ihongs.action.anno.CommitSuccess;
+import io.github.ihongs.action.anno.Preset;
+import io.github.ihongs.action.anno.Verify;
 import io.github.ihongs.dh.IEntity;
 import io.github.ihongs.serv.matrix.Data;
+import io.github.ihongs.util.Synt;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- *
+ * 站点管理
  * @author Hongs
  */
+@Action("centra/mosaic/site")
 public class MosaicSiteAction extends DataAction {
-    
+
     /**
      * 获取模型对象
      * 注意:
@@ -28,6 +36,32 @@ public class MosaicSiteAction extends DataAction {
         Data   entity = Data.getInstance("mosaic", "site");
         entity.setUserId(userId);
         return entity;
+    }
+
+    @Action("update")
+    @Preset(conf="", form="", defs={".defence"})
+    @Verify(conf="", form="")
+    @CommitSuccess
+    @Override
+    public void update(ActionHelper helper) throws HongsException {
+        Map req = helper.getRequestData();
+        Map rep = new HashMap ( );
+        // 只让修改状态
+        int sta = Synt.declare(req.get("state"), 0);
+        if (sta > 0) {
+            rep.put("state", sta);
+        }
+        if (rep.isEmpty()) {
+            helper.fault("参数错误, 没有可以更新的");
+            return;
+        }
+        rep.put(Cnst.ID_KEY, req.get(Cnst.ID_KEY));
+        super.update(helper);
+    }
+
+    @Override
+    public void create(ActionHelper helper) throws HongsException {
+        throw new HongsException(405);
     }
 
 }
