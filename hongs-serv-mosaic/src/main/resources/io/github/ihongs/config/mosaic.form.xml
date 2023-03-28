@@ -33,7 +33,14 @@
             <param name="enum">state</param>
             <param name="default">21</param>
         </field>
-        <field text="管理员" name="owner" type="fork" repeated="yes" required="yes">
+        <field text="意见" name="cause" type="text">
+        </field>
+        <field text="拥有者" name="owner" type="fork" required="yes" repeated="yes">
+            <param name="data-at">centra/master/user/list</param>
+            <param name="data-nk">name</param>
+            <param name="data-vk">id</param>
+        </field>
+        <field text="管理者" name="admin" type="fork" required="yes" repeated="yes">
             <param name="data-at">centra/master/user/list</param>
             <param name="data-nk">name</param>
             <param name="data-vk">id</param>
@@ -107,6 +114,8 @@
             <param name="enum">state</param>
             <param name="default">1</param>
         </field>
+        <field text="意见" name="cause" type="text">
+        </field>
         <field text="发布时间" name="ptime" type="date">
             <param name="type">timestamp</param>
         </field>
@@ -164,6 +173,8 @@
             <param name="enum">state</param>
             <param name="default">1</param>
         </field>
+        <field text="意见" name="cause" type="text">
+        </field>
         <field text="发布时间" name="ptime" type="date">
             <param name="type">timestamp</param>
         </field>
@@ -214,6 +225,8 @@
         <field text="状态" name="state" type="enum">
             <param name="enum">state</param>
             <param name="default">1</param>
+        </field>
+        <field text="意见" name="cause" type="text">
         </field>
         <field text="发布时间" name="ptime" type="date">
             <param name="type">timestamp</param>
@@ -279,6 +292,8 @@
         <field text="状态" name="state" type="enum">
             <param name="enum">state</param>
             <param name="default">1</param>
+        </field>
+        <field text="意见" name="cause" type="text">
         </field>
         <field text="发布时间" name="ptime" type="date">
             <param name="type">timestamp</param>
@@ -363,6 +378,8 @@
         <field text="状态" name="state" type="enum">
             <param name="enum">state</param>
             <param name="default">1</param>
+        </field>
+        <field text="意见" name="cause" type="text">
         </field>
         <field text="开始时间" name="ptime" type="date">
             <param name="type">timestamp</param>

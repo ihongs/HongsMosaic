@@ -4,8 +4,13 @@ import io.github.ihongs.Cnst;
 import io.github.ihongs.HongsException;
 import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.action.anno.Action;
+import io.github.ihongs.action.anno.CommitSuccess;
+import io.github.ihongs.action.anno.Preset;
+import io.github.ihongs.action.anno.Verify;
 import io.github.ihongs.dh.IEntity;
 import io.github.ihongs.serv.matrix.Data;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 管理动作
@@ -30,6 +35,34 @@ public class MosaicRootAction extends DataAction {
         Data   entity = Data.getInstance("mosaic", "root");
         entity.setUserId(userId);
         return entity;
+    }
+
+    @Action("update")
+    @Preset(conf="", form="", defs={".defence"})
+    @Verify(conf="", form="")
+    @CommitSuccess
+    @Override
+    public void update(ActionHelper helper) throws HongsException {
+        Map req = helper.getRequestData();
+        Map rep = new HashMap();
+        if (req.containsKey("state")) {
+            rep.put("state", req.get("state"));
+        }
+        if (req.containsKey("cause")) {
+            rep.put("cause", req.get("cause"));
+        }
+        if (rep.isEmpty()) {
+            helper.fault("参数错误, 仅能审核");
+            return;
+        }
+        rep.put(Cnst.ID_KEY, req.get(Cnst.ID_KEY));
+        helper.setRequestData(rep);
+        super.update(helper);
+    }
+
+    @Override
+    public void create(ActionHelper helper) throws HongsException {
+        throw new HongsException(405);
     }
 
 }

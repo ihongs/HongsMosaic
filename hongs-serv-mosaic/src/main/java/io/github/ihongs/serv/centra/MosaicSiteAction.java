@@ -45,17 +45,19 @@ public class MosaicSiteAction extends DataAction {
     @Override
     public void update(ActionHelper helper) throws HongsException {
         Map req = helper.getRequestData();
-        Map rep = new HashMap ( );
-        // 只让修改状态
-        int sta = Synt.declare(req.get("state"), 0);
-        if (sta > 0) {
-            rep.put("state", sta);
+        Map rep = new HashMap();
+        if (req.containsKey("state")) {
+            rep.put("state", req.get("state"));
+        }
+        if (req.containsKey("cause")) {
+            rep.put("cause", req.get("cause"));
         }
         if (rep.isEmpty()) {
-            helper.fault("参数错误, 没有可以更新的");
+            helper.fault("参数错误, 仅能审核");
             return;
         }
         rep.put(Cnst.ID_KEY, req.get(Cnst.ID_KEY));
+        helper.setRequestData(rep);
         super.update(helper);
     }
 
