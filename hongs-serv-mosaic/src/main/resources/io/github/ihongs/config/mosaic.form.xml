@@ -106,7 +106,7 @@
             <param name="unwritable">yes</param>
             <param name="type">html</param>
         </field>
-        <field name="list" type="json" repeated="yes">
+        <field name="list" type="object" repeated="yes">
             <param name="unreadable">yes</param>
             <param name="unwritable">yes</param>
         </field>
@@ -373,7 +373,7 @@
         <field text="类型" name="type" type="enum">
             <param name="enum">form_type</param>
         </field>
-        <field text="字段" name="list" type="json" repeated="yes">
+        <field text="字段" name="list" type="object" repeated="yes">
         </field>
         <field text="状态" name="state" type="enum">
             <param name="enum">state</param>
