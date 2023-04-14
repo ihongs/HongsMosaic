@@ -35,12 +35,14 @@
         </field>
         <field text="意见" name="cause" type="text">
         </field>
-        <field text="拥有者" name="owner" type="fork" required="yes" repeated="yes">
+        <field text="拥有者" name="owner" type="fork" required="yes" repeated="no">
             <param name="data-at">centra/master/user/list</param>
             <param name="data-nk">name</param>
             <param name="data-vk">id</param>
+            <param name="default">=$uid</param>
+            <param name="deforce">create</param>
         </field>
-        <field text="管理者" name="admin" type="fork" required="yes" repeated="yes">
+        <field text="管理者" name="admin" type="fork" required="no" repeated="yes">
             <param name="data-at">centra/master/user/list</param>
             <param name="data-nk">name</param>
             <param name="data-vk">id</param>
@@ -106,7 +108,7 @@
             <param name="unwritable">yes</param>
             <param name="type">html</param>
         </field>
-        <field name="list" type="object" repeated="yes">
+        <field name="list" type="object" rule="Intact" repeated="yes">
             <param name="unreadable">yes</param>
             <param name="unwritable">yes</param>
         </field>
@@ -373,7 +375,7 @@
         <field text="类型" name="type" type="enum">
             <param name="enum">form_type</param>
         </field>
-        <field text="字段" name="list" type="object" repeated="yes">
+        <field text="字段" name="list" type="object" rule="Intact" repeated="yes">
         </field>
         <field text="状态" name="state" type="enum">
             <param name="enum">state</param>
