@@ -28,7 +28,7 @@ public class MosaicCaller extends Async<String> implements Core.Singleton {
             new Supplier<MosaicCaller> () {
                 @Override
                 public MosaicCaller get() {
-                    CoreConfig conf = CoreConfig.getInstance("mosaic");
+                    CoreConfig conf = CoreConfig.getInstance();
                     try {
                         return new MosaicCaller(
                             conf.getProperty("core.mosaic.data.caller.max.tasks", Integer.MAX_VALUE),
