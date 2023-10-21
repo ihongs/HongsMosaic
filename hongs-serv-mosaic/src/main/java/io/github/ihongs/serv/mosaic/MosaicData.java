@@ -149,10 +149,10 @@ abstract public class MosaicData extends Data {
             .getOne( );
         if (! od.isEmpty()) {
             if (Synt.declare(od.get("state"), 0  ) ==  0   ) {
-                throw new HongsException(404, "@matrix:matrix.item.is.removed", getDbName(), id);
+                throw new HongsException(404, "@matrix:matrix.item.is.removed", getFormId(), id);
             }
             if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
-                throw new HongsException(400, "@matrix:matrix.wait.one.second", getDbName(), id);
+                throw new HongsException(400, "@matrix:matrix.wait.one.second", getFormId(), id);
             }
         }
 
@@ -232,10 +232,10 @@ abstract public class MosaicData extends Data {
             .getOne( );
         if (! od.isEmpty()) {
             if (Synt.declare(od.get("state"), 0  ) ==  0   ) {
-                throw new HongsException(404, "@matrix:matrix.item.is.removed", getDbName(), id);
+                throw new HongsException(404, "@matrix:matrix.item.is.removed", getFormId(), id);
             }
             if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
-            //  throw new HongsException(400, "@matrix:matrix.wait.one.second", getDbName(), id);
+            //  throw new HongsException(400, "@matrix:matrix.wait.one.second", getFormId(), id);
                 ctime = 0;
             }
         }
@@ -329,7 +329,7 @@ abstract public class MosaicData extends Data {
             return 0; // 删除是幂等的可重复调用
         }
         if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
-            throw new HongsException(400, "@matrix:matrix.wait.one.second", getDbName(), id);
+            throw new HongsException(400, "@matrix:matrix.wait.one.second", getFormId(), id);
         }
 
         Map ud = new HashMap();
@@ -399,7 +399,7 @@ abstract public class MosaicData extends Data {
             return 0; // 删除是幂等的可重复调用
         }
         if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
-        //  throw new HongsException(400, "@matrix:matrix.wait.one.second", getDbName(), id);
+        //  throw new HongsException(400, "@matrix:matrix.wait.one.second", getFormId(), id);
             ctime  = 0;
         }
 
@@ -462,7 +462,7 @@ abstract public class MosaicData extends Data {
     public int rev(String id, Map rd, long ctime) throws HongsException {
         Table table = getTable();
         if (table == null) {
-            throw new HongsException(405, "@matrix:matrix.rev.unsupported", getDbName());
+            throw new HongsException(405, "@matrix:matrix.rev.unsupported", getFormId());
         }
 
         String   uid   = getUserId();
@@ -500,10 +500,10 @@ abstract public class MosaicData extends Data {
             .select("ctime")
             .getOne( );
         if (od.isEmpty()) {
-        //  throw new HongsException(404, "@matrix:matrix.node.not.exists", getDbName(), id);
+        //  throw new HongsException(404, "@matrix:matrix.node.not.exists", getFormId(), id);
         } else
         if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
-            throw new HongsException(400, "@matrix:matrix.wait.one.second", getDbName(), id);
+            throw new HongsException(400, "@matrix:matrix.wait.one.second", getFormId(), id);
         }
 
         // 获取快照数据
@@ -512,12 +512,12 @@ abstract public class MosaicData extends Data {
         //  .assort("ctime  DESC")
             .getOne( );
         if (sd.isEmpty()) {
-            throw new HongsException(404, "@matrix:matrix.node.not.exists", getDbName(), id, ctime);
+            throw new HongsException(404, "@matrix:matrix.node.not.exists", getFormId(), id, ctime);
         }
         // 删除时保留的是删除前的快照, 即使为最终记录仍然可以恢复
         if (Synt.declare(sd.get("state"), 0  ) !=  0   ) {
         if (Synt.declare(sd.get("etime"), 0L ) ==  0L  ) {
-            throw new HongsException(400, "@matrix:matrix.node.is.current", getDbName(), id, ctime);
+            throw new HongsException(400, "@matrix:matrix.node.is.current", getFormId(), id, ctime);
         }}
 
         // 保存到文档库
