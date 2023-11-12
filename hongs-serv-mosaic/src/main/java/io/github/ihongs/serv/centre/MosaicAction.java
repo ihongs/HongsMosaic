@@ -1,7 +1,7 @@
 package io.github.ihongs.serv.centre;
 
 import io.github.ihongs.Cnst;
-import io.github.ihongs.HongsException;
+import io.github.ihongs.CruxException;
 import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.action.ActionRunner;
 import io.github.ihongs.action.anno.Select;
@@ -24,13 +24,13 @@ public abstract class MosaicAction extends SearchAction {
 
     @Override
     public void acting(ActionHelper helper, ActionRunner runner)
-    throws HongsException {
+    throws CruxException {
         super.acting(helper, runner);
 
         String uid = (String) helper.getSessibute(Cnst.UID_SES);
         String sid = (String) helper.getAttribute(SITE_ID_ATTR);
         if (sid == null || sid.isEmpty()) {
-            throw new HongsException(400, "Site not exists");
+            throw new CruxException(400, "Site not exists");
         }
 
         // 查验管理员权限
@@ -40,11 +40,11 @@ public abstract class MosaicAction extends SearchAction {
             Cnst.ID_KEY, sid
         ));
         if (row == null || row.isEmpty()) {
-            throw new HongsException(404, "Site not exists");
+            throw new CruxException(404, "Site not exists");
         }
         int state  = Synt.declare(row.get("state"), 0);
         if (state != 1) {
-            throw new HongsException(404, "Site is not ready or locked");
+            throw new CruxException(404, "Site is not ready or locked");
         }
         Set owner  = Synt. asSet (row.get("owner"));
         switch ( runner.getHandle() ) {
@@ -53,10 +53,10 @@ public abstract class MosaicAction extends SearchAction {
             case "delete":
                 // 只能管理自己的内容
                 if (null == uid) {
-                    throw new HongsException(401, "Login required");
+                    throw new CruxException(401, "Login required");
                 }
                 if (null == owner || ! owner.contains(uid)) {
-                    throw new HongsException(403, "Power required");
+                    throw new CruxException(403, "Power required");
                 }
                 break;
             case "search":

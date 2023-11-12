@@ -1,7 +1,7 @@
 package io.github.ihongs.serv.mosaic;
 
 import io.github.ihongs.Cnst;
-import io.github.ihongs.HongsException;
+import io.github.ihongs.CruxException;
 import io.github.ihongs.db.DB;
 import io.github.ihongs.db.Model;
 import io.github.ihongs.db.Table;
@@ -34,7 +34,7 @@ abstract public class MosaicData extends Data {
     protected abstract String getFormId(Map dd);
 
     @Override
-    public Model getModel() throws HongsException {
+    public Model getModel() throws CruxException {
         String tn = Synt.declare(getParams().get("db-model"), "data");
         if ("".equals(tn) || "none".equals(tn)) {
             return null;
@@ -43,7 +43,7 @@ abstract public class MosaicData extends Data {
     }
 
     @Override
-    public Table getTable() throws HongsException {
+    public Table getTable() throws CruxException {
         String tn = Synt.declare(getParams().get("db-table"), "data");
         if ("".equals(tn) || "none".equals(tn)) {
             return null;
@@ -57,10 +57,10 @@ abstract public class MosaicData extends Data {
      * @param rd
      * @param ctime
      * @return
-     * @throws HongsException
+     * @throws CruxException
      */
     @Override
-    public int add(String id, Map rd, long ctime) throws HongsException {
+    public int add(String id, Map rd, long ctime) throws CruxException {
         Map dd = new HashMap();
         padInf(dd, rd);
 
@@ -115,10 +115,10 @@ abstract public class MosaicData extends Data {
      * @param rd
      * @param ctime
      * @return 有更新为 1, 无更新为 0
-     * @throws HongsException
+     * @throws CruxException
      */
     @Override
-    public int put(String id, Map rd, long ctime) throws HongsException {
+    public int put(String id, Map rd, long ctime) throws CruxException {
         Map dd = get(id);
         int t  = dd.isEmpty()? 1: 2;
         int i  = padInf(dd , rd);
@@ -149,10 +149,10 @@ abstract public class MosaicData extends Data {
             .getOne( );
         if (! od.isEmpty()) {
             if (Synt.declare(od.get("state"), 0  ) ==  0   ) {
-                throw new HongsException(404, "@matrix:matrix.item.is.removed", getFormId(), id);
+                throw new CruxException(404, "@matrix:matrix.item.is.removed", getFormId(), id);
             }
             if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
-                throw new HongsException(400, "@matrix:matrix.wait.one.second", getFormId(), id);
+                throw new CruxException(400, "@matrix:matrix.wait.one.second", getFormId(), id);
             }
         }
 
@@ -198,10 +198,10 @@ abstract public class MosaicData extends Data {
      * @param rd
      * @param ctime
      * @return 有更新为 1, 无更新为 0
-     * @throws HongsException
+     * @throws CruxException
      */
     @Override
-    public int set(String id, Map rd, long ctime) throws HongsException {
+    public int set(String id, Map rd, long ctime) throws CruxException {
         Map dd = get(id);
         int t  = dd.isEmpty()? 1: 2;
         int i  = padInf(dd , rd);
@@ -232,10 +232,10 @@ abstract public class MosaicData extends Data {
             .getOne( );
         if (! od.isEmpty()) {
             if (Synt.declare(od.get("state"), 0  ) ==  0   ) {
-                throw new HongsException(404, "@matrix:matrix.item.is.removed", getFormId(), id);
+                throw new CruxException(404, "@matrix:matrix.item.is.removed", getFormId(), id);
             }
             if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
-            //  throw new HongsException(400, "@matrix:matrix.wait.one.second", getFormId(), id);
+            //  throw new CruxException(400, "@matrix:matrix.wait.one.second", getFormId(), id);
                 ctime = 0;
             }
         }
@@ -303,10 +303,10 @@ abstract public class MosaicData extends Data {
      * @param rd
      * @param ctime
      * @return 有更新为 1, 无更新为 0
-     * @throws HongsException
+     * @throws CruxException
      */
     @Override
-    public int del(String id, Map rd, long ctime) throws HongsException {
+    public int del(String id, Map rd, long ctime) throws CruxException {
         delDoc(id);
 
         Table table = getTable();
@@ -329,7 +329,7 @@ abstract public class MosaicData extends Data {
             return 0; // 删除是幂等的可重复调用
         }
         if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
-            throw new HongsException(400, "@matrix:matrix.wait.one.second", getFormId(), id);
+            throw new CruxException(400, "@matrix:matrix.wait.one.second", getFormId(), id);
         }
 
         Map ud = new HashMap();
@@ -373,10 +373,10 @@ abstract public class MosaicData extends Data {
      * @param rd
      * @param ctime
      * @return 有更新为 1, 无更新为 0
-     * @throws HongsException
+     * @throws CruxException
      */
     @Override
-    public int end(String id, Map rd, long ctime) throws HongsException {
+    public int end(String id, Map rd, long ctime) throws CruxException {
         delDoc(id);
 
         Table table = getTable();
@@ -399,7 +399,7 @@ abstract public class MosaicData extends Data {
             return 0; // 删除是幂等的可重复调用
         }
         if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
-        //  throw new HongsException(400, "@matrix:matrix.wait.one.second", getFormId(), id);
+        //  throw new CruxException(400, "@matrix:matrix.wait.one.second", getFormId(), id);
             ctime  = 0;
         }
 
@@ -456,13 +456,13 @@ abstract public class MosaicData extends Data {
      * @param rd
      * @param ctime
      * @return 有更新为 1, 无更新为 0
-     * @throws HongsException
+     * @throws CruxException
      */
     @Override
-    public int rev(String id, Map rd, long ctime) throws HongsException {
+    public int rev(String id, Map rd, long ctime) throws CruxException {
         Table table = getTable();
         if (table == null) {
-            throw new HongsException(405, "@matrix:matrix.rev.unsupported", getFormId());
+            throw new CruxException(405, "@matrix:matrix.rev.unsupported", getFormId());
         }
 
         String   uid   = getUserId();
@@ -500,10 +500,10 @@ abstract public class MosaicData extends Data {
             .select("ctime")
             .getOne( );
         if (od.isEmpty()) {
-        //  throw new HongsException(404, "@matrix:matrix.node.not.exists", getFormId(), id);
+        //  throw new CruxException(404, "@matrix:matrix.node.not.exists", getFormId(), id);
         } else
         if (Synt.declare(od.get("ctime"), 0L ) >= ctime) {
-            throw new HongsException(400, "@matrix:matrix.wait.one.second", getFormId(), id);
+            throw new CruxException(400, "@matrix:matrix.wait.one.second", getFormId(), id);
         }
 
         // 获取快照数据
@@ -512,12 +512,12 @@ abstract public class MosaicData extends Data {
         //  .assort("ctime  DESC")
             .getOne( );
         if (sd.isEmpty()) {
-            throw new HongsException(404, "@matrix:matrix.node.not.exists", getFormId(), id, ctime);
+            throw new CruxException(404, "@matrix:matrix.node.not.exists", getFormId(), id, ctime);
         }
         // 删除时保留的是删除前的快照, 即使为最终记录仍然可以恢复
         if (Synt.declare(sd.get("state"), 0  ) !=  0   ) {
         if (Synt.declare(sd.get("etime"), 0L ) ==  0L  ) {
-            throw new HongsException(400, "@matrix:matrix.node.is.current", getFormId(), id, ctime);
+            throw new CruxException(400, "@matrix:matrix.node.is.current", getFormId(), id, ctime);
         }}
 
         // 保存到文档库

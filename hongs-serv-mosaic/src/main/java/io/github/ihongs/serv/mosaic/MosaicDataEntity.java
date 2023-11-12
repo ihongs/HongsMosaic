@@ -1,8 +1,8 @@
 package io.github.ihongs.serv.mosaic;
 
 import io.github.ihongs.Core;
-import io.github.ihongs.HongsException;
-import io.github.ihongs.HongsExemption;
+import io.github.ihongs.CruxException;
+import io.github.ihongs.CruxExemption;
 import java.util.Map;
 import java.util.Set;
 import org.apache.lucene.document.Document;
@@ -57,7 +57,7 @@ public class MosaicDataEntity extends MosaicData {
     }
 
     @Override
-    protected void padQry(BooleanQuery.Builder qr, Map rd) throws HongsException {
+    protected void padQry(BooleanQuery.Builder qr, Map rd) throws CruxException {
         // 限定站点范围
         String sd = getSiteId();
         if (null != sd && ! sd.isEmpty( )) {
@@ -75,7 +75,7 @@ public class MosaicDataEntity extends MosaicData {
             doc.add(new StringField("@"+SITE_ID_KEY, sd, Field.Store.NO));
             doc.add(new StoredField(/**/SITE_ID_KEY, sd));
         } else {
-            throw new HongsExemption( "siteId required" );
+            throw new CruxExemption( "siteId required" );
         }
 
         super.padDoc(doc, map, rep);

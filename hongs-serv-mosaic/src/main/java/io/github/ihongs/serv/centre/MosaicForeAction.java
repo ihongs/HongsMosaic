@@ -1,7 +1,7 @@
 package io.github.ihongs.serv.centre;
 
 import io.github.ihongs.Cnst;
-import io.github.ihongs.HongsException;
+import io.github.ihongs.CruxException;
 import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.action.ActionRunner;
 import io.github.ihongs.action.anno.Action;
@@ -29,12 +29,12 @@ public class MosaicForeAction extends SearchAction {
 
     @Override
     public void acting(ActionHelper helper, ActionRunner runner)
-    throws HongsException {
+    throws CruxException {
         super.acting(helper, runner);
 
         String sid = (String) helper.getAttribute(SITE_ID_ATTR);
         if (sid == null || sid.isEmpty()) {
-            throw new HongsException(400, "Site not exists");
+            throw new CruxException(400, "Site not exists");
         }
 
         // 查验管理员权限
@@ -44,11 +44,11 @@ public class MosaicForeAction extends SearchAction {
             Cnst.ID_KEY, sid
         ));
         if (row == null || row.isEmpty()) {
-            throw new HongsException(404, "Site not exists");
+            throw new CruxException(404, "Site not exists");
         }
         int state  = Synt.declare(row.get("state"), 0);
         if (state != 1) {
-            throw new HongsException(404, "Site is not ready or locked");
+            throw new CruxException(404, "Site is not ready or locked");
         }
         Set owner  = Synt. asSet (row.get("owner"));
         switch ( runner.getHandle() ) {
@@ -58,7 +58,7 @@ public class MosaicForeAction extends SearchAction {
                 // 非管理员只能查阅和管理自己的内容
                 String uid = (String) helper.getSessibute(Cnst.UID_SES);
                 if (null == uid) {
-                    throw new HongsException(401, "Login required");
+                    throw new CruxException(401, "Login required");
                 }
                 if (null == owner || ! owner.contains(uid)) {
                     Dict.put(helper.getRequestData(), uid, Cnst.AR_KEY, "x", "cuser");
@@ -85,11 +85,11 @@ public class MosaicForeAction extends SearchAction {
      *  方法 Action 注解的命名只能是 "动作名称", 不得含子级实体名称
      * @param helper
      * @return
-     * @throws HongsException
+     * @throws CruxException
      */
     @Override
     public IEntity getEntity(ActionHelper helper)
-    throws HongsException {
+    throws CruxException {
         ActionRunner runner = (ActionRunner) helper.getAttribute(ActionRunner.class.getName());
         String formId = runner.getEntity();
         String siteId = (String) helper.getAttribute(SITE_ID_ATTR);

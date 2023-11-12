@@ -1,7 +1,7 @@
 package io.github.ihongs.serv.centra;
 
 import io.github.ihongs.Cnst;
-import io.github.ihongs.HongsException;
+import io.github.ihongs.CruxException;
 import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.action.anno.Action;
 import io.github.ihongs.action.anno.CommitSuccess;
@@ -26,11 +26,11 @@ public class MosaicRootAction extends DataAction {
      *  方法 Action 注解的命名只能是 "动作名称", 不得含子级实体名称
      * @param helper
      * @return
-     * @throws HongsException
+     * @throws CruxException
      */
     @Override
     public IEntity getEntity(ActionHelper helper)
-    throws HongsException {
+    throws CruxException {
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
         Data   entity = Data.getInstance("mosaic", "root");
         entity.setUserId(userId);
@@ -42,7 +42,7 @@ public class MosaicRootAction extends DataAction {
     @Verify(conf="", form="")
     @CommitSuccess
     @Override
-    public void update(ActionHelper helper) throws HongsException {
+    public void update(ActionHelper helper) throws CruxException {
         Map req = helper.getRequestData();
         Map rep = new HashMap();
         if (req.containsKey("state")) {
@@ -61,8 +61,8 @@ public class MosaicRootAction extends DataAction {
     }
 
     @Override
-    public void create(ActionHelper helper) throws HongsException {
-        throw new HongsException(405);
+    public void create(ActionHelper helper) throws CruxException {
+        throw new CruxException(405);
     }
 
 }

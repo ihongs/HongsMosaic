@@ -3,7 +3,7 @@ package io.github.ihongs.serv.mosaic;
 import io.github.ihongs.Core;
 import io.github.ihongs.CoreConfig;
 import io.github.ihongs.CoreLogger;
-import io.github.ihongs.HongsException;
+import io.github.ihongs.CruxException;
 import io.github.ihongs.util.Remote;
 import io.github.ihongs.util.Syno;
 import io.github.ihongs.util.daemon.Async;
@@ -18,7 +18,7 @@ public class MosaicCaller extends Async<String> implements Core.Singleton {
     private static final String SPACE = "hongs.log.mosaic.data.call" ;
     private static final String ENVIR =    "INSIDE mosaic.data.call ";
 
-    protected MosaicCaller(int maxTasks, int maxServs) throws HongsException {
+    protected MosaicCaller(int maxTasks, int maxServs) throws CruxException {
         super(MosaicCaller.class.getName( ), maxTasks, maxServs);
     }
 
@@ -34,7 +34,7 @@ public class MosaicCaller extends Async<String> implements Core.Singleton {
                             conf.getProperty("core.mosaic.data.caller.max.tasks", Integer.MAX_VALUE),
                             conf.getProperty("core.mosaic.data.caller.max.servs", 1)
                         );
-                    } catch (HongsException x) {
+                    } catch ( CruxException x) {
                         throw x.toExemption( );
                     }
                 }

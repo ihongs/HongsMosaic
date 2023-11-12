@@ -1,12 +1,11 @@
 package io.github.ihongs.serv.centre;
 
 import io.github.ihongs.Cnst;
-import io.github.ihongs.HongsException;
+import io.github.ihongs.CruxException;
 import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.action.ActionRunner;
 import io.github.ihongs.action.anno.Action;
 import io.github.ihongs.dh.IEntity;
-import io.github.ihongs.serv.matrix.Data;
 import io.github.ihongs.serv.mosaic.MosaicSiteEntity;
 import io.github.ihongs.util.Dict;
 import io.github.ihongs.util.Synt;
@@ -21,7 +20,7 @@ public class MosaicSiteAction extends DataAction {
 
     @Override
     public void acting(ActionHelper helper, ActionRunner runner)
-    throws HongsException {
+    throws CruxException {
         super.acting(helper, runner);
 
         // 限制操作范围
@@ -29,7 +28,7 @@ public class MosaicSiteAction extends DataAction {
         String act = runner.getHandle();
         String uid = (String) helper.getSessibute(Cnst.UID_SES);
         if (null == uid) {
-            throw new HongsException(401, "Login required");
+            throw new CruxException(401, "Login required");
         }
         switch(act) {
             case "search":
@@ -53,11 +52,11 @@ public class MosaicSiteAction extends DataAction {
      *  方法 Action 注解的命名只能是 "动作名称", 不得含子级实体名称
      * @param helper
      * @return
-     * @throws HongsException
+     * @throws CruxException
      */
     @Override
     public IEntity getEntity(ActionHelper helper)
-    throws HongsException {
+    throws CruxException {
         String userId = (String) helper.getSessibute(Cnst.UID_SES);
         MosaicSiteEntity entity = MosaicSiteEntity.getInstance("mosaic", "site");
         entity.setUserId(userId);

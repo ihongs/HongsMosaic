@@ -1,7 +1,7 @@
 package io.github.ihongs.util.verify;
 
 import io.github.ihongs.Cnst;
-import io.github.ihongs.HongsExemption;
+import io.github.ihongs.CruxExemption;
 import io.github.ihongs.action.ActionHelper;
 import io.github.ihongs.util.Syno;
 
@@ -20,7 +20,7 @@ public class MosaicImage extends Thumb {
                 String  uri = (String) prm;
                 String  uid = (String) ActionHelper.getInstance().getSessibute(Cnst.UID_SES);
                 if (uid == null) {
-                    throw new HongsExemption(401);
+                    throw  new CruxExemption(401);
                 }
                 uid = Syno.splitPath (uid);
                 return uri.replace("${uid}", uid);
