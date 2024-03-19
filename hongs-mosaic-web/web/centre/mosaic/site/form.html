@@ -1,3 +1,4 @@
+<h2>{DO}微站</h2>
 <div id="centre-mosaic-site-form">
     <form action="" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="id"/>
@@ -50,8 +51,8 @@
     var context = H$("#centre-mosaic-site-form");
     
     var formobj = context.hsForm({
-        loadUrl: "centre/mosaic/site/search.act?id={ID}",
-        saveUrl: "centre/mosaic/site/create.act?id={ID}"
+        loadUrl: "centre/mosaic/site/recite.act?id=$id",
+        saveUrl: "centre/mosaic/site/create.act?id=$id"
     });
 })(jQuery);
 </script>

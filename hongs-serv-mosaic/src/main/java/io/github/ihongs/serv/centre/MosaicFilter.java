@@ -72,7 +72,7 @@ public class MosaicFilter extends ActionDriver {
         String url = ActionDriver.getRecentPath(req);
 
         // 跳过指定路径
-        if (patter != null && ! patter.matches (url)) {
+        if (patter != null && ! patter.matches(url)) {
             chain.doFilter(req, rsp);
             return ;
         }
