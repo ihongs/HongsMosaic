@@ -13,7 +13,8 @@ import java.util.function.Supplier;
  * 数据更新通知队列
  * @author Hongs
  */
-public class MosaicCaller extends Async<String> implements Core.Singleton {
+@Core.Singleton
+public class MosaicCaller extends Async<String> {
 
     private static final String SPACE = "hongs.log.mosaic.data.call" ;
     private static final String ENVIR =    "INSIDE mosaic.data.call ";
