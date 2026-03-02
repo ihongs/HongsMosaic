@@ -1,0 +1,259 @@
+<h2 class="hide">站点</h2>
+<div id="centra-mosaic-site-list" class="centra-mosaic-site-list browse-list">
+    <form class="findbox toolbox board row">
+        <div class="col-xs-7">
+            <div class="btn-group">
+                <button type="button" class="review for-choose btn btn-default">查看</button>
+                <button type="button" class="verify for-checks btn btn-default">审核</button>
+                <button type="button" class="copies for-checks btn btn-default" title="拷贝"><span class="bi bi-hi-export"></span></button>
+                <button type="button" class="delete for-checks btn btn-default" title="删除"><span class="bi bi-hi-remove text-danger"></span></button>
+            </div>
+        </div>
+        <div class="col-xs-5">
+            <div class="input-group">
+                <input type="search" class="form-control" name="wd" placeholder="名称, 简介" /><!--[name, note]-->
+                <span class="input-group-btn">
+                    <button type="submit" class="search btn btn-default" title="查找"><span class="bi bi-hi-search"></span></button>
+                    <button type="button" class="filter btn btn-default" title="过滤"><span class="bi bi-hi-filter"></span></button>
+                    <button type="button" class="statis btn btn-default" title="统计"><span class="bi bi-hi-statis "></span></button>
+                    <button type="button" class="column btn btn-default" title="字段"><span class="bi bi-hi-column"></span></button>
+                </span>
+            </div>
+        </div>
+    </form>
+    <!-- 筛选 -->
+    <form class="findbox filtbox invisible well form-horizontal">
+        <div class="group-end">
+        <hr  style="clear: both;"/>
+        <div class="btns-group form-group form-group-sm row">
+            <div class="col-xs-12 text-center">
+                <button type="submit" class="btn btn-primary">过滤</button>
+                <span style="padding: 0.1em;"></span>
+                <button type="reset"  class="btn btn-default">重置</button>
+            </div>
+        </div>
+        </div>
+    </form>
+    <!-- 统计 -->
+    <form class="findbox statbox invisible well">
+        <div class="board-end row">
+            <div class="stat-group col-xs-6" data-name="state" data-text="状态" data-type="acount" data-plot="pie">
+                <div class="panel panel-body panel-default clearfix" style="height: 302px;">
+                    <div class="checkbox col-xs-3" style="height: 100%; display:none"></div>
+                    <div class="chartbox col-xs-9" style="height: 100%; display:none"></div>
+                    <div class="alertbox"><div>状态加载中...</div></div>
+                </div>
+            </div>
+        </div>
+        <div class="board-end row">
+            <div class="stat-group col-xs-6" data-name="tags"  data-text="标签" data-type="acount">
+                <div class="panel panel-body panel-default clearfix" style="height: 302px;">
+                    <div class="checkbox col-xs-3" style="height: 100%; display:none"></div>
+                    <div class="chartbox col-xs-9" style="height: 100%; display:none"></div>
+                    <div class="alertbox"><div>标签加载中...</div></div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- 列表 -->
+    <div class="listbox rollbox panel panel-default table-responsive">
+        <table class="table table-hover table-striped table-compressed">
+            <thead>
+                <tr>
+                    <th data-fn="id." data-ft="_check" class="_check">
+                        <input name="id." type="checkbox" class="checkall"/>
+                    </th>
+                    <th data-fn="_" data-ft="_admin" class="_admin _amenu">
+                        <div class="dropdown invisible">
+                            <a href="javascript:;" data-toggle="dropdown"><span class="bi bi-hi-action"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="javascript:;" class="review">查看</a></li>
+                                <li><a href="javascript:;" class="delete"><span class="text-danger">删除</span></a></li>
+                            </ul>
+                        </div>
+                    </th>
+                    <th data-fn="name" class="">名称</th>
+                    <th data-fn="tags" class="">标签</th>
+                    <th data-fn="logo" data-ft="_image" class=" text-center">图标</th>
+                    <th data-fn="state_text" class="">状态</th>
+                    <th data-fn="owner_fork.name" class="">站长</th>
+                    <th data-fn="ctime" data-ft="_htime" data-ob="ctime" class="sortable numerial _date">创建时间</th>
+                    <th data-fn="mtime" data-ft="_htime" data-ob="mtime" class="sortable numerial _date">修改时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="pagebox clearfix">
+        <em class="page-text">...</em>
+    </div>
+</div>
+<script type="text/javascript">
+(function($) {
+    var context = H$("#centra-mosaic-site-list");
+    var loadbox = context.closest(".loadbox");
+    var listbox = context.find(".listbox");
+    var findbox = context.find(".findbox");
+    var filtbox = context.find(".filtbox");
+    var statbox = context.find(".statbox");
+
+    var loadres = hsSerialDic(loadbox);
+    var denycss = loadres['.deny'];
+        delete    loadres['.deny'];
+
+    //** 列表、搜索表单 **/
+
+    var listobj = context.hsList({
+        _data : loadres,
+        _url: "centra/mosaic/site/search.act?ab=_text,_fork&ob=mtime!,ctime!",
+        sendUrls: [
+            [ 'centra/mosaic/site/delete.act',
+              '.delete',
+              '您确定要删除这个(些)站点吗？' ]
+        ],
+        openUrls: [
+            [ 'centra/mosaic/site/info.html?id={ID}',
+              '.review', '@' ]
+        ],
+        load: hsLoadWithWord,
+        send: hsSendWithMemo,
+        
+        // 多行文本, 富文本等
+        _fill__texts: hsFillListMore,
+        // 链接填充, 支持多值, 占格子窄
+        _fill__ulink: hsListWrapOpen("link" ),
+        _fill__files: hsListWrapOpen("file" ),
+        _fill__image: hsListWrapOpen("image"),
+        _fill__video: hsListWrapOpen("video"),
+        _fill__audio: hsListWrapOpen("audio")
+    });
+
+    var filtobj = filtbox.hsForm({
+        _url: "centra/mosaic/site/select.act?ab=.enfo",
+        _doll__enum : hsListDollFilt,
+        _fill__enum : hsListFillFilt
+    });
+
+    var statobj = context.hsStat({
+        murl: "centra/mosaic/site/amount.act?rn=20&ob=-&ab=linked,_text",
+        curl: "centra/mosaic/site/acount.act?rn=20&ob=-&ab=linked,_text,_fork"
+    });
+
+    // 绑定参数
+    listobj._url = hsSetPms(listobj._url, loadres);
+    statobj.murl = hsSetPms(statobj.murl, loadres);
+    statobj.curl = hsSetPms(statobj.curl, loadres);
+
+    // 延迟加载
+    context.on("opened",".filtbox", function() {
+        if (filtbox.data("fetched") != true) {
+            filtbox.data("fetched"  ,  true);
+            filtobj.load();
+        }
+    });
+    context.on("opened",".statbox", function() {
+        if (statbox.data("changed") == true) {
+            statbox.data("changed"  ,  null);
+            statobj.load();
+        }
+    });
+
+    // 管理动作
+    context.on("click", ".toolbox .filter", function() {
+        filtbox.toggleClass("invisible");
+        if (! filtbox.is("invisible")) {
+            filtbox.trigger("opened");
+        }
+        statbox.addClass("invisible");
+    });
+    context.on("click", ".toolbox .statis", function() {
+        statbox.toggleClass("invisible");
+        if (! statbox.is("invisible")) {
+            statbox.trigger("opened");
+        }
+        filtbox.addClass("invisible");
+    });
+    context.on("click", ".toolbox :submit", function() {
+        filtbox.addClass("invisible");
+    });
+    context.on("click", ".filtbox :submit", function() {
+        filtbox.addClass("invisible");
+    });
+    context.on("click", ".toolbox .copies", function() {
+        hsCopyListData(listbox);
+    });
+    context.on("click", ".toolbox .column", function() {
+        hsHideListCols(listbox);
+    });
+    hsSaveListCols(listbox, "centra-mosaic-site-browse");
+
+    hsRequires("centra/mosaic/site/defines.js", function() {
+        // 外部定制
+        Promise.resolve(window["in_centra_mosaic_site_list"] && window["in_centra_mosaic_site_list"](context, listobj, filtobj, statobj))
+               .then(function() {
+
+        // 权限控制
+        $.each({"create":".create", "update":".update",
+                "delete":".delete", "reveal":".reveal"}
+        , function(k, v) {
+            if (! hsChkUri("centra/mosaic/site/"+k+".act")) {
+                context.find(v).remove();
+            }
+        });
+        // 外部限制
+        $.each(denycss ? denycss . split (",") : [ ]
+        , function(i, n) {
+            if (/^stat\./.test(n)) {
+                n = ".form-group[data-name='"+n.substring(5)+"']";
+                statbox.find(n).remove();
+            } else
+            if (/^filt\./.test(n)) {
+                n = ".form-group[data-name='"+n.substring(5)+"']";
+                filtbox.find(n).remove();
+            } else
+            if (/^find\./.test(n)) {
+                n = ".form-group[data-name='"+n.substring(5)+"']";
+                findbox.find(n).remove();
+            } else
+            if (/^list\./.test(n)) {
+                n = "th[data-fn='"+n.substring(5)+"']";
+                listbox.find(n).remove();
+            } else
+            {
+                context.find(n).remove();
+            }
+        });
+        // 无行内菜单项则隐藏之
+        if (listbox.find("thead ._amenu ul>li>a").size() == 0) {
+            listbox.find("thead ._amenu").addClass( "hidden" );
+        }
+        // 无操作按钮则隐藏选择
+        if (findbox.find(".for-choose").size() == 0
+        &&  findbox.find(".for-checks").size() == 0) {
+            listbox.find("thead ._check").addClass( "hidden" );
+        }
+        // 无过滤或统计则隐藏之
+        if (filtbox.find(".filt-group").size() == 0) {
+            findbox.find(".filter").remove();
+        }
+        if (statbox.find(".stat-group").size() == 0) {
+            findbox.find(".statis").remove();
+        }
+
+        // 自适滚动
+        var h = hsFlexRoll(listbox.filter(".rollbox"), $("#main-context"));
+        if (h > 0) {
+            filtbox.css("max-height", h+"px");
+            filtbox.css("overflow-y", "auto");
+            statbox.css("max-height", h+"px");
+            statbox.css("overflow-y", "auto");
+        }
+
+        // 加载数据
+        listobj.load(null, findbox);
+
+        }); // End Promise
+    });
+})(jQuery);
+</script>

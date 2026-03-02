@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+    <head>
+        <title>微站 - 站点</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <base href="/">
+        <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+        <link rel="stylesheet" type="text/css" href="static/assets/css/common.min.css"/>
+        <link rel="stylesheet" type="text/css" href="static/assets/css/centra.min.css"/>
+        <!--[if glt IE8.0]>
+        <script type="text/javascript" src="static/addons/respond/respond.min.js"></script>
+        <![endif]-->
+        <script type="text/javascript" src="static/assets/common.min.js"></script>
+        <script type="text/javascript" src="common/conf/default.js"></script>
+        <script type="text/javascript" src="common/lang/default.js"></script>
+        <script type="text/javascript" src="common/auth/centra.js" ></script>
+        <script type="text/javascript" src="centra/mosaic/site/defines.js"></script>
+    </head>
+    <body class="sider-open toper-open">
+        <div id="context">
+            <div id="headbox">
+                <div id="menu-context" data-load="centra/head.jsp"></div>
+            </div>
+            <div id="bodybox">
+                <div id="main-context" class="container-fluid labs laps">
+                    <div>
+                        <ul class="nav nav-tabs tabs hide-less-bread hide-icon-after board" data-toggle="hsTabs" data-target="+">
+                            <li class="active">
+                                <a href="javascript:;" data-href="centra/mosaic/site/list.html">
+                                    <span class="title">全部</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" data-href="centra/mosaic/site/list.html#state.eq=21">
+                                    <span class="title">待审</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" data-href="centra/mosaic/site/list.html#state.le=11">
+                                    <span class="title">审核已通过</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" data-href="centra/mosaic/site/list.html#state.eq=14">
+                                    <span class="title">审核不通过</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" data-href="centra/mosaic/site/list.html#state.eq=24">
+                                    <span class="title">锁定</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div data-load="centra/mosaic/site/list.html"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            (function($) {
+                var context = $("#main-context>:last");
+
+                context.find(">ul" ).trigger("hsStab");
+            })(jQuery);
+        </script>
+    </body>
+</html>

@@ -62,7 +62,7 @@ abstract public class MosaicData extends Data {
     @Override
     public int add(String id, Map rd, long ctime) throws CruxException {
         Map dd = new HashMap();
-        padInf(dd, rd);
+        padDif(dd, rd);
 
         // 保存到文档库
         dd.put(Cnst.ID_KEY , id);
@@ -121,7 +121,7 @@ abstract public class MosaicData extends Data {
     public int put(String id, Map rd, long ctime) throws CruxException {
         Map dd = get(id);
         int t  = dd.isEmpty()? 1: 2;
-        int i  = padInf(dd , rd);
+        int i  = padDif(dd , rd);
         // 无更新不存储
         if (i  ==  0) {
             return 0;
@@ -204,7 +204,7 @@ abstract public class MosaicData extends Data {
     public int set(String id, Map rd, long ctime) throws CruxException {
         Map dd = get(id);
         int t  = dd.isEmpty()? 1: 2;
-        int i  = padInf(dd , rd);
+        int i  = padDif(dd , rd);
         // 无更新不存储
         if (i  ==  0) {
             return 0;
@@ -484,7 +484,7 @@ abstract public class MosaicData extends Data {
             if (Synt.declare(od.get("state"), 0) > 0) {
                 Map dd = (Map) Dist.toObject((String) od.get("data"));
                 dd.put(Cnst.ID_KEY , id);
-                padInf(dd, dd);
+                padDif(dd, dd);
                 Document dc = padDoc(dd);
                 setDoc(id, dc);
             } else {
@@ -523,7 +523,7 @@ abstract public class MosaicData extends Data {
         // 保存到文档库
         Map dd = (Map) Dist.toObject((String) sd.get("data"));
         dd.put(Cnst.ID_KEY , id);
-        padInf(dd, dd);
+        padDif(dd, dd);
         Document dc = padDoc(dd);
         setDoc(id, dc);
 
