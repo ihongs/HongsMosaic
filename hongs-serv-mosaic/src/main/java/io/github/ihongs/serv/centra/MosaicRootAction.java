@@ -38,7 +38,7 @@ public class MosaicRootAction extends DataAction {
     }
 
     @Action("update")
-    @Preset(conf="", form="", defs={".defence"})
+    @Preset(conf="", form="", defe={".defence"})
     @Verify(conf="", form="")
     @CommitSuccess
     @Override

@@ -559,4 +559,15 @@ abstract public class MosaicData extends Data {
         return 1;
     }
 
+    /**
+     * getTval 的兼容方法
+     * @param rd
+     * @param key
+     * @return
+     * @throws CruxException 
+     */
+    private String getText(Map rd, String key) throws CruxException {
+        return getTval(rd, key);
+    }
+
 }
